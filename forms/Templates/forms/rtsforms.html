@@ -1,0 +1,76 @@
+{% extends 'forms/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="header">Return To Supplier (R.T.S) Form Summary</div>
+<div class="display_table">
+    <table class='table'>
+        <thead>
+          <tr>
+            <!-- <th>COUNT</th>-->
+            <th>SERIAL NUMBER</th>
+            <th>DEPARTMENT</th>
+            <th>SUPPLIER</th>
+            <th>DATE POSTED</th>
+            <th>SUBMITTED BY</th>
+            <th>STATUS</th>
+            <th>UPDATE</th>
+            <th>VIEW</th>
+          </tr>
+        </thead>
+      {% for rtsform in rtsforms %}
+          <tr>
+            <!--<td>{{ forloop.counter }}</td>-->
+            <td>{{ rtsform.id }}</td>
+            <td>{{ rtsform.department }}</td>
+            <td>{{ rtsform.supplier }}</td>
+            <td>{{ rtsform.date_posted }}</td>
+            <td>{{ rtsform.author }}</td>
+
+            {% if rtsform.form_status == 0 %}
+            <td>Submitted to HOD</td>
+            {% elif rtsform.form_status == -1 %}
+            <td>Rejected by HOD</td>
+            {% elif rtsform.form_status == 2 %}
+            <td>Submitted to QAO</td>
+            {% elif rtsform.form_status == 1 %}
+            <td>Rejected by QAO</td>
+            {% elif rtsform.form_status == 4 %}
+            <td>Submitted to FM</td>
+            {% elif rtsform.form_status == 3 %}
+            <td>Rejected by FM</td>
+            {% elif rtsform.form_status == 6 %}
+            <td>Ready for printing</td>
+            {% else %}
+            <td>Error</td>
+            {% endif %}
+            
+            {% if rtsform.form_status == 0 %}
+            <td><a href="{% url 'rtsform-update' rtsform.id%}">Update</a></td>
+            {% elif rtsform.form_status == -1 %}
+            <td><a href="{% url 'rtsform-update' rtsform.id%}">Update</a></td>
+            {% elif rtsform.form_status == 2 %}
+            <td><a href="{% url 'rtsform-update1' rtsform.id%}">Update</a></td>
+            {% elif rtsform.form_status == 1 %}
+            <td><a href="{% url 'rtsform-update' rtsform.id%}">Update</a></td>
+            {% elif rtsform.form_status == 4 %}
+            <td><a href="{% url 'rtsform-update2' rtsform.id%}">Update</a></td>
+            {% elif rtsform.form_status == 3 %}
+            <td><a href="{% url 'rtsform-update1' rtsform.id%}">Update</a></td>
+            {% elif rtsform.form_status == 5 %}
+            <td><a href="{% url 'rtsform-update2' rtsform.id%}">Update</a></td>
+            {% elif rtsform.form_status == 6 %}
+            <td><a href="{% url 'rtsform_pdf_view' rtsform.id%}">Get PDF</a></td>
+            {% else %}
+            <td>Error</td>
+            {% endif %}
+
+
+            <td><a href="{% url 'get_photo' rtsform.id%}">Photo</a></td>
+
+          </tr>
+      {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'forms/base.html' %}
+
+{% block content %}
+<body>
+    <section class="features-icons bg-light text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                        <div class="features-icons-icon d-flex"><i class="bi-window m-auto text-primary"></i></div>
+                        <h3>New Form</h3>
+                        <p class="lead mb-0"><a  class="lead mb-0" href="{% url 'rts' %}">Create a new RTS Form!</a></p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                        <div class="features-icons-icon d-flex"><i class="bi-layers m-auto text-primary"></i></div>
+                        <h3>Form Summary</h3>
+                        <p class="lead mb-0"><a  class="lead mb-0" href="{% url 'rtsforms' %}">Check out the form summary!</a></p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="features-icons-item mx-auto mb-0 mb-lg-3">
+                        <div class="features-icons-icon d-flex"><i class="bi-terminal m-auto text-primary"></i></div>
+                        <h3>Edit profile</h3>
+                        <p class="lead mb-0"><a  class="lead mb-0" href="{% url 'profile' %}">Check out you profile!</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+{% endblock %}

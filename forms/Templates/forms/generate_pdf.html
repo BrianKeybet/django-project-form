@@ -1,0 +1,163 @@
+{% load crispy_forms_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--Bottstrap CSS-->
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+
+    {% if title %}
+        <title>Kapa Forms- {{ title }}</title>
+    {% else %}
+        <title>Kapa Forms</title>
+    {% endif %}
+    <style type="text/css">
+
+        @page {
+            background-image: url("http://10.10.1.195:8000/media/Report_Background.png");
+        }
+        body {
+            font-weight: 200;
+            font-size: 14px;
+        }
+        .container {
+            position: relative;
+            text-align: Left;
+            /* padding-top: 50px; */
+            /* padding-right: 30px; */
+            /* padding-bottom: 50px; */
+            padding-left: 40px;
+        }
+        /* .legend1 {
+            padding-top: 50px;
+            padding-right: 30px;
+            padding-bottom: 50px;
+            padding-left: 40px;
+        } */
+         .top_row {
+            padding-top: 130px;
+        }
+        .top_row_field {
+            padding-top: 20px;
+        }
+        .bottom_row_hod {
+            padding-top: 60px;
+        }
+        .top_row_resolution {
+            padding-top: 80px;
+        }
+
+    </style>
+</head>
+
+<body>
+  <div class="container">
+            <div class="media-body">
+                <fieldset>
+                    <p class="top_row">
+                        <strong>Serial Number:</strong>
+                        {{ rtsform.id }}
+                    </p>
+                    <p>
+                        <strong>Date Posted:</strong>
+                        {{ rtsform.date_posted|date:"F d, Y" }}
+                        
+                    </p>
+                    <p >
+                        <strong>Department:</strong>
+                        {{ rtsform.department }} 
+                    </p>
+                </fieldset>
+                <fieldset>
+                    <p class="top_row_field">
+                        <strong>Supplier:</strong>
+                        {{ rtsform.supplier }}
+                    </p>
+                    <p class="col-sm-3">
+                        <strong>Vehicle number:</strong>
+                        {{ rtsform.vehicle_number }}
+                        
+                    </p>
+                    <p class="col-sm-2">
+                        <strong>D/Note number:</strong>
+                        {{ rtsform.dnote_number }} 
+                    </p>
+                    <p class="col-sm-2">
+                        <strong>D/Note date:</strong>
+                        {{ rtsform.dnote_date }} 
+                    </p>
+                    <p class="col-sm-2">
+                        <strong>Quantity:</strong>
+                        {{ rtsform.delivery_quantity }}                        
+                    </p>  
+                </fieldset>
+                <fieldset>
+                    <p class="top_row_field">
+                        <strong>Item:</strong>
+                        {{ rtsform.material_description }}
+                    </p>
+                    <p class="col-sm-4">
+                        <strong>Issue:</strong>
+                        {{ rtsform.quality_issue }}
+                    </p>
+                    <p class="col-sm-4">
+                        <strong>Reason for rejecton:</strong>
+                        {{ rtsform.reason_for_rejection }}
+                    </p>
+                    <p class="col-sm-3">
+                        <strong>Sampled quantity :</strong>
+                        {{ rtsform.sampled_quantity }}
+                    </p>
+                    <p class="col-sm-2">
+                        <strong>Quantity affected:</strong>
+                        {{ rtsform.quantity_affected }}
+                    </p>
+                    <p class="col-sm-3">
+                        <strong>Acceptable level:</strong>
+                        {{ rtsform.acceptable_level }}
+                    </p>
+                    <p class="col-sm-2">
+                        <strong>Batches:</strong>
+                        {{ rtsform.batches_sampled }}
+                    </p>
+                    <p class="col-sm-2">
+                        <strong>Mould:</strong>
+                        {{ rtsform.mould }}
+                    </p>
+                </fieldset>
+                <fieldset class="form-group">
+                    <div class="row">
+                        <p class="col-sm-6">
+                            <strong>{{ rtsform.department }} H.O.D Comment:</strong>
+                            {{ rtsform.hod_comment }}
+                        </p>
+                        <p class="bottom_row_hod">
+                            <strong>Quality Assurance Officer Comment:</strong>
+                            {{ rtsform.qao_comment }}
+                        </p>
+                    </div>
+                </fieldset>  
+                <fieldset class="form-group">
+                    <div class="row">
+                        <p class="top_row_resolution">
+                            <strong>Resolution:</strong>
+                            {{ rtsform.resolution }}
+                        </p>
+                    </div>
+                </fieldset>
+</div>
+
+  <!--jQuery then Popper.js then Bootstrap js-->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

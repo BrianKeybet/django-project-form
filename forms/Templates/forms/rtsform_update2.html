@@ -1,0 +1,157 @@
+{% extends "forms/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="center">
+        <h3>Return To Supplier (R.T.S) Form</h3>
+    </div>
+    <div>
+        <article class="media content-section">
+            <div class="media-body">
+                <hr>
+                <div class="row">
+                    <p class="col-sm-4">
+                        <strong>Serial Number:</strong>
+                        {{ object.id }}
+                    </p>
+                    <p class="col-sm-4">
+                        <strong>Date Posted:</strong>
+                        {{ object.date_posted|date:"F d, Y" }}
+                        
+                    </p>
+                    <p class="col-sm-4">
+                        <strong>Department:</strong>
+                        {{ object.department }} 
+                    </p>
+                </div>
+                <hr><hr>
+                <h5 class="center border-bottom mb-4">Document details</h5>
+                <div class="row">
+                    <p class="col-sm-3">
+                        <strong>Supplier:</strong>
+                        {{ object.supplier }}
+                    </p>
+                    <p class="col-sm-3">
+                        <strong>Vehicle number:</strong>
+                        {{ object.vehicle_number }}
+                        
+                    </p>
+                    <p class="col-sm-2">
+                        <strong>D/Note:</strong>
+                        {{ object.dnote_number }} 
+                    </p>
+                    <p class="col-sm-2">
+                        <strong>D/Note:</strong>
+                        {{ object.dnote_date }} 
+                    </p>
+                    <p class="col-sm-2">
+                        <strong>Quantity:</strong>
+                        {{ object.delivery_quantity }}                        
+                    </p>  
+                </div>
+                <hr>
+                <h5 class="center border-bottom mb-4 background-color:grey;">QC Findings</h5>
+                <div class="row">
+                    <p class="col-sm-4">
+                        <strong>Item:</strong>
+                        {{ object.material_description }}
+                    </p>
+                    <p class="col-sm-4">
+                        <strong>Issue:</strong>
+                        {{ object.quality_issue }}
+                    </p>
+                    <p class="col-sm-4">
+                        <strong>Reason for rejecton:</strong>
+                        {{ object.reason_for_rejection }}
+                    </p>
+                </div>
+                <br>
+                <div class="row">
+                    <p class="col-sm-2">
+                        <strong>Sampled quantity :</strong>
+                        {{ object.sampled_quantity }}
+                    </p>
+                    <p class="col-sm-2">
+                        <strong>Quantity affected:</strong>
+                        {{ object.quantity_affected }}
+                    </p>
+                    <p class="col-sm-2">
+                        <strong>Acceptable level:</strong>
+                        {{ object.acceptable_level }}
+                    </p>
+                    <p class="col-sm-3">
+                        <strong>Batches:</strong>
+                        {{ object.batches_sampled }}
+                    </p>
+                    <p class="col-sm-2">
+                        <strong>Mould:</strong>
+                        {{ object.mould }}
+                    </p>
+                </div>
+        </article>
+        <article class="media content-section">
+            <div class="media-body">
+                <fieldset class="form-group">
+                    <legend class="center border-bottom mb-4">Head of Department</legend>
+                    <div class="row">
+                        <p class="col-sm-6">
+                            <strong>HOD Comment:</strong>
+                            {{ object.hod_comment }}
+                            {{ object.qao_comment }}
+                        </p>
+                        <p class="col-sm-6">
+                            <strong>Picture:</strong>
+                            <a href="/media{{ MEDIA_URL }}/{{object.image}}">Click to see picture</a>
+                        </p>
+                    </div>
+                </fieldset>
+                <hr>
+            </div>    
+        </article>
+        <article class="media content-section">
+            <div class="media-body">
+                <fieldset class="form-group">
+                    <legend class=" center border-bottom mb-4">Quality Assurance Officer</legend>
+                    <div class="row">
+                        <p class="col-sm-6">
+                            <strong>QAO Comment:</strong>
+                            {{ rtsform.qao_comment }}
+                        </p>
+                    </div>
+                </fieldset>
+                <hr>
+            </div>    
+        </article>
+        <article class="media content-section">
+            <div class="content-section">
+                <form method="POST" action="" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% if rtsform.form_status == 4 %}
+                        {% if request.user.profile.level == 4 or request.user.profile.level == 5 %}
+                        <fieldset class="form-group">
+                            <legend class="border-bottom mb-4">Factory Manager / Purchasing department</legend>
+                            {{ form|crispy }}
+                        </fieldset>
+                        <div class="row justify-content-center mt-5">
+                            <button name="elevate" value="submit" type="submit" class="btn btn-outline-secondary active btn-sm">Submit</button>
+                            <button name="demote" value="submit" type="submit" class="btn btn-outline-danger active btn-sm">Return to QAO</button>
+                        </div>
+                        {% else %}
+                        <fieldset class="form-group" disabled>
+                            <legend class="border-bottom mb-4">Only FM / Purchasing department can fill</legend>
+                            {{ form|crispy }}
+                        </fieldset>
+                        {% endif %}
+                    {% else %}
+                    <fieldset class="form-group" disabled>
+                        <legend class="border-bottom mb-4">FM / PURCHASING</legend>
+                        {{ form|crispy }}
+                    </fieldset>
+                    {% endif %}
+                </form>
+            </div>
+        </article>
+    </div>
+    <div>
+
+    </div>
+{% endblock content %}
