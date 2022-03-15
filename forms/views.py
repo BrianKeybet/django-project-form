@@ -10,7 +10,7 @@ from .models import RTSform
 from users.models import Profile
 from .forms import PresentationForm, InspectionForm, RTSForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.core.mail import send_mail
 from django.core.mail import EmailMessage
@@ -321,6 +321,5 @@ def demote_form_status(request, pk):
 
 def get_material_image(request, pk):
     rtsform = get_object_or_404(RTSform, pk=pk)
-    rtsform.image
-    render(request, 'forms/rtsform_photo.html', {'rtsform.image': rtsform.image})
-    # Comment
+    return render(request, 'forms/rtsform_photo.html', {'form': rtsform })
+
