@@ -4,6 +4,7 @@ from django.utils import timezone
 from django import forms
 from django.contrib.auth.models import User
 
+#Belonging to another application
 class Speaker(models.Model):
     name = models.CharField(max_length=40, blank=False)
     def __str__(self):
