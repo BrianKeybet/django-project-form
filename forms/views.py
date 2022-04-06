@@ -8,7 +8,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from . import models
 from .models import RTSform
 from users.models import Profile
-from .forms import PresentationForm, InspectionForm, RTSForm
+from .forms import RTSForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
@@ -49,29 +49,6 @@ def rtsforms_render_pdf_view(request, *args, **kwargs):
       return HttpResponse('We had some errors <pre>' + html + '</pre>')
    return response
 
-class IndexView(generic.ListView):
-    context_object_name = 'presentations'
-    template_name = 'forms/index.html'
-
-    def get_queryset(self):
-        return models.Presentation.objects.all()
-
-class DetailView(generic.DetailView):
-    context_object_name = 'presentation'
-    model = models.Presentation
-    template_name = 'forms/detail.html' 
-
-
-class CreateView(SuccessMessageMixin,  generic.CreateView):
-    template_name = 'forms/edit.html'
-    success_message = 'Thank you for your submission! We will be in touch!'
-    form_class = PresentationForm
-
-    
-class CreateInspectionForm(SuccessMessageMixin,  generic.CreateView):
-    template_name = 'forms/inspectionform.html'
-    success_message = 'submitted successfully!'
-    form_class = InspectionForm
 
 class RTSForm(LoginRequiredMixin, SuccessMessageMixin,  generic.CreateView):
     template_name = 'forms/rtsform.html'

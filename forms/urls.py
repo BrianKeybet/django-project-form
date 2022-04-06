@@ -3,11 +3,7 @@ from .views import FormsDetailView, FormsHODUpdateView, FormsQAOUpdateView, Form
 from . import views
 
 urlpatterns = [
-    path('index/', views.IndexView.as_view(), name='index'),
     path('', views.home, name='forms-home'),
-    path('<int:pk>', views.DetailView.as_view(), name='detail'),
-    path('submit/', views.CreateView.as_view(), name='submit'),
-    path('inspection/', views.CreateInspectionForm.as_view(), name='inspection'),
     path('rts/', views.RTSForm.as_view(), name='rts'),
     path('rtsforms/', views.FormsView.as_view(), name='rtsforms'),
     path('rtsform/<int:pk>/', FormsDetailView.as_view(), name='rtsform-detail'),
