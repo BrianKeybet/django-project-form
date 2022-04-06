@@ -4,7 +4,22 @@ from django.contrib import messages
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 
+from django.contrib.auth import get_user_model
+from django.contrib.auth.backends import ModelBackend
 
+ ##This part enables logging via email, settings.py has to be modified also 
+class EmailBackend(ModelBackend):
+    def authenticate(self, request, username=None, password=None, **kwargs):
+        UserModel = get_user_model()
+        try:
+            user = UserModel.objects.get(email=username)
+        except UserModel.DoesNotExist:
+            return None
+        else:
+            if user.check_password(password):
+                return user
+        return None
+        
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
