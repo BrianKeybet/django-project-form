@@ -4,16 +4,6 @@ from django.utils import timezone
 from django import forms
 from django.contrib.auth.models import User
 
-#Belonging to another application
-class Speaker(models.Model):
-    name = models.CharField(max_length=40, blank=False)
-    def __str__(self):
-        return self.name
-
-class Track(models.Model):
-    title = models.CharField(max_length=40, blank=False)
-    def __str__(self):
-        return self.title
 
 class Department(models.Model):
     name = models.CharField(max_length=40, blank=False)
@@ -41,42 +31,7 @@ class Resolution(models.Model):
     def __str__(self):
         return self.name                               
 
-class Presentation(models.Model):
-    title = models.CharField(max_length=40, blank=False)
-    abstract = models.TextField(blank=False)
-    track = models.ForeignKey(Track, on_delete=models.PROTECT)
-    speaker = models.ForeignKey(Speaker, on_delete=models.PROTECT)
-    def __str__(self):
-        return self.title
-    def get_absolute_url(self):
-        return reverse('detail', kwargs={'pk': self.pk}) 
 
-#Sealing choices
-my_choices = [('G','Good'),('L','Leaking')]
-
-class BPinspectionform(models.Model):
-    boolean = models.BooleanField(default=False, verbose_name="New Inspection Form")
-    date_posted = models.DateTimeField(default=timezone.now)
-    serial_number = models.CharField(max_length=40)
-    sample1 = models.CharField(max_length=40, blank=False)
-    sample2 = models.CharField(max_length=40, blank=False)
-    sample3 = models.CharField(max_length=40, blank=False)
-    sample4 = models.CharField(max_length=40, blank=False)
-    sample5 = models.CharField(max_length=40, blank=False)
-
-    
-    S1Sealing=models.CharField(max_length=40, choices=my_choices)
-    S2Sealing=models.CharField(max_length=40, choices=my_choices)
-    S3Sealing=models.CharField(max_length=40, choices=my_choices)
-    S4Sealing=models.CharField(max_length=40, choices=my_choices)
-    S5Sealing=models.CharField(max_length=40, choices=my_choices)
-    #S5Sealing=models.CharField(label='Sealing', widget=forms.RadioSelect(choices=CHOICES))
-
-    def __str__(self):
-        return self.serial_number
-
-    class Meta:
-        ordering = ['id'] 
 
 class RTSform(models.Model):
     date_posted = models.DateTimeField(default=timezone.now, verbose_name="Date")
