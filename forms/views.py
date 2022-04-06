@@ -93,9 +93,10 @@ class RTSForm(LoginRequiredMixin, SuccessMessageMixin,  generic.CreateView):
         subject=f'{form.instance.department} department R.T.S form',
         body=f'R.T.S form number {serial_num} has been submitted by {form.instance.author}, kindly log on to the portal on http://10.10.1.195:8000/forms/home/ to view it.  In case of any challenges feel free to contact IT for further assistance.',
         from_email='kapaforms@kapa-oil.local',
-        to=[f'{em}'],
-        cc=['ict@kapa-oil.com','warehse.user2@kapa-oil.local'],
-        reply_to=['ict@kapa-oil.com'],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+        # to=[f'{em}'],
+        to=['support.user2@kapa-oil.local'],
+        cc=['support.user2@kapa-oil.local'],
+        reply_to=['support.user2@kapa-oil.local'],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
         )
         # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
         email.send()
@@ -126,9 +127,9 @@ class FormsHODUpdateView(UpdateView):
             subject=f'{form.instance.department} department R.T.S form',
             body=f'R.T.S form number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}, kindly log on to http://10.10.1.195:8000/forms/home/ to view it.  In case of any challenges feel free to contact IT for further assistance.',
             from_email='kapaforms@kapa-oil.local',
-            to=['qao.user6@kapa-oil.local','qao.user1@kapa-oil.local'],
-            cc=['ict@kapa-oil.com','warehse.user4@kapa-oil.local'],
-            reply_to=['ict@kapa-oil.com'],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            to=['support.user2@kapa-oil.local'],
+            cc=['support.user2@kapa-oil.local'],
+            reply_to=['support.user2@kapa-oil.local'],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
             email.send()
@@ -142,9 +143,9 @@ class FormsHODUpdateView(UpdateView):
             subject=f'{form.instance.department} department R.T.S form',
             body=f'R.T.S form number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}, kindly log on to  http://10.10.1.195:8000/forms/home/  to view it.  In case of any challenges feel free to contact IT for further assistance.',
             from_email='kapaforms@kapa-oil.local',
-            to=['qao.user6@kapa-oil.local','qao.user1@kapa-oil.local'],
-            cc=['ict@kapa-oil.com','warehse.user4@kapa-oil.local'],
-            reply_to=['ict@kapa-oil.com'],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            to=['support.user2@kapa-oil.local'],
+            cc=['support.user2@kapa-oil.local'],
+            reply_to=['support.user2@kapa-oil.local'],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
             email.send()
@@ -158,9 +159,9 @@ class FormsHODUpdateView(UpdateView):
             subject=f'{form.instance.department} department R.T.S form',
             body=f'R.T.S form number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}, kindly log on to  http://10.10.1.195:8000/forms/home/  to view it.  In case of any challenges feel free to contact IT for further assistance.',
             from_email='kapaforms@kapa-oil.local',
-            to=['qao.user3@kapa-oil.local'],
-            cc=['ict@kapa-oil.com','warehse.user4@kapa-oil.local'],
-            reply_to=['ict@kapa-oil.com'],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            to=['support.user2@kapa-oil.local'],
+            cc=['support.user2@kapa-oil.local'],
+            reply_to=['support.user2@kapa-oil.local'],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
             email.send()
@@ -174,9 +175,9 @@ class FormsHODUpdateView(UpdateView):
             subject=f'{form.instance.department} department R.T.S form',
             body=f'R.T.S form number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}, kindly log on to  http://10.10.1.195:8000/forms/home/  to view it.  In case of any challenges feel free to contact IT for further assistance.',
             from_email='kapaforms@kapa-oil.local',
-            to=['qao.user3@kapa-oil.local'],
-            cc=['ict@kapa-oil.com','warehse.user4@kapa-oil.local'],
-            reply_to=['ict@kapa-oil.com'],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            to=['support.user2@kapa-oil.local'],
+            cc=['support.user2@kapa-oil.local'],
+            reply_to=['support.user2@kapa-oil.local'],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
             email.send()
@@ -196,9 +197,9 @@ class FormsQAOUpdateView(UpdateView):
             subject=f'{form.instance.department} department R.T.S form',
             body=f'R.T.S form number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}, kindly log on to  http://10.10.1.195:8000/forms/home/  to view it.  In case of any challenges feel free to contact IT for further assistance.',
             from_email='kapaforms@kapa-oil.local',
-            to=['purchases.user7@kapa-oil.local', 'fm@kapa-oil.com'],
-            cc=['ict@kapa-oil.com','warehse.user4@kapa-oil.local'],
-            reply_to=['ict@kapa-oil.com'],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            to=['support.user2@kapa-oil.local'],
+            cc=['support.user2@kapa-oil.local'],
+            reply_to=['support.user2@kapa-oil.local'],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
             email.send()
@@ -213,9 +214,9 @@ class FormsQAOUpdateView(UpdateView):
             subject=f'{form.instance.department} department R.T.S form',
             body=f'R.T.S form number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}, kindly log on to  http://10.10.1.195:8000/forms/home/  to view it.  In case of any challenges feel free to contact IT for further assistance.',
             from_email='kapaforms@kapa-oil.local',
-            to=['purchases.user7@kapa-oil.local', 'fm@kapa-oil.com'],
-            cc=['ict@kapa-oil.com','warehse.user4@kapa-oil.local'],
-            reply_to=['ict@kapa-oil.com'],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            to=['support.user2@kapa-oil.local'],
+            cc=['support.user2@kapa-oil.local'],
+            reply_to=['support.user2@kapa-oil.local'],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
             email.send()
@@ -230,9 +231,9 @@ class FormsQAOUpdateView(UpdateView):
             subject=f'{form.instance.department} department R.T.S form',
             body=f'R.T.S form number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}, kindly log on to  http://10.10.1.195:8000/forms/home/  to view it.  In case of any challenges feel free to contact IT for further assistance.',
             from_email='kapaforms@kapa-oil.local',
-            to=['warehse.user2@kapa-oil.local'],
-            cc=['ict@kapa-oil.com','warehse.user4@kapa-oil.local'],
-            reply_to=['ict@kapa-oil.com'],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            to=['support.user2@kapa-oil.local'],
+            cc=['support.user2@kapa-oil.local'],
+            reply_to=['support.user2@kapa-oil.local'],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
             email.send()
@@ -246,9 +247,9 @@ class FormsQAOUpdateView(UpdateView):
             subject=f'{form.instance.department} department R.T.S form',
             body=f'R.T.S form number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}, kindly log on to  http://10.10.1.195:8000/forms/home/  to view it.  In case of any challenges feel free to contact IT for further assistance.',
             from_email='kapaforms@kapa-oil.local',
-            to=['warehse.user2@kapa-oil.local'],
-            cc=['ict@kapa-oil.com','warehse.user4@kapa-oil.local'],
-            reply_to=['ict@kapa-oil.com'],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            to=['support.user2@kapa-oil.local'],
+            cc=['support.user2@kapa-oil.local'],
+            reply_to=['support.user2@kapa-oil.local'],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
             email.send()
@@ -272,9 +273,9 @@ class FormsFMUpdateView(UpdateView):
             subject=f'{form.instance.department} department R.T.S form',
             body=f'R.T.S form number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}, kindly log on to  http://10.10.1.195:8000/forms/home/  to view it.  In case of any challenges feel free to contact IT for further assistance.',
             from_email='kapaforms@kapa-oil.local',
-            to=['qao.user3@kapa-oil.local'],
-            cc=['ict@kapa-oil.com','warehse.user4@kapa-oil.local'],
-            reply_to=['ict@kapa-oil.com'],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            to=['support.user2@kapa-oil.local'],
+            cc=['support.user2@kapa-oil.local'],
+            reply_to=['support.user2@kapa-oil.local'],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
             email.send()
@@ -289,9 +290,9 @@ class FormsFMUpdateView(UpdateView):
             subject=f'{form.instance.department} department R.T.S form',
             body=f'R.T.S form number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}, kindly log on to  http://10.10.1.195:8000/forms/home/  to view it.  In case of any challenges feel free to contact IT for further assistance.',
             from_email='kapaforms@kapa-oil.local',
-            to=['qao.user6@kapa-oil.local', 'qao.user1@kapa-oil.local'],
-            cc=['ict@kapa-oil.com','warehse.user4@kapa-oil.local'],
-            reply_to=['ict@kapa-oil.com'],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            to=['support.user2@kapa-oil.local'],
+            cc=['support.user2@kapa-oil.local'],
+            reply_to=['support.user2@kapa-oil.local'],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
             email.send()
