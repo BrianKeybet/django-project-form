@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from forms.models import Department
+from rts_forms.models import Department
 from PIL import Image
 
 class Profile(models.Model):
