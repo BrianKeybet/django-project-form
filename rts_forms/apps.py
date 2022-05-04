@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class FormsConfig(AppConfig):
-    name = 'forms'
+class Rts_FormsConfig(AppConfig):
+    name = 'rts_forms'
