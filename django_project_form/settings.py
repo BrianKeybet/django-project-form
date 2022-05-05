@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'crispy_forms',
     'rts_forms.apps.Rts_FormsConfig',
+    'waste_management.apps.WasteManagementConfig',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
