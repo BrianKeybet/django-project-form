@@ -12,6 +12,7 @@ class Department(models.Model):
 
 class Supplier(models.Model):
     name = models.CharField(max_length=40, blank=False)
+    supplier_code = models.CharField(max_length = 40, blank = False, null = True)
     def __str__(self):
         return self.name
 

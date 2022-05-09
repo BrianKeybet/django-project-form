@@ -168,4 +168,4 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = '10.0.0.25'
 EMAIL_PORT = 25
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'kapaforms@kapa-oil.local'
+EMAIL_HOST_USER = config('EMAIL_HOST_USER'),
