@@ -41,7 +41,7 @@ class RTSform(models.Model):
     supplier = models.ForeignKey(Supplier, on_delete=models.PROTECT)
     vehicle_number = models.CharField(max_length=40, verbose_name="Vehicle Number")
     dnote_number = models.CharField(max_length=40, verbose_name="D/Note number")
-    dnote_date = models.CharField(max_length=40, verbose_name="D/Note Date")
+    dnote_date = models.DateField(verbose_name="D/Note Date")
     material_description = models.ForeignKey(Material, on_delete=models.PROTECT, verbose_name="Material description")
     quality_issue = models.CharField(max_length=100, verbose_name="Quality issue")
     reason_for_rejection = models.ForeignKey(Reason, on_delete=models.PROTECT, verbose_name="Reason for rejection")
