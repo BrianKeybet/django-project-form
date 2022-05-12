@@ -47,7 +47,7 @@ def rtsforms_render_pdf_view(request, *args, **kwargs):
       html, dest=response)
    # if error then show some funy view
    if pisa_status.err:
-      return HttpResponse('We had some errors <pre>' + html + '</pre>')
+      return HttpResponse('We had some errors ' + html + '')
    return response
 
 

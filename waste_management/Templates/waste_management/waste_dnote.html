@@ -9,6 +9,11 @@
     padding: 0;
     margin: 0;
     }
+    label {
+    box-sizing: border-box;
+    padding: 5px;
+    margin: 0;
+    }
 
     body {
     font-family: 'Open Sans', sans-serif;
@@ -88,38 +93,38 @@
                         <legend class="center border-bottom mb-4">Items Disposed</legend>
                         <table>
                             <tr>
-                               <td><label for="mat1">Material Name:</label</td>
-                               <td><input type="text" id="mat1" value="{{ form.item1.value }}" name="items_disposed"></td> 
-                               <td><label for="qty1">Quantity:</label</td>
-                               <td><input type="text" id="qty1" value="{{ form.item_qty1.value }}" name="material_quantity"></td> 
+                               <td><label for="mat1">Material: </label</td>
+                               <td><input type="text" id="mat1" value="{{ form.item1.value }}" name="item1" placeholder="Material" size="30"></td>
+                               <td><label for="qty1">Quantity: </label</td>
+                               <td><input type="number" id="qty1" value="{{ form.item_qty1.value }}" name="item_qty1"></td> 
                              </tr>
 
                              <tr>
-                                <td><label for="mat2">Material Name:</label</td>
-                                <td><input type="text" id="mat2" value="{{ form.item2.value }}" name="items_disposed"></td> 
-                                <td><label for="qty2">Quantity:</label</td>
-                                <td><input type="text" id="qty2" value="{{ form.item_qty2.value }}" name="material_quantity"></td> 
+                                <td><label for="mat2">Material: </label</td>
+                                <td><input type="text" id="mat2" value="{{ form.item2.value }}" name="item2" size="30"></td> 
+                                <td><label for="qty2">Quantity: </label</td>
+                                <td><input type="number" id="qty2" value="{{ form.item_qty2.value }}" name="item_qty2" size="2"></td> 
                               </tr>
 
                               <tr>
-                                <td><label for="mat3">Material Name:</label</td>
-                                <td><input type="text" id="mat3" value="{{ form.item3.value }}" name="items_disposed"></td> 
-                                <td><label for="qty3">Quantity:</label</td>
-                                <td><input type="text" id="qty3" value="{{ form.item_qty3.value }}" name="material_quantity"></td> 
+                                <td><label for="mat3">Material: </label</td>
+                                <td><input type="text" id="mat3" value="{{ form.item3.value }}" name="item3" size="30"></td> 
+                                <td><label for="qty3">Quantity: </label</td>
+                                <td><input type="number" id="qty3" value="{{ form.item_qty3.value }}" name="item_qty3" size="2"></td> 
                               </tr>
 
                               <tr>
-                                <td><label for="mat4">Material Name:</label</td>
-                                <td><input type="text" id="mat4" value="{{ form.item4.value }}" name="items_disposed"></td> 
-                                <td><label for="qty4">Quantity:</label</td>
-                                <td><input type="text" id="qty4" value="{{ form.item_qty4.value }}" name="material_quantity"></td> 
+                                <td><label for="mat4">Material: </label</td>
+                                <td><input type="text" id="mat4" value="{{ form.item4.value }}" name="item4" size="30"></td> 
+                                <td><label for="qty4">Quantity: </label</td>
+                                <td><input type="number" id="qty4" value="{{ form.item_qty4.value }}" name="item_qty4" size="2"></td> 
                               </tr>
 
                               <tr>
-                                <td><label for="mat5">Material Name:</label</td>
-                                <td><input type="text" id="mat5" value="{{ form.item5.value }}" name="items_disposed"></td> 
-                                <td><label for="qty5">Quantity:</label</td>
-                                <td><input type="text" id="qty5" value="{{ form.item_qty5.value }}" name="material_quantity"></td> 
+                                <td><label for="mat5">Material: </label</td>
+                                <td><input type="text" id="mat5" value="{{ form.item5.value }}" name="item5" size="30"></td> 
+                                <td><label for="qty5">Quantity: </label</td>
+                                <td><input type="number" id="qty5" value="{{ form.item_qty5.value }}" name="item_qty5" size="2"></td> 
                               </tr>
                         </table>
                         <!-- {{ form|crispy }} -->

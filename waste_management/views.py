@@ -11,4 +11,4 @@ class waste_delivery_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, gen
     template_name = 'waste_management/waste_dnote.html'
     success_message = 'Form Submitted Sccessfully!'
     model = waste_delivery_note
-    fields = ['items_disposed', 'material_quantity']
+    fields = ['item1', 'item_qty1', 'item2', 'item_qty2', 'item3', 'item_qty3', 'item4', 'item_qty4', 'item5', 'item_qty5']
