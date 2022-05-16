@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from rts_forms.models import Material
+from django.urls import reverse
 
 # Create your models here.
 class waste_delivery_note(models.Model):
@@ -24,4 +25,7 @@ class waste_delivery_note(models.Model):
     item_qty7 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
     item8 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material8', verbose_name = "Material Description")
     item_qty8 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
+
+    def get_absolute_url(self):
+        return reverse('waste_delivery_note-create') 
 
