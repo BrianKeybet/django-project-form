@@ -11,7 +11,9 @@
     <title>Kapa Waste</title>
   </head>
   <body>
-    <header>Header</header>
+    <header>
+      <h5>Kapa Oil Refineries</h5>
+    </header>
     <main> 
         {% if messages %}
         <div class='alert alert-success alert-dismissible'>
@@ -24,8 +26,42 @@
         {% block content %}
         {% endblock %}
     </main>
-    <nav>Navigation</nav>
-    <aside>Sidebar</aside>
-    <footer>Footer</footer>
+    <nav>
+      <p  class='text-muted'>
+        <ul  class="list-group">
+        <li class="list-group-item list-group-item-light"><a href="{% url 'forms-home' %}">Home</a></li>
+        <li class="list-group-item list-group-item-light"><a href="{% url 'forms-home' %}">Back</a></li>
+        <li class="list-group-item list-group-item-light"><a href="http://10.0.0.7:3000/question/367" target="_blank">Reports</a></li>
+        <li class="list-group-item list-group-item-light"><a href="{% url 'rts' %}">New Form</a></li>
+        <li class="list-group-item list-group-item-light"><a href="{% url 'rtsforms' %}">Summary</a></li>
+      </ul>
+    </p>
+    </nav>
+    <aside>
+      <a href="#">Welcome {{user.get_username}} !</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Logout</a>
+      {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Register</a>
+      {% endif %}
+    </aside>
+    <footer>
+      <div class="row">
+        <div class="h-100   text-center text-lg-start  my-auto">
+            <ul class="list-inline mb-2">
+                <li class="list-inline-item"><a href="#!">About</a></li>
+                <li class="list-inline-item">⋅</li>
+                <li class="list-inline-item"><a href="#!">Contact</a></li>
+                <li class="list-inline-item">⋅</li>
+                <li class="list-inline-item"><a href="#!">Terms of Use</a></li>
+                <li class="list-inline-item">⋅</li>
+                <li class="list-inline-item"><a href="#!">Privacy Policy</a></li>
+            </ul>
+            <p class="text-muted small mb-4 mb-lg-0">&copy; Kapa Forms 2022. All Rights Reserved.</p>
+            
+        </div>
+    </div>
+    </footer>
   </body>
 </html>

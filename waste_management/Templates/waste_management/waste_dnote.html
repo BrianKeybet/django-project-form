@@ -9,6 +9,11 @@
     padding: 0;
     margin: 0;
     }
+
+    button {
+    margin: 5px;
+    }
+
     label {
     box-sizing: border-box;
     padding: 5px;
@@ -126,8 +131,28 @@
                                 <td><label for="qty5">Quantity: </label</td>
                                 <td><input type="number" id="qty5" value="{{ form.item_qty5.value }}" name="item_qty5" size="2"></td> 
                               </tr>
+
+                              <tr>
+                                <td><label for="mat6">Material: </label</td>
+                                <td><input type="text" id="mat6" value="{{ form.item6.value }}" name="item6" size="30"></td> 
+                                <td><label for="qty6">Quantity: </label</td>
+                                <td><input type="number" id="qty6" value="{{ form.item_qty6.value }}" name="item_qty6" size="2"></td> 
+                              </tr>
+
+                              <tr>
+                                <td><label for="mat7">Material: </label</td>
+                                <td><input type="text" id="mat7" value="{{ form.item7.value }}" name="item7" size="30"></td> 
+                                <td><label for="qty7">Quantity: </label</td>
+                                <td><input type="number" id="qty7" value="{{ form.item_qty7.value }}" name="item_qty7" size="2"></td> 
+                              </tr>
+
+                              <tr>
+                                <td><label for="mat8">Material: </label</td>
+                                <td><input type="text" id="mat8" value="{{ form.item8.value }}" name="item8" size="30"></td> 
+                                <td><label for="qty8">Quantity: </label</td>
+                                <td><input type="number" id="qty8" value="{{ form.item_qty8.value }}" name="item_qty8" size="2"></td> 
+                              </tr>
                         </table>
-                        <!-- {{ form|crispy }} -->
                     </fieldset>
                     <div class="row justify-content-center mt-5">
                         <button name="elevate" value="submit" type="submit" class="btn btn-outline-secondary active btn-sm">Submit</button>
@@ -135,9 +160,6 @@
                     </div>
         </form>
     </div>
-    <div class="item">5</div>
-    <div class="item">6</div>  
-    <div class="item">7</div>
   </div>
 
 {% endblock content %}

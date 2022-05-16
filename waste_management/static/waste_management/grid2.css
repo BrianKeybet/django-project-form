@@ -23,11 +23,11 @@
   main,
   aside,
   nav {
-    /* background-color: steelblue; */
     background-color: #cfd9e0;
     color: #fff;
-    padding: 20px;
+    padding: 10px;
     border: skyblue 1px solid;
+    /* display: block; */
   }
   
   header {
@@ -35,7 +35,7 @@
     color: #0e0d0de1;
     background-color: #5f788a;
   }
-  
+
   nav {
     grid-area: nav;
   }
@@ -50,5 +50,9 @@
   
   footer {
     grid-area: footer;
+  }
+
+  a {
+    padding: 10px;
   }
   
