@@ -94,6 +94,18 @@
     <div class="item">
         <form method="POST" action="" {% if form.is_multipart %} enctype="multipart/form-data" {% endif %}>
                 {% csrf_token %}
+                    <fieldset>
+                        <div class="fieldWrapper">
+                            {{ form.supplier.errors }}
+                            <label for="{{ form.supplier.id_for_label }}"><strong>Supplier:</strong></label>
+                            {{ form.supplier }}
+    
+                            {{ form.waste_loader.errors }}
+                            <label for="{{ form.waste_loader.id_for_label }}"><strong>Loaded By:</strong></label>
+                            {{ form.waste_loader }}
+                        </div>   
+                    </fieldset><hr>
+                    
                     <fieldset class="form-group">
                         <legend class="center border-bottom mb-4">Items Disposed</legend>
                         {{ form.errors }}
@@ -229,8 +241,8 @@
                               </tr>
                         </table> -->
                         <div class="row justify-content-center mt-5">
-                            <button name="elevate" value="Submit" type="submit" class="btn btn-outline-secondary active btn-sm">Submit</button>
-                            <button name="demote" value="Submit" type="submit" class="btn btn-outline-danger active btn-sm">Cancel</button>
+                            <button name="elevate" value="Submit" type="submit" class="btn btn-outline-success active btn-sm">Submit</button>
+                            <!-- <button name="demote" value="Submit" type="submit" class="btn btn-outline-danger active btn-sm">Cancel</button> -->
                         </div>
                     </fieldset>
 
