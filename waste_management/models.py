@@ -45,5 +45,5 @@ class waste_delivery_note(models.Model):
     warehouse_hod_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name=" Warehouse HOD Comment")
 
     def get_absolute_url(self):
-        return reverse('waste_delivery_note-create') 
+        return reverse('dnotes') 
 

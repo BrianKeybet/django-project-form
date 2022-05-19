@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from datetime import date
 from .forms import WasteForm
+from . import models
 from users.models import Profile
 from django.core.mail import EmailMessage
 from django.contrib import messages
@@ -43,6 +44,13 @@ class waste_delivery_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, gen
         email.send()
         # messages.success(self.request, 'Form submitted and mail sent!')
         return super().form_valid(form)
+
+class DnotesListView(LoginRequiredMixin, generic.ListView):
+    context_object_name = 'waste_delivery_notes'
+    template_name = 'waste_management/waste_dnotes_list.html'
+
+    def get_queryset(self):
+        return models.waste_delivery_note.objects.all()          
 
 class DnoteHODUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'waste_management/dnote_update.html'
