@@ -84,6 +84,7 @@
 <div class="container">
     <div class="item"><h2>Waste Delivery Notes Summary</h2></div>
     <div class="item">
+        <font size="3" face="Times New Roman" >
         <table class='table'>
             <thead>
             <tr>
@@ -91,7 +92,9 @@
                 <th>DEPARTMENT</th>
                 <th>SUPPLIER</th>
                 <th>DATE POSTED</th>
-                <th>SUBMITTED BY</th>
+                <th>SUBMITED BY</th>
+                <th>STATUS</th>
+                <th>UPDATE / VIEW</th>
             </tr>
             </thead>
         {% for waste_delivery_note in waste_delivery_notes %}
@@ -101,9 +104,41 @@
                 <td>{{ waste_delivery_note.supplier }}</td>
                 <td>{{ waste_delivery_note.date_posted }}</td>
                 <td>{{ waste_delivery_note.author }}</td>
+
+                {% if waste_delivery_note.form_status == 2 %}
+                <td>Submitted to HOD</td>
+                {% elif waste_delivery_note.form_status == 1 %}
+                <td>Rejected by HOD</td>
+                {% elif waste_delivery_note.form_status == 4 %}
+                <td>Submitted to Warehouse</td>
+                {% elif waste_delivery_note.form_status == 3 %}
+                <td>Rejected by Warehouse</td>
+                {% elif waste_delivery_note.form_status == 6 %}
+                <td>Check Delivery Note</td>
+                {% else %}
+                <td>Error</td>
+                {% endif %}
+
+                {% if waste_delivery_note.form_status == 0 %}
+                <td><a href="{% url 'waste_delivery_note-create' %}">Update</a></td>
+                {% elif waste_delivery_note.form_status == 1 %}
+                <td><a href="{% url 'dnotes' waste_delivery_note.id%}" style="color: red">Invalid Form</a></td>
+                {% elif waste_delivery_note.form_status == 2 %}
+                <td><a href="{% url 'dnote-update' waste_delivery_note.id%}">Update</a></td>
+                {% elif waste_delivery_note.form_status == 4 %}
+                <td><a href="{% url 'dnote-update1' waste_delivery_note.id%}">Update</a></td>
+                {% elif waste_delivery_note.form_status == 3 %}
+                <td><a href="{% url 'dnote-update' waste_delivery_note.id%}">Update</a></td>
+                {% elif waste_delivery_note.form_status == 6 %}
+                <td><a href="{% url 'dnote_pdf_view' waste_delivery_note.id%}">Get PDF</a></td>
+                {% else %}
+                <td>Error</td>
+                {% endif %}
+
             </tr>
         {% endfor %}
         </table>
+        </font>
     </div>
 
     

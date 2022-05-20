@@ -19,6 +19,7 @@ class Material(models.Model):
 class waste_delivery_note(models.Model):
     date_posted = models.DateTimeField(default = timezone.now, verbose_name= "Date")
     department = models.CharField(max_length = 20, blank = True)
+    form_status = models.IntegerField(null=True, default='0')
     author = models.ForeignKey(User, null = True, on_delete = models.PROTECT)
     hod = models.ForeignKey(User, null = True, on_delete = models.PROTECT, related_name = 'Head_of_Department', blank= True)
     warehouse_hod = models.ForeignKey(User, null = True, on_delete = models.PROTECT, related_name = 'Warehouse_Head_of_Department', blank= True)
@@ -43,6 +44,9 @@ class waste_delivery_note(models.Model):
     item_qty8 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
     hod_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="HOD comment")
     warehouse_hod_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name=" Warehouse HOD Comment")
+
+    class Meta:
+        ordering = ['-id']   
 
     def get_absolute_url(self):
         return reverse('dnotes') 
