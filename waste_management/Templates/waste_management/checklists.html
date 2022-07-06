@@ -1,0 +1,117 @@
+{% extends "waste_management/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<style>
+    * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    }
+
+    button {
+    margin: 5px;
+    }
+
+    label {
+    box-sizing: border-box;
+    padding: 5px;
+    margin: 0;
+    }
+
+    body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    background: #f5f5f5;
+    }
+
+    .container-fluid {
+    margin: auto auto;
+    padding: 0;
+    display: grid;
+    /* grid-template-columns: repeat(5, 1fr); */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+
+    /* align-items: end;
+    justify-content: end; */
+
+    /* column-gap: 10px;
+    row-gap: 10px; */
+    /* grid-auto-rows: minmax(200px, auto); */
+    /* grid-template-rows: repeat(3, 1fr); */
+    }
+
+    .item {
+    background: white;
+    color: black;
+    font-size: 20px;
+    padding: 20px;
+    border: skyblue 1px solid;
+    }
+
+    .item:nth-of-type(1) {
+    grid-column: 1 / 5;
+    text-align: center;
+    }
+    .item:nth-of-type(2) {
+    grid-column: 1 / 5;
+    text-align: center;
+    }
+
+
+
+
+    /* .item:nth-of-type(3) {
+    background: #333;
+    grid-row: 2 / 4;
+    }
+
+    .item:nth-of-type(4) {
+    background: #333;
+    grid-row: 2 / 4;
+    } */
+
+    @media (max-width: 500px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+<div class="container">
+
+    <div class="item"><h2>Checklists Summary</h2></div>
+    <div class="item">
+        <font size="3" face="Times New Roman" >
+        <table class='table'>
+            <thead>
+            <tr>
+                <th>SERIAL</th>
+                <th>DATE POSTED</th>
+                <th>SUBMITED BY</th>
+                <th>UPDATE / PRINT</th>
+            </tr>
+            </thead>
+        {% for waste_delivery_note in waste_delivery_notes %}
+            <tr>
+                <td>{{ checklist.id }}</td>
+                <td>{{ checklist.date_posted }}</td>
+                <td>{{ checklist.author }}</td>
+                <td>
+                    <a href="#">Update</a>
+                    <a href="#">View</a>
+                </td>
+                
+
+            </tr>
+        {% endfor %}
+        </table>
+        </font>
+    </div>
+  
+</div>
+
+{% endblock content %}

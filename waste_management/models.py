@@ -44,10 +44,19 @@ class waste_delivery_note(models.Model):
     item_qty8 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
     hod_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="HOD comment")
     warehouse_hod_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name=" Warehouse HOD Comment")
+    checklist = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-id']   
 
     def get_absolute_url(self):
-        return reverse('dnotes') 
+        return reverse('dnotes')
 
+class checklist(models.Model):
+
+    form_serials = models.CharField(max_length = 100, blank = True) 
+    date_posted = models.DateTimeField(default = timezone.now, verbose_name= "Date")
+    author = models.ForeignKey(User, null = True, on_delete = models.PROTECT)
+
+    class Meta:
+        ordering = ['-id']

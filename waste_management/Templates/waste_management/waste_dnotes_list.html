@@ -82,6 +82,8 @@
 }
 </style>
 <div class="container">
+    <form method="POST" action="{%url 'create_checklist' %}" {% if form.is_multipart %} enctype="multipart/form-data" {% endif %}>
+    {% csrf_token %}
     <div class="item"><h2>Waste Delivery Notes Summary</h2></div>
     <div class="item">
         <font size="3" face="Times New Roman" >
@@ -134,14 +136,20 @@
                 {% else %}
                 <td>Error</td>
                 {% endif %}
+                
+                <td><input type="checkbox" name = "checks[]" value = "{{waste_delivery_note.id}}"></td>
 
             </tr>
         {% endfor %}
         </table>
         </font>
     </div>
+    <div class="row justify-content-center">
+        <button name="elevate" value="Submit" type="submit" class="btn btn-outline-success active btn-sm">Create Checklist</button>
+    </div>
 
-    
+    </form>
+  
 </div>
 
 {% endblock content %}

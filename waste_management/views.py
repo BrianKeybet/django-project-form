@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render
-from .models import waste_delivery_note
+from .models import checklist, waste_delivery_note
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
@@ -82,7 +82,7 @@ class DnotesListView(LoginRequiredMixin, generic.ListView):
     template_name = 'waste_management/waste_dnotes_list.html'
 
     def get_queryset(self):
-        return models.waste_delivery_note.objects.all()          
+        return models.waste_delivery_note.objects.all()           
 
 class DnoteHODUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'waste_management/dnote_update.html'
@@ -194,3 +194,44 @@ class DnoteWHUpdateView(LoginRequiredMixin, UpdateView):
             email.send()
             messages.success(self.request,'Form submitted and mail sent!')
             return super().form_valid(form)
+
+def create_checklist(request):
+
+    # model = checklist
+
+    if request.method == 'POST':
+        check = request.POST.getlist('checks[]')
+        print(check)
+
+        models.checklist.form_serial = check
+        # model.checklist.author = 'self.request.user'
+        # model.checklist.department = 'self.request.user.department'
+        # models.checklist.save()
+            
+
+    return redirect('checklists') 
+# class create_checklist(LoginRequiredMixin, generic.CreateView):
+
+#     model = checklist
+
+#     def form_valid(self, form):
+
+#         if self.request.method == 'POST':
+#             check = self.request.POST.getlist('checks[]')
+            
+#             print(check)
+
+#             form.instance.form_serial = check
+#             form.instance.author = 'self.request.user'
+#             form.instance.department = 'self.request.user.department'
+#             form.instance.save()
+            
+
+#         return redirect('checklists')   
+
+class CheckListView(LoginRequiredMixin, generic.ListView):
+    context_object_name = 'checklists'
+    template_name = 'waste_management/checklists.html'
+
+    def get_queryset(self):
+        return models.checklist.objects.all()       

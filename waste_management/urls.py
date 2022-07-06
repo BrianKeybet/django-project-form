@@ -8,4 +8,6 @@ urlpatterns = [
     path('dnote/<int:pk>/update1/', views.DnoteWHUpdateView.as_view(), name='dnote-update1'),
     path('dnotes/', views.DnotesListView.as_view(), name='dnotes'),
     path('dnote/pdf/<pk>', views.rtsforms_render_pdf_view, name='dnote_pdf_view'),
+    path('check/checklist', views.create_checklist, name='create_checklist'),
+    path('checklists/', views.CheckListView.as_view(), name='checklists'),
 ]
