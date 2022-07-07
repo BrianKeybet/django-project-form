@@ -89,20 +89,20 @@
         <table class='table'>
             <thead>
             <tr>
-                <th>SERIAL</th>
+                <th>FORM SERIALS</th>
                 <th>DATE POSTED</th>
                 <th>SUBMITED BY</th>
                 <th>UPDATE / PRINT</th>
             </tr>
             </thead>
-        {% for waste_delivery_note in waste_delivery_notes %}
+        {% for checklist in checklists %}
             <tr>
-                <td>{{ checklist.id }}</td>
+                <td>{{ checklist.form_serials }}</td>
                 <td>{{ checklist.date_posted }}</td>
                 <td>{{ checklist.author }}</td>
                 <td>
                     <a href="#">Update</a>
-                    <a href="#">View</a>
+                    <a href="#">Print</a>
                 </td>
                 
 

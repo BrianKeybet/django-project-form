@@ -3,7 +3,7 @@ from .models import checklist, waste_delivery_note
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
-from datetime import date
+from datetime import date, datetime
 from .forms import WasteForm
 from . import models
 from users.models import Profile
@@ -196,38 +196,12 @@ class DnoteWHUpdateView(LoginRequiredMixin, UpdateView):
             return super().form_valid(form)
 
 def create_checklist(request):
-
-    # model = checklist
-
     if request.method == 'POST':
         check = request.POST.getlist('checks[]')
         print(check)
-
-        models.checklist.form_serial = check
-        # model.checklist.author = 'self.request.user'
-        # model.checklist.department = 'self.request.user.department'
-        # models.checklist.save()
-            
-
-    return redirect('checklists') 
-# class create_checklist(LoginRequiredMixin, generic.CreateView):
-
-#     model = checklist
-
-#     def form_valid(self, form):
-
-#         if self.request.method == 'POST':
-#             check = self.request.POST.getlist('checks[]')
-            
-#             print(check)
-
-#             form.instance.form_serial = check
-#             form.instance.author = 'self.request.user'
-#             form.instance.department = 'self.request.user.department'
-#             form.instance.save()
-            
-
-#         return redirect('checklists')   
+        checklist_instance = checklist.objects.create(form_serials = check, date_posted = datetime.now(), author = request.user)
+        checklist_instance.save()
+    return redirect('checklists')  
 
 class CheckListView(LoginRequiredMixin, generic.ListView):
     context_object_name = 'checklists'

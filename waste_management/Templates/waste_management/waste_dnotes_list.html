@@ -84,6 +84,7 @@
 <div class="container">
     <form method="POST" action="{%url 'create_checklist' %}" {% if form.is_multipart %} enctype="multipart/form-data" {% endif %}>
     {% csrf_token %}
+    {{form.as_p}}
     <div class="item"><h2>Waste Delivery Notes Summary</h2></div>
     <div class="item">
         <font size="3" face="Times New Roman" >
