@@ -51,9 +51,9 @@ class waste_delivery_note(models.Model):
 
     def get_absolute_url(self):
         return reverse('dnotes')
-
+#Random comment
 class checklist(models.Model):
-
+    
     form_serials = models.CharField(max_length = 100, blank = True) 
     date_posted = models.DateTimeField(default = timezone.now, verbose_name= "Date")
     author = models.ForeignKey(User, null = True, on_delete = models.PROTECT)
