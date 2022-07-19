@@ -16,12 +16,39 @@ from django.shortcuts import get_object_or_404, redirect, HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 
-def rtsforms_render_pdf_view(request, *args, **kwargs):
+def dnotes_render_pdf_view(request, *args, **kwargs):
    pk = kwargs.get('pk')
    dnote = get_object_or_404(waste_delivery_note, pk=pk)
 
    template_path = 'waste_management/generate_pdf.html'
    context = {'dnote': dnote}
+   # Create a Django response object, and specify content_type as pdf
+   response = HttpResponse(content_type='application/pdf')
+
+   # to directly download the pdf we need attachment 
+   # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+
+   # to view on browser we can remove attachment 
+   response['Content-Disposition'] = 'filename="report.pdf"'
+
+   # find the template and render it.
+   template = get_template(template_path)
+   html = template.render(context)
+
+   # create a pdf
+   pisa_status = pisa.CreatePDF(
+      html, dest=response)
+   # if error then show some funy view
+   if pisa_status.err:
+      return HttpResponse('We had some errors ' + html + '')
+   return response
+
+def checklists_render_pdf_view(request, *args, **kwargs):
+   pk = kwargs.get('pk')
+   checks = get_object_or_404(checklist, pk=pk)
+
+   template_path = 'waste_management/generatechecklist_pdf.html'
+   context = {'checks': checks}
    # Create a Django response object, and specify content_type as pdf
    response = HttpResponse(content_type='application/pdf')
 

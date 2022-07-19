@@ -102,7 +102,7 @@
                 <td>{{ checklist.author }}</td>
                 <td>
                     <a href="#">Update</a>
-                    <a href="#">Print</a>
+                    <a href="{% url 'checklist_pdf_view' checklist.id%}">Print</a>
                 </td>
                 
 
