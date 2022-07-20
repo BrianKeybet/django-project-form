@@ -15,6 +15,7 @@ from django.views.generic import DetailView, UpdateView
 from django.shortcuts import get_object_or_404, redirect, HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
+import nums_from_string
 
 def dnotes_render_pdf_view(request, *args, **kwargs):
    pk = kwargs.get('pk')
@@ -46,9 +47,23 @@ def dnotes_render_pdf_view(request, *args, **kwargs):
 def checklists_render_pdf_view(request, *args, **kwargs):
    pk = kwargs.get('pk')
    checks = get_object_or_404(checklist, pk=pk)
+   my_stringlist = checks.form_serials #Pick list of serial numbers from the checklist as a string
+   print(f'Initial list {my_stringlist} type {type(my_stringlist)}')
+   #my_list = my_stringlist.strip('][').split(',') #Split the string into list of individual items but each item as a string
+   my_list = [nums_from_string.get_nums(my_stringlist)] #Split the string into list of individual items as integers
+   print(f'Second list {my_list} type {type(my_list)}')
+   my_list = [x for xs in my_list for x in xs] #Flatten the list of lists into a single list
+   print(f'Third list {my_list} type {type(my_list)}')
+
+   dnotes_list = []
+   for num in my_list: #For each item in the new list
+    dnote = get_object_or_404(waste_delivery_note, pk=num) #Find the corresponding delivery note
+    print(f'{num} {dnote}')
+    dnotes_list.append(dnote) #Add the delivery note to the list
+    print(f'{dnotes_list}')
 
    template_path = 'waste_management/generatechecklist_pdf.html'
-   context = {'checks': checks}
+   context = {'dnotes_list': dnotes_list, 'checks': checks, 'dnote': dnote}
    # Create a Django response object, and specify content_type as pdf
    response = HttpResponse(content_type='application/pdf')
 

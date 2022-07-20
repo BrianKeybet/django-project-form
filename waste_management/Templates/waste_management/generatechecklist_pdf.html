@@ -7,7 +7,7 @@
     
 
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
 
     <!--Bottstrap CSS-->
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
@@ -61,7 +61,11 @@
             <div class="media-body">
                 <fieldset>
                     <p class="top_row">
-                        <strong>Serial Number:</strong>
+                        <strong>Checklist Serial:</strong>
+                        {{ checks.id }}
+                    </p>
+                    <p>
+                        <strong>D/Notes Serials:</strong>
                         {{ checks.form_serials }}
                     </p>
                     <p>
@@ -75,12 +79,77 @@
                     </p>
                     <p >
                         <strong>Department:</strong>
-                        {{ checks.department }} 
+                        {{ dnote.department }} 
                     </p>
-                    <p >
-                        <strong>Department:</strong>
-                        {{ checks.department }} 
-                    </p>
+                </fieldset>
+                <fieldset>
+                    <table class='table'>
+                        <thead>
+                        <tr>
+                            <th>SUPPLIER</th>
+                            <th>ITEM</th>
+                            <th>QUANTITY</th>
+                        </tr>    
+                        </thead>
+                    {% for dnote in dnotes_list %}
+                        {% if dnote.item1 != null %}
+                        <tr>
+                            <td>{{ dnote.supplier }}</td>
+                            <td>{{ dnote.item1 }}</td>
+                            <td>{{ dnote.item_qty1 }}</td>            
+                        </tr>
+                        {% endif %}
+                        {% if dnote.item2 != null %}
+                        <tr>
+                            <td>{{ dnote.supplier }}</td>
+                            <td>{{ dnote.item2 }}</td>
+                            <td>{{ dnote.item_qty2 }}</td>            
+                        </tr>
+                        {% endif %}
+                        {% if dnote.item3 != null %}
+                        <tr>
+                            <td>{{ dnote.supplier }}</td>
+                            <td>{{ dnote.item3 }}</td>
+                            <td>{{ dnote.item_qty3 }}</td>            
+                        </tr>
+                        {% endif %}
+                        {% if dnote.item4 != null %}
+                        <tr>
+                            <td>{{ dnote.supplier }}</td>
+                            <td>{{ dnote.item4 }}</td>
+                            <td>{{ dnote.item_qty4 }}</td>            
+                        </tr>
+                        {% endif %}
+                        {% if dnote.item5 != null %}
+                        <tr>
+                            <td>{{ dnote.supplier }}</td>
+                            <td>{{ dnote.item5 }}</td>
+                            <td>{{ dnote.item_qty5 }}</td>            
+                        </tr>
+                        {% endif %}
+                        {% if dnote.item6 != null %}
+                        <tr>
+                            <td>{{ dnote.supplier }}</td>
+                            <td>{{ dnote.item6 }}</td>
+                            <td>{{ dnote.item_qty6 }}</td>            
+                        </tr>
+                        {% endif %}
+                        {% if dnote.item7 != null %}
+                        <tr>
+                            <td>{{ dnote.supplier }}</td>
+                            <td>{{ dnote.item7 }}</td>
+                            <td>{{ dnote.item_qty7 }}</td>            
+                        </tr>
+                        {% endif %}
+                        {% if dnote.item8 != null %}
+                        <tr>
+                            <td>{{ dnote.supplier }}</td>
+                            <td>{{ dnote.item8 }}</td>
+                            <td>{{ dnote.item_qty8 }}</td>            
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </table>
                 </fieldset>
 
 </div>
