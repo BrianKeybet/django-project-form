@@ -20,7 +20,7 @@
     <style type="text/css">
 
         @page {
-            background-image: url("http://10.10.0.186:8000/media/index.png");
+            background-image: url("http://10.10.0.186:8000/media/Waste_Checklist.png");
         }
         body {
             font-weight: 200;
@@ -41,7 +41,7 @@
             padding-left: 40px;
         } */
          .top_row {
-            padding-top: 130px;
+            padding-top: 170px;
         }
         .top_row_field {
             padding-top: 20px;
@@ -69,13 +69,9 @@
                         {{ checks.form_serials }}
                     </p>
                     <p>
-                        <strong>Date Posted:</strong>
+                        <strong>Date Created:</strong>
                         {{ checks.date_posted|date:"F d, Y" }}
                         
-                    </p>
-                    <p >
-                        <strong>Created by:</strong>
-                        {{ checks.author }} 
                     </p>
                     <p >
                         <strong>Department:</strong>
@@ -150,6 +146,10 @@
                         {% endif %}
                     {% endfor %}
                     </table>
+                    <p >
+                        <strong>Created by:</strong>
+                        {{ checks.author }} 
+                    </p>
                 </fieldset>
 
 </div>

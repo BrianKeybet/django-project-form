@@ -20,7 +20,8 @@
     <style type="text/css">
 
         @page {
-            background-image: url("http://10.10.0.186:8000/media/Dnote_Background.png");
+            background-image: url("http://10.10.0.186:8000/media/Waste_Delivery_Note2.png");
+            size: A5 landscape;
         }
         body {
             font-weight: 200;
@@ -41,7 +42,7 @@
             padding-left: 40px;
         } */
          .top_row {
-            padding-top: 130px;
+            padding-top: 100px;
         }
         .top_row_field {
             padding-top: 20px;
@@ -51,6 +52,9 @@
         }
         .top_row_resolution {
             padding-top: 80px;
+        }
+        .bottom_row {
+            padding-bottom: 0px;
         }
 
     </style>
@@ -69,33 +73,85 @@
                         {{ dnote.date_posted|date:"F d, Y" }}
                         
                     </p>
-                    <p >
+                    <p class="bottom_row">
                         <strong>Department:</strong>
                         {{ dnote.department }} 
                     </p>
                 </fieldset>
                 <fieldset>
-                    <p class="top_row_field">
-                        <strong>Material:</strong>
-                        {{ dnote.item1 }}
-                    </p>
-                    <p class="col-sm-3">
-                        <strong>Quantity:</strong>
-                        {{ dnote.item_qty1 }}
-                        
-                    </p>
-                    <p class="col-sm-2">
-                        <strong>Material:</strong>
-                        {{ dnote.item_qty2 }} 
-                    </p>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>SUPPLIER</th>
+                            <th>ITEM</th>
+                            <th>QUANTITY</th>
+                        </tr>    
+                        </thead>
+                        {% if dnote.item1 != null %}
+                        <tr>
+                            <td>{{ dnote.supplier }}</td>
+                            <td>{{ dnote.item1 }}</td>
+                            <td>{{ dnote.item_qty1 }}</td>            
+                        </tr>
+                        {% endif %}
+                        {% if dnote.item2 != null %}
+                        <tr>
+                            <td>{{ dnote.supplier }}</td>
+                            <td>{{ dnote.item2 }}</td>
+                            <td>{{ dnote.item_qty2 }}</td>            
+                        </tr>
+                        {% endif %}
+                        {% if dnote.item3 != null %}
+                        <tr>
+                            <td>{{ dnote.supplier }}</td>
+                            <td>{{ dnote.item3 }}</td>
+                            <td>{{ dnote.item_qty3 }}</td>            
+                        </tr>
+                        {% endif %}
+                        {% if dnote.item4 != null %}
+                        <tr>
+                            <td>{{ dnote.supplier }}</td>
+                            <td>{{ dnote.item4 }}</td>
+                            <td>{{ dnote.item_qty4 }}</td>            
+                        </tr>
+                        {% endif %}
+                        {% if dnote.item5 != null %}
+                        <tr>
+                            <td>{{ dnote.supplier }}</td>
+                            <td>{{ dnote.item5 }}</td>
+                            <td>{{ dnote.item_qty5 }}</td>            
+                        </tr>
+                        {% endif %}
+                        {% if dnote.item6 != null %}
+                        <tr>
+                            <td>{{ dnote.supplier }}</td>
+                            <td>{{ dnote.item6 }}</td>
+                            <td>{{ dnote.item_qty6 }}</td>            
+                        </tr>
+                        {% endif %}
+                        {% if dnote.item7 != null %}
+                        <tr>
+                            <td>{{ dnote.supplier }}</td>
+                            <td>{{ dnote.item7 }}</td>
+                            <td>{{ dnote.item_qty7 }}</td>            
+                        </tr>
+                        {% endif %}
+                        {% if dnote.item8 != null %}
+                        <tr>
+                            <td>{{ dnote.supplier }}</td>
+                            <td>{{ dnote.item8 }}</td>
+                            <td>{{ dnote.item_qty8 }}</td>            
+                        </tr>
+                        {% endif %}
+                    </table>
                 </fieldset>
-                <fieldset class="form-group">
-                    <div class="row">
-                        <p class="col-sm-6">
-                            <strong>{{ dnote.hod }}Comment:</strong>
+                <fieldset class="bottom_row">
+                    <div>
+                        <p>
+                            <strong>{{ dnote.hod }} Comment:</strong>
                             {{ dnote.hod_comment }}
                         </p>
-                        <p class="bottom_row_hod">
+                        <p>
                             <strong>{{ dnote.warehouse_hod }} Comment:</strong>
                             {{ dnote.warehouse_hod_comment }}
                         </p>
