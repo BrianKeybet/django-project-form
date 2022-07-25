@@ -33,6 +33,7 @@
             /* padding-right: 30px; */
             /* padding-bottom: 50px; */
             padding-left: 40px;
+            padding-bottom: 1px;
         }
         /* .legend1 {
             padding-top: 50px;
@@ -61,7 +62,7 @@
             <div class="media-body">
                 <fieldset>
                     <p class="top_row">
-                        <strong>Checklist Serial:</strong>
+                        <strong>Checklist No.:</strong>
                         {{ checks.id }}
                     </p>
                     <p>
@@ -82,9 +83,9 @@
                     <table class='table'>
                         <thead>
                         <tr>
-                            <th>SUPPLIER</th>
-                            <th>ITEM</th>
-                            <th>QUANTITY</th>
+                            <th style="text-align: Left">SUPPLIER</th>
+                            <th style="text-align: Left">ITEM</th>
+                            <th style="text-align: Left">QUANTITY</th>
                         </tr>    
                         </thead>
                     {% for dnote in dnotes_list %}
@@ -149,6 +150,15 @@
                     <p >
                         <strong>Created by:</strong>
                         {{ checks.author }} 
+                    </p>
+                    <p >
+                        <strong>Loaded by:</strong>
+                        {{ waste_loader }} 
+                    </p>
+                    <p >
+                        <strong>Received by: </strong>
+                        Name____________________Signature_______________Date_____________
+                        <!-- <strong>Received by (Name & Signature) :____________________</strong> -->
                     </p>
                 </fieldset>
 

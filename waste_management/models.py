@@ -25,7 +25,8 @@ class waste_delivery_note(models.Model):
     warehouse_hod = models.ForeignKey(User, null = True, on_delete = models.PROTECT, related_name = 'Warehouse_Head_of_Department', blank= True)
     supplier = models.ForeignKey(Supplier, on_delete=models.PROTECT, null = True, blank = True)
     waste_loader = models.CharField(max_length=20, null = True, blank = True, verbose_name = "Loaded By")
-    waste_offloader = models.CharField(max_length=20, null = True, blank = True, verbose_name = "Acknowledged By")
+    #waste_offloader = models.CharField(max_length=20, null = True, blank = True, verbose_name = "Acknowledged By")
+    waste_offloader = models.ForeignKey(User, null = True, blank = True, related_name = "Acknowledged_By", on_delete = models.PROTECT)
     item1 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material1', verbose_name = "Material Description")
     item_qty1 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
     item2 = models.ForeignKey(Material, on_delete = models.PROTECT,null = True, blank = True, related_name = 'material2', verbose_name = "Material Description")
@@ -57,6 +58,7 @@ class checklist(models.Model):
     form_serials = models.CharField(max_length = 100, blank = True) 
     date_posted = models.DateTimeField(default = timezone.now, verbose_name= "Date")
     author = models.ForeignKey(User, null = True, on_delete = models.PROTECT)
+    checklist_status = models.IntegerField(null=True, default='0')
 
     class Meta:
         ordering = ['-id']

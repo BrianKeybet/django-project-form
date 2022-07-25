@@ -132,9 +132,9 @@ class DnoteHODUpdateView(LoginRequiredMixin, UpdateView):
     fields = ['hod_comment']
 
     def form_valid(self, form):
-        form.instance.hod = self.request.user
-        if ('elevate' in self.request.POST) and (form.instance.form_status == 2):
-            form.instance.form_status += 2
+        form.instance.hod = self.request.user #Inserts the author into the new post
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 2): #If the HOD has clicked the button to elevate the form to the next level
+            form.instance.form_status += 2 #Increases the form status by 2
 
             email = EmailMessage(
             subject=f'{form.instance.department} department Waste Delivery Note',
@@ -196,16 +196,19 @@ class DnoteHODUpdateView(LoginRequiredMixin, UpdateView):
             messages.success(self.request,'Form submitted and mail sent!')
             return super().form_valid(form)
 
+        else:
+            return HttpResponse('Error')
+
 class DnoteWHUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'waste_management/dnote_update1.html'
     model = waste_delivery_note
-    fields = ['waste_offloader', 'warehouse_hod_comment']
+    fields = ['warehouse_hod_comment']
 
     def form_valid(self, form):
         form.instance.warehouse_hod = self.request.user
 
-        if ('elevate' in self.request.POST) and (form.instance.form_status == 4):
-            form.instance.form_status += 2
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 4): #If the WH HOD has clicked the button to elevate the form to the next level
+            form.instance.form_status += 2 
 
             email = EmailMessage(
             subject=f'{form.instance.department} department Waste Delivery Note',
@@ -236,14 +239,49 @@ class DnoteWHUpdateView(LoginRequiredMixin, UpdateView):
             email.send()
             messages.success(self.request,'Form submitted and mail sent!')
             return super().form_valid(form)
+        else:
+            return HttpResponse('Error')
 
 def create_checklist(request):
     if request.method == 'POST':
+    #if 'create' in self.request.POST:
+        #rtsform = get_object_or_404(waste_delivery_note, pk=pk)
         check = request.POST.getlist('checks[]')
-        print(check)
+        print(f'Initial list {check} type {type(check)}')
         checklist_instance = checklist.objects.create(form_serials = check, date_posted = datetime.now(), author = request.user)
         checklist_instance.save()
+
+        for num in check:
+            waste_delivery_note.objects.filter(id=num).update(form_status=6)
     return redirect('checklists')  
+
+def accept_checklist(request):
+    if request.method == 'POST':
+        check = request.POST.getlist('checks[]') #get the list of serial numbers
+        print(f'Checklist IDs list {check} type {type(check)}')
+
+        my_list_string = []
+        my_list_int = []
+        for num in check: #for each serial number in the list
+            x = get_object_or_404(checklist, pk=num) #get the object for that serial number
+            my_list_string.append(x.form_serials) #append the serial number to the list
+        print(f'Initial list {my_list_string} type {type(my_list_string)}')
+
+        for num in my_list_string: #for each serial number in the list
+            my_list_int.append(nums_from_string.get_nums(num)) #append the serial number to the list, as an integer
+        print(f'Final list {my_list_int} type {type(my_list_int)}')
+
+        my_list_flat = [x for xs in my_list_int for x in xs] #Flatten the list of lists into a single list
+        print(f'Y list {my_list_flat} type {type(my_list_flat)}')
+
+        for num in check: #for each serial number in the list
+            checklist.objects.filter(id=num).update(checklist_status=2) #update the checklist status to 2, meaning accepted, could also be done when extracting form serials from the list
+
+
+        for num in my_list_flat: #for each serial number in the list
+            waste_delivery_note.objects.filter(id=num).update(form_status=8, waste_offloader=request.user) #update the form status to 8, meaning accepted
+
+    return redirect('checklists')
 
 class CheckListView(LoginRequiredMixin, generic.ListView):
     context_object_name = 'checklists'

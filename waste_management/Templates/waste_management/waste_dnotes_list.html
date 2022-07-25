@@ -113,11 +113,15 @@
                 {% elif waste_delivery_note.form_status == 1 %}
                 <td>Rejected by HOD</td>
                 {% elif waste_delivery_note.form_status == 4 %}
-                <td>Submitted to Warehouse</td>
+                <td>Approved by HOD</td>
                 {% elif waste_delivery_note.form_status == 3 %}
                 <td>Rejected by Warehouse</td>
                 {% elif waste_delivery_note.form_status == 6 %}
-                <td>Check Delivery Note</td>
+                <td>Submitted to Warehouse Clerk</td>
+                {% elif waste_delivery_note.form_status == 8 %}
+                <td>Submitted to Warehouse HOD</td>
+                {% elif waste_delivery_note.form_status == 10 %}
+                <td>Delivery note ready</td>
                 {% else %}
                 <td>Error</td>
                 {% endif %}
@@ -137,8 +141,12 @@
                 {% else %}
                 <td>Error</td>
                 {% endif %}
-                
+
+                {% if waste_delivery_note.form_status != 4 %}
+                <td><input type="checkbox" disabled="disabled"></td>
+                {% else %}
                 <td><input type="checkbox" name = "checks[]" value = "{{waste_delivery_note.id}}"></td>
+                {% endif %}
 
             </tr>
         {% endfor %}
@@ -146,7 +154,8 @@
         </font>
     </div>
     <div class="row justify-content-center">
-        <button name="elevate" value="Submit" type="submit" class="btn btn-outline-success active btn-sm">Create Checklist</button>
+        <button name="create" value="Submit" type="submit" class="btn btn-outline-success active btn-sm">Create Checklist</button>
+        <button name="accept" value="Submit" type="submit" class="btn btn-outline-success active btn-sm">Accept Checklist</button>
     </div>
 
     </form>

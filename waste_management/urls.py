@@ -9,6 +9,7 @@ urlpatterns = [
     path('dnotes/', views.DnotesListView.as_view(), name='dnotes'),
     path('dnote/pdf/<pk>', views.dnotes_render_pdf_view, name='dnote_pdf_view'),
     path('check/checklist', views.create_checklist, name='create_checklist'),
+    path('accept/checklist', views.accept_checklist, name='accept_checklist'),
     path('checklists/', views.CheckListView.as_view(), name='checklists'),
     path('checklists/pdf/<pk>', views.checklists_render_pdf_view, name='checklist_pdf_view'),
 ]

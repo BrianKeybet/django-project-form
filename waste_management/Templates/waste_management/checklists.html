@@ -82,36 +82,47 @@
 }
 </style>
 <div class="container">
-
+    <form method="POST" action="{%url 'accept_checklist' %}" {% if form.is_multipart %} enctype="multipart/form-data" {% endif %}>
+        {% csrf_token %}
+        {{form.as_p}}
     <div class="item"><h2>Checklists Summary</h2></div>
     <div class="item">
         <font size="3" face="Times New Roman" >
         <table class='table'>
             <thead>
             <tr>
-                <th>FORM SERIALS</th>
+                <th>CHECKLIST No.</th>
+                <th>D/NOTE SERIALS</th>
                 <th>DATE POSTED</th>
                 <th>SUBMITED BY</th>
-                <th>UPDATE / PRINT</th>
+                <th>PRINT</th>
             </tr>
             </thead>
         {% for checklist in checklists %}
             <tr>
+                <td>{{checklist.id}}</td>
                 <td>{{ checklist.form_serials }}</td>
                 <td>{{ checklist.date_posted }}</td>
                 <td>{{ checklist.author }}</td>
                 <td>
-                    <a href="#">Update</a>
                     <a href="{% url 'checklist_pdf_view' checklist.id%}">Print</a>
                 </td>
-                
+
+                {% if checklist.checklist_status != 0 %}
+                <td><input type="checkbox" disabled="disabled"></td>
+                {% else %}
+                <td><input type="checkbox" name = "checks[]" value = "{{checklist.id}}"></td>
+                {% endif %}
 
             </tr>
         {% endfor %}
         </table>
         </font>
     </div>
-  
+    <div class="row justify-content-center">
+        <button name="accept" value="Submit" type="submit" class="btn btn-outline-success active btn-sm">Accept Checklist</button>
+    </div>
+    </form>  
 </div>
 
 {% endblock content %}

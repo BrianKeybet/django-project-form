@@ -54,6 +54,9 @@
             padding-top: 80px;
         }
         .bottom_row {
+            padding-top: 5px;
+            position:absolute;
+            bottom: 0px;
             padding-bottom: 0px;
         }
 
@@ -62,7 +65,6 @@
 
 <body>
   <div class="container">
-            <div class="media-body">
                 <fieldset>
                     <p class="top_row">
                         <strong>Serial Number:</strong>
@@ -73,7 +75,7 @@
                         {{ dnote.date_posted|date:"F d, Y" }}
                         
                     </p>
-                    <p class="bottom_row">
+                    <p>
                         <strong>Department:</strong>
                         {{ dnote.department }} 
                     </p>
@@ -82,9 +84,9 @@
                     <table>
                         <thead>
                         <tr>
-                            <th>SUPPLIER</th>
-                            <th>ITEM</th>
-                            <th>QUANTITY</th>
+                            <th style="text-align: Left;">SUPPLIER</th>
+                            <th style="text-align: Left;">ITEM</th>
+                            <th style="text-align: Left;">QUANTITY</th>
                         </tr>    
                         </thead>
                         {% if dnote.item1 != null %}
@@ -145,19 +147,64 @@
                         {% endif %}
                     </table>
                 </fieldset>
-                <fieldset class="bottom_row">
-                    <div>
+                <fieldset  class="bottom_row">
+                    <table>
+                        <tr>
+                            <th style="text-align: Left">DEPARTMENT</th>
+                            <th style="text-align: Left">WAREHOUSE</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Loaded by:</strong>
+                                {{ dnote.waste_loader }}
+                            </td>
+                            <td><strong>Received by:</strong>
+                                {{ dnote.waste_offloader }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Form Submitted by:</strong>
+                                {{ dnote.author }}
+                            </td>
+                            <td><strong>H.O.D / Representative:</strong>
+                                {{ dnote.warehouse_hod }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>H.O.D:</strong>
+                                {{ dnote.hod }}
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                    </table>
+                    <!-- <div>
                         <p>
-                            <strong>{{ dnote.hod }} Comment:</strong>
-                            {{ dnote.hod_comment }}
+                            <strong>Loaded by:</strong>
+                            {{ dnote.waste_loader }}
                         </p>
                         <p>
-                            <strong>{{ dnote.warehouse_hod }} Comment:</strong>
-                            {{ dnote.warehouse_hod_comment }}
+                            <strong>Form Submitted by:</strong>
+                            {{ dnote.author }}
                         </p>
-                    </div>
-                </fieldset>  
-</div>
+                        <p>
+                            <strong>Department HOD:</strong>
+                            {{ dnote.hod }}
+                        </p>
+                        <p >
+                            <strong>Received by (Warehouse Clerk):</strong>
+                            {{ dnote.waste_offloader }}
+                        </p>
+                        <p >
+                            <strong>Warehouse HOD / Representative:</strong>
+                            {{ dnote.warehouse_hod }}
+                        </p>
+                    </div> -->
+                </fieldset> 
+ 
+    </div>
+    <div>
+        
+    </div>
 
   <!--jQuery then Popper.js then Bootstrap js-->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
