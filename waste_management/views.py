@@ -1,10 +1,10 @@
 from django.shortcuts import redirect, render
-from .models import checklist, waste_delivery_note
+from .models import checklist, waste_delivery_note, kgrn, goods_issue_note
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from datetime import date, datetime
-from .forms import WasteForm
+from .forms import WasteForm, GoodsIssueNoteForm
 from . import models
 from users.models import Profile
 from django.core.mail import EmailMessage
@@ -206,8 +206,9 @@ class DnoteWHUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.warehouse_hod = self.request.user
+        print(4)
 
-        if ('elevate' in self.request.POST) and (form.instance.form_status == 4): #If the WH HOD has clicked the button to elevate the form to the next level
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 8): #If the WH HOD has clicked the button to elevate the form to the next level
             form.instance.form_status += 2 
 
             email = EmailMessage(
@@ -224,8 +225,8 @@ class DnoteWHUpdateView(LoginRequiredMixin, UpdateView):
             return super().form_valid(form)
 
 
-        if ('demote' in self.request.POST) and (form.instance.form_status == 4):
-            form.instance.form_status -= 1
+        if ('demote' in self.request.POST) and (form.instance.form_status == 8): #
+            form.instance.form_status -= 1 #If the WH HOD has clicked the button to demote the form to the previous level
 
             email = EmailMessage(
             subject=f'{form.instance.department} department Waste Delivery Note',
@@ -239,13 +240,12 @@ class DnoteWHUpdateView(LoginRequiredMixin, UpdateView):
             email.send()
             messages.success(self.request,'Form submitted and mail sent!')
             return super().form_valid(form)
+
         else:
             return HttpResponse('Error')
 
 def create_checklist(request):
     if request.method == 'POST':
-    #if 'create' in self.request.POST:
-        #rtsform = get_object_or_404(waste_delivery_note, pk=pk)
         check = request.POST.getlist('checks[]')
         print(f'Initial list {check} type {type(check)}')
         checklist_instance = checklist.objects.create(form_serials = check, date_posted = datetime.now(), author = request.user)
@@ -288,4 +288,68 @@ class CheckListView(LoginRequiredMixin, generic.ListView):
     template_name = 'waste_management/checklists.html'
 
     def get_queryset(self):
-        return models.checklist.objects.all()       
+        return models.checklist.objects.all()  
+
+class Dnotes_KGRN_ListView(LoginRequiredMixin, generic.ListView):
+    context_object_name = 'waste_delivery_notes'
+    template_name = 'waste_management/raise_kgrn.html'
+
+    def get_queryset(self):
+        return models.waste_delivery_note.objects.all() 
+
+def create_kgrn(request):
+    if request.method == 'POST':
+        check = request.POST.getlist('checks[]')
+        print(f'Initial list {check} type {type(check)}')
+        kgrn_instance = kgrn.objects.create(form_serials = check, date_posted = datetime.now(), author = request.user)
+        kgrn_instance.save()
+
+    return redirect('dnotes_kgrn')
+
+class KGRNListView(LoginRequiredMixin, generic.ListView):
+    context_object_name = 'kgrns'
+    template_name = 'waste_management/kgrns.html'
+
+    def get_queryset(self):
+        return models.kgrn.objects.all()
+
+class goods_issue_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
+    template_name = 'waste_management/raise_goodsissuenote.html'
+    success_message = 'Form Submitted Successfully!'
+    model = goods_issue_note
+    form_class = GoodsIssueNoteForm
+
+    def form_valid(self,form):
+        if form.instance.isInternal == True:
+            form.instance.form_status = 2 #Increases the form status by 2
+        else:
+            form.instance.form_status = 1 #Increases the form status by 1
+
+        form.instance.author = self.request.user #Inserts the author into the new post
+        form.instance.department_from = self.request.user.profile.department
+        print(1)
+
+        prev_serial_num = goods_issue_note.objects.count()
+        serial_num = prev_serial_num + 0 #Get next serial number to display in email
+
+        print(2)
+        dept = self.request.user.profile.department
+        prof = Profile.objects.get(department=f'{dept}',level='2')
+        em = prof.email #Gets email account of the HOD from the logged in user's department
+ 
+        print(3)
+        email = EmailMessage(
+        subject=f'{form.instance.department_from} department Goods Issue Note',
+        body=f'Goods Issue Note number {serial_num} has been submitted by {form.instance.author}.\nKindly log on to the portal to view it.\vIn case of any challenges, feel free to contact IT for further assistance.',
+        from_email=config('EMAIL_HOST_USER'),
+        # to=[f'{em}'],
+        to=[config('BRIAN_EMAIL')],
+        cc=[config('BRIAN_EMAIL')],
+        reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+        )
+        # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
+        print(4)
+        email.send()
+        # messages.success(self.request, 'Form submitted and mail sent!')
+        print(5)
+        return super().form_valid(form) 

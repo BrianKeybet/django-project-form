@@ -133,10 +133,14 @@
                 {% elif waste_delivery_note.form_status == 2 %}
                 <td><a href="{% url 'dnote-update' waste_delivery_note.id%}">Update</a></td>
                 {% elif waste_delivery_note.form_status == 4 %}
-                <td><a href="{% url 'dnote-update1' waste_delivery_note.id%}">Update</a></td>
+                <td><a href="#">Create Checklist</a></td>
                 {% elif waste_delivery_note.form_status == 3 %}
-                <td><a href="{% url 'dnote-update' waste_delivery_note.id%}">Update</a></td>
+                <td><a href="#">Rejected</a></td>
                 {% elif waste_delivery_note.form_status == 6 %}
+                <td><a href="{% url 'checklists' %}">Accept Checklist</a></td>
+                {% elif waste_delivery_note.form_status == 8 %}
+                <td><a href="{% url 'dnote-update1' waste_delivery_note.id%}">Update</a></td>
+                {% elif waste_delivery_note.form_status == 10 %}
                 <td><a href="{% url 'dnote_pdf_view' waste_delivery_note.id%}">Get PDF</a></td>
                 {% else %}
                 <td>Error</td>
@@ -155,7 +159,6 @@
     </div>
     <div class="row justify-content-center">
         <button name="create" value="Submit" type="submit" class="btn btn-outline-success active btn-sm">Create Checklist</button>
-        <button name="accept" value="Submit" type="submit" class="btn btn-outline-success active btn-sm">Accept Checklist</button>
     </div>
 
     </form>

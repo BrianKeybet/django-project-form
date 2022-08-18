@@ -112,12 +112,12 @@
 </style>
 <div class="container">
     <div class="item"><h2>Waste Delivery Note</h2></div>
-    <div class="item">KAPA/ENG/0010</div>
+    <div class="item">KAPA/ENG/0010</div> 
     <div class="item">Department: {{ object.department }}</div>
     <div class="item">Serial Number: {{ object.id }}</div> 
     <div class="item">Raised on: {{ object.date_posted|date:"F d, Y"  }}</div> 
     <div class="item">Raised by: {{ object.author }}</div>
-    <div class="item">Loaded by: {{ object.waste_loader }}. <br> Offloaded by: {{ object.waste_offloader }}</div>
+    <div class="item">Loaded by: {{ object.waste_loader }}</div>
     <div class="item"> 
         <fieldset class="form-group">
             <legend class="center border-bottom mb-4">Items Disposed</legend>
@@ -195,6 +195,7 @@
         </fieldset>
     </div>    
     <div class="item">
+        <div><strong>Offloaded by:</strong>{{ object.waste_offloader }}</div>
         <form method="POST" action="" {% if form.is_multipart %} enctype="multipart/form-data" {% endif %}>
                 {% csrf_token %}
                     <fieldset class="form-group">

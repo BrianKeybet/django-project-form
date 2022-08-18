@@ -12,4 +12,8 @@ urlpatterns = [
     path('accept/checklist', views.accept_checklist, name='accept_checklist'),
     path('checklists/', views.CheckListView.as_view(), name='checklists'),
     path('checklists/pdf/<pk>', views.checklists_render_pdf_view, name='checklist_pdf_view'),
+    path('dnoteskgrn/', views.Dnotes_KGRN_ListView.as_view(), name='dnotes_kgrn'),
+    path('dnoteskgrn/kgrn', views.create_kgrn, name='create_kgrn'),
+    path('kgrns/', views.KGRNListView.as_view(), name='kgrns'),
+    path('newIssueNote/', views.goods_issue_noteCreateView.as_view(), name='goods_issue_note-create'),   
 ]
