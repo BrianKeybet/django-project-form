@@ -327,17 +327,14 @@ class goods_issue_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, generi
 
         form.instance.author = self.request.user #Inserts the author into the new post
         form.instance.department_from = self.request.user.profile.department
-        print(1)
 
         prev_serial_num = goods_issue_note.objects.count()
         serial_num = prev_serial_num + 0 #Get next serial number to display in email
 
-        print(2)
         dept = self.request.user.profile.department
         prof = Profile.objects.get(department=f'{dept}',level='2')
         em = prof.email #Gets email account of the HOD from the logged in user's department
  
-        print(3)
         email = EmailMessage(
         subject=f'{form.instance.department_from} department Goods Issue Note',
         body=f'Goods Issue Note number {serial_num} has been submitted by {form.instance.author}.\nKindly log on to the portal to view it.\vIn case of any challenges, feel free to contact IT for further assistance.',
@@ -348,8 +345,6 @@ class goods_issue_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, generi
         reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
         )
         # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
-        print(4)
         email.send()
         # messages.success(self.request, 'Form submitted and mail sent!')
-        print(5)
         return super().form_valid(form) 
