@@ -206,7 +206,6 @@ class DnoteWHUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.warehouse_hod = self.request.user
-        print(4)
 
         if ('elevate' in self.request.POST) and (form.instance.form_status == 8): #If the WH HOD has clicked the button to elevate the form to the next level
             form.instance.form_status += 2 
@@ -347,4 +346,87 @@ class goods_issue_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, generi
         # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
         email.send()
         # messages.success(self.request, 'Form submitted and mail sent!')
-        return super().form_valid(form) 
+        return super().form_valid(form)
+
+class FM_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'waste_management/approve_goodsissuenote.html'
+    model = goods_issue_note
+    fields = ['fm_comment']
+
+    def form_valid(self, form):
+        form.instance.approved_by = self.request.user
+
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 2): #For internal forms, if the form is approved by the FM, the form status is increased by 2
+            form.instance.form_status += 2 
+
+            return super().form_valid(form)
+
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 1): #For external forms, if the form is approved by the FM, the form status is increased by 2
+            form.instance.form_status += 2 
+
+            return super().form_valid(form)    
+
+
+        if ('demote' in self.request.POST) and (form.instance.form_status == 2): #For internal forms, if the form is rejected by the FM, the form status is decreased by 2
+            form.instance.form_status -= 2 
+
+            return super().form_valid(form)
+
+        if ('demote' in self.request.POST) and (form.instance.form_status == 1): #For external forms, if the form is rejected by the FM, the form status is decreased by 1
+            form.instance.form_status -= 1 
+
+            return super().form_valid(form)  
+
+        else:
+            return HttpResponse('Error')
+
+
+class Dept_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'waste_management/dept_receivegoodsissuenote.html'
+    model = goods_issue_note
+    fields = ['received_by','dept_comment']
+
+    def form_valid(self, form):
+        form.instance.approved_by = self.request.user
+
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 4):
+            form.instance.form_status += 2 
+
+            return super().form_valid(form)
+
+        if ('demote' in self.request.POST) and (form.instance.form_status == 4):
+            form.instance.form_status -= 4 
+
+            return super().form_valid(form)
+
+        else:
+            return HttpResponse('Error')
+
+class Sales_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'waste_management/sales_receivegoodsissuenote.html'
+    model = goods_issue_note
+    fields = ['item_qty1_sale','received_by','dept_comment']
+
+    def form_valid(self, form):
+        form.instance.approved_by = self.request.user
+        print(1)
+
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 3):
+            form.instance.form_status += 2
+            print(2) 
+
+            return super().form_valid(form)
+
+        if ('demote' in self.request.POST) and (form.instance.form_status == 3):
+            form.instance.form_status -= 3 
+
+            return super().form_valid(form)
+        else:
+            return HttpResponse('Error')
+
+class Goods_issue_note_ListView(LoginRequiredMixin, generic.ListView):
+    context_object_name = 'goods_issue_notes'
+    template_name = 'waste_management/gins.html'
+
+    def get_queryset(self):
+        return models.goods_issue_note.objects.all() 

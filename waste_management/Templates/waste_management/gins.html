@@ -1,0 +1,141 @@
+{% extends "waste_management/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<style>
+    * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    }
+
+    button {
+    margin: 5px;
+    }
+
+    label {
+    box-sizing: border-box;
+    padding: 5px;
+    margin: 0;
+    }
+
+    body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    background: #f5f5f5;
+    }
+
+    .container-fluid {
+    margin: auto auto;
+    padding: 0;
+    display: grid;
+    /* grid-template-columns: repeat(5, 1fr); */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+
+    /* align-items: end;
+    justify-content: end; */
+
+    /* column-gap: 10px;
+    row-gap: 10px; */
+    /* grid-auto-rows: minmax(200px, auto); */
+    /* grid-template-rows: repeat(3, 1fr); */
+    }
+
+    .item {
+    background: white;
+    color: black;
+    font-size: 20px;
+    padding: 20px;
+    border: skyblue 1px solid;
+    }
+
+    .item:nth-of-type(1) {
+    grid-column: 1 / 5;
+    text-align: center;
+    }
+    .item:nth-of-type(2) {
+    grid-column: 1 / 5;
+    text-align: center;
+    }
+
+
+
+
+    /* .item:nth-of-type(3) {
+    background: #333;
+    grid-row: 2 / 4;
+    }
+
+    .item:nth-of-type(4) {
+    background: #333;
+    grid-row: 2 / 4;
+    } */
+
+    @media (max-width: 500px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+<div class="container">
+    <div class="item"><h2>Goods Issue Notes Summary</h2></div>
+    <div class="item">
+        <font size="3" face="Times New Roman" >
+        <table class='table'>
+            <thead>
+            <tr>
+                <th>Form No.</th>
+                <th>DATE POSTED</th>
+                <th>SUBMITED BY</th>
+                <th>STATUS</th>
+                <th>UPDATE/PRINT</th>
+            </tr>
+            </thead>
+            {% for goods_issue_note in goods_issue_notes %}
+                <tr>
+                    <td>{{goods_issue_note.id}}</td>
+                    <td>{{ goods_issue_note.date_posted }}</td>
+                    <td>{{ goods_issue_note.author }}</td>
+
+                {% if goods_issue_note.form_status == 0 %}
+                    <td>Rejected</td>
+                {% elif goods_issue_note.form_status == 1 %}
+                    <td>Submitted to FM / Directors</td>
+                {% elif goods_issue_note.form_status == 2 %}
+                <td>Submitted to FM / Directors</td>
+                {% elif goods_issue_note.form_status == 3 %}
+                    <td>Submitted to Sales</td>
+                {% elif goods_issue_note.form_status == 4 %}
+                    <td>Submitted to {{ goods_issue_note.department_to }}</td>
+                {% elif goods_issue_note.form_status == 5 %}
+                    <td>Complete</td>
+                {% elif goods_issue_note.form_status == 6 %}
+                <td>Complete</td>
+                {% endif %}
+
+                {% if goods_issue_note.form_status == 1 %}
+                    <td><a href="{% url 'goods_issue_note-update' goods_issue_note.id %}">Update</a></td>
+                {% elif goods_issue_note.form_status == 2 %}
+                    <td><a href="{% url 'goods_issue_note-update' goods_issue_note.id %}">Update</a></td>
+                {% elif goods_issue_note.form_status == 3 %}
+                    <td><a href="{% url 'goods_issue_note-update2' goods_issue_note.id %}">Update</a></td>
+                {% elif goods_issue_note.form_status == 4 %}
+                    <td><a href="{% url 'goods_issue_note-update1' goods_issue_note.id %}">Update</a></td>
+                {% elif goods_issue_note.form_status == 5 %}
+                    <td><a href="#">Get PDF</a></td>
+                {% elif goods_issue_note.form_status == 6 %}
+                    <td><a href="#">Get PDF</a></td>
+                {% endif %}
+
+                </tr>
+            {% endfor %}
+        </table>
+        </font>
+    </div>
+</div>
+
+{% endblock content %}
