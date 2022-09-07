@@ -353,6 +353,8 @@ class FM_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
     model = goods_issue_note
     fields = ['fm_comment']
 
+    #uom = goods_issue_note.objects.all().values_list('uom', flat=True)
+
     def form_valid(self, form):
         form.instance.approved_by = self.request.user
 
@@ -405,7 +407,8 @@ class Dept_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 class Sales_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'waste_management/sales_receivegoodsissuenote.html'
     model = goods_issue_note
-    fields = ['item_qty1_sale','received_by','dept_comment']
+    fields = ['item_qty1_sale','item_qty2_sale','item_qty3_sale','item_qty4_sale','item_qty5_sale','item_qty6_sale','item_qty7_sale','item_qty8_sale','received_by','dept_comment']
+    # form_class = GoodsIssueNoteForm
 
     def form_valid(self, form):
         form.instance.approved_by = self.request.user

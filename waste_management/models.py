@@ -9,9 +9,11 @@ from django.urls import reverse
 class Material(models.Model):
     name = models.CharField(max_length=80, blank=False)
     material_code = models.CharField(max_length=12, blank=False)
+    uom = models.CharField(max_length=20, null=True, blank=True, default='PC', verbose_name="UOM")
+    price = models.DecimalField(max_digits=6, decimal_places=2, default = 0.00 , verbose_name="Price")
 
     class Meta:
-        ordering = ['name'] 
+        ordering = ['name']
 
     def __str__(self):
         return self.name 
@@ -84,28 +86,28 @@ class goods_issue_note(models.Model):
     received_by = models.ForeignKey(User, null = True, blank = True, related_name = "Received_By", on_delete = models.PROTECT)
     item1 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material01', verbose_name = "Material Description")
     item_qty1 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
-    item_qty1_sale = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Sales Estimated Quantity")
+    item_qty1_sale = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "WB Weight:")
     item2 = models.ForeignKey(Material, on_delete = models.PROTECT,null = True, blank = True, related_name = 'material02', verbose_name = "Material Description")
     item_qty2 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
-    item_qty2_sale = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Sales Estimated Quantity")
+    item_qty2_sale = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "WB Weight:")
     item3 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material03', verbose_name = "Material Description")
     item_qty3 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
-    item_qty3_sale = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Sales Estimated Quantity")
+    item_qty3_sale = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "WB Weight:")
     item4 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material04', verbose_name = "Material Description")
     item_qty4 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
-    item_qty4_sale = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Sales Estimated Quantity")
+    item_qty4_sale = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "WB Weight:")
     item5 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material05', verbose_name = "Material Description")
     item_qty5 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
-    item_qty5_sale = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Sales Estimated Quantity")
+    item_qty5_sale = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "WB Weight:")
     item6 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material06', verbose_name = "Material Description")
     item_qty6 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
-    item_qty6_sale = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Sales Estimated Quantity")
+    item_qty6_sale = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "WB Weight:")
     item7 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material07', verbose_name = "Material Description")
     item_qty7 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
-    item_qty7_sale = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Sales Estimated Quantity")
+    item_qty7_sale = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "WB Weight:")
     item8 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material08', verbose_name = "Material Description")
     item_qty8 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
-    item_qty8_sale = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Sales Estimated Quantity")
+    item_qty8_sale = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "WB Weight:")
     isInternal = models.BooleanField(default=False, verbose_name = "Internal/External")
     approved_by = models.ForeignKey(User, null = True, on_delete = models.PROTECT,  related_name = 'Approved_by', blank= True)
     fm_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="FM comment")

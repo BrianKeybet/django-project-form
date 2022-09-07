@@ -122,94 +122,133 @@
         <form method="POST" action="" {% if form.is_multipart %} enctype="multipart/form-data" {% endif %}>
             {% csrf_token %}
 
-        <fieldset class="form-group">
-            <legend class="center border-bottom mb-4">Items</legend>
-            {% if object.item1 == None %}
-                <div></div>
-            {% else %}
-                <div class="row">
-                    <div class="col-6 text-left">Material: {{ object.item1 }}</div>
-                    <div class="col text-left">Quantity: {{ object.item_qty1 }}</div>
-                    <div class="col text-left">W/B:<input type="number" value='{{ form.item_qty1_sale|crispy }}'></div>
-                </div>
-            {% endif %}
+            <fieldset class="form-group">
+                <legend class="center border-bottom mb-4">Items</legend>
+                {% if object.item1 == None %}
+                    <div></div>
+                {% else %}
+                    <div class="row">
+                        <div class="col text-left">Material: {{ object.item1 }}</div>
+                        <div class="col text-left">Quantity: {{ object.item_qty1 }}</div>
+                        {% if object.item1.uom == "KG" %}
+                            <div class="col text-left">{{ form.item_qty1_sale|as_crispy_field }}</div>
+                        {% else %}
+                            <div></div>
+                        {% endif %}    
+                    </div>
+                {% endif %}
 
-            {% if object.item2 == None %}
-                <div></div>
-            {% else %}
-                <div class="row">
-                    <div class="col-8 text-left">Material: {{ object.item2 }}</div>
-                    <div class="col text-left">Quantity: {{ object.item_qty2 }}</div>   
-                </div>
-            {% endif %}
+                {% if object.item2 == None %}
+                    <div></div>
+                {% else %}
+                    <div class="row">
+                        <div class="col text-left">Material: {{ object.item2 }}</div>
+                        <div class="col text-left">Quantity: {{ object.item_qty2 }}</div>
+                        {% if object.item2.uom == "KG" %}
+                            <div class="col text-left">{{ form.item_qty2_sale|as_crispy_field }}</div>
+                        {% else %}
+                            <div></div>
+                        {% endif %}     
+                    </div>
+                {% endif %}
 
-            {% if object.item3 == None %}
-                <div></div>
-            {% else %}
-                <div class="row">
-                    <div class="col-8 text-left">Material: {{ object.item3 }}</div>
-                    <div class="col text-left">Quantity: {{ object.item_qty3 }}</div>   
-                </div>
-            {% endif %}
+                {% if object.item3 == None %}
+                    <div></div>
+                {% else %}
+                    <div class="row">
+                        <div class="col text-left">Material: {{ object.item3 }}</div>
+                        <div class="col text-left">Quantity: {{ object.item_qty3 }}</div>
+                        {% if object.item3.uom == "KG" %}
+                            <div class="col text-left">{{ form.item_qty3_sale|as_crispy_field }}</div>
+                        {% else %}
+                            <div></div>
+                        {% endif %}     
+                    </div>
+                {% endif %}
 
-            {% if object.item4 == None %}
-                <div></div>
-            {% else %}
-                <div class="row">
-                    <div class="col-8 text-left">Material: {{ object.item4 }}</div>
-                    <div class="col text-left">Quantity: {{ object.item_qty4 }}</div>   
-                </div>
-            {% endif %}
-        
-            {% if object.item5 == None %}
-                <div></div>
-            {% else %}
-                <div class="row">
-                    <div class="col-8 text-left">Material: {{ object.item5 }}</div>
-                    <div class="col text-left">Quantity: {{ object.item_qty5 }}</div>   
-                </div>
-            {% endif %}
+                {% if object.item4 == None %}
+                    <div></div>
+                {% else %}
+                    <div class="row">
+                        <div class="col text-left">Material: {{ object.item4 }}</div>
+                        <div class="col text-left">Quantity: {{ object.item_qty4 }}</div>
+                        {% if object.item4.uom == "KG" %}
+                            <div class="col text-left">{{ form.item_qty4_sale|as_crispy_field }}</div>
+                        {% else %}
+                            <div></div>
+                        {% endif %}     
+                    </div>
+                {% endif %}
+            
+                {% if object.item5 == None %}
+                    <div></div>
+                {% else %}
+                    <div class="row">
+                        <div class="col text-left">Material: {{ object.item5 }}</div>
+                        <div class="col text-left">Quantity: {{ object.item_qty5 }}</div>
+                        {% if object.item5.uom == "KG" %}
+                            <div class="col text-left">{{ form.item_qty5_sale|as_crispy_field }}</div>
+                        {% else %}
+                            <div></div>
+                        {% endif %}     
+                    </div>
+                {% endif %}
 
-            {% if object.item6 == None %}
-                <div></div>
-            {% else %}
-                <div class="row">
-                    <div class="col-8 text-left">Material: {{ object.item6 }}</div>
-                    <div class="col text-left">Quantity: {{ object.item_qty6 }}</div>   
-                </div>
-            {% endif %}
+                {% if object.item6 == None %}
+                    <div></div>
+                {% else %}
+                    <div class="row">
+                        <div class="col text-left">Material: {{ object.item6 }}</div>
+                        <div class="col text-left">Quantity: {{ object.item_qty6 }}</div>
+                        {% if object.item6.uom == "KG" %}
+                            <div class="col text-left">{{ form.item_qty6_sale|as_crispy_field }}</div>
+                        {% else %}
+                            <div></div>
+                        {% endif %}     
+                    </div>
+                {% endif %}
 
-            {% if object.item7 == None %}
-                <div></div>
-            {% else %}
-                <div class="row">
-                    <div class="col-8 text-left">Material: {{ object.item7 }}</div>
-                    <div class="col text-left">Quantity: {{ object.item_qty7 }}</div>   
-                </div>
-            {% endif %}
+                {% if object.item7 == None %}
+                    <div></div>
+                {% else %}
+                    <div class="row">
+                        <div class="col text-left">Material: {{ object.item7 }}</div>
+                        <div class="col text-left">Quantity: {{ object.item_qty7 }}</div>
+                        {% if object.item7.uom == "KG" %}
+                            <div class="col text-left">{{ form.item_qty7_sale|as_crispy_field }}</div>
+                        {% else %}
+                            <div></div>
+                        {% endif %}     
+                    </div>
+                {% endif %}
 
-            {% if object.item8 == None %}
-                <div></div>
-            {% else %}
-                <div class="row">
-                    <div class="col-8 text-left">Material: {{ object.item8 }}</div>
-                    <div class="col text-left">Quantity: {{ object.item_qty8 }}</div>   
-                </div>
-            {% endif %}
-        </fieldset>
+                {% if object.item8 == None %}
+                    <div></div>
+                {% else %}
+                    <div class="row">
+                        <div class="col text-left">Material: {{ object.item8 }}</div>
+                        <div class="col text-left">Quantity: {{ object.item_qty8 }}</div>
+                        {% if object.item8.uom == "KG" %}
+                            <div class="col text-left">{{ form.item_qty8_sale|as_crispy_field }}</div>
+                        {% else %}
+                            <div></div>
+                        {% endif %}     
+                    </div>
+                {% endif %}
+            </fieldset>
     </div>    
-    <div class="item">
-                    <fieldset class="form-group">
+        <div class="item">
+                        <fieldset class="form-group">
 
-                        <div>{{ form|crispy }}</div>
+                            <!-- <div>{{ form|crispy }}</div> -->
 
-                        <div class="row justify-content-center mt-5">
-                            <button name="elevate" value="Submit" type="submit" class="btn btn-outline-success active btn-sm">Receive</button>
-                            <button name="demote" value="Submit" type="submit" class="btn btn-outline-danger active btn-sm">Reject</button>
-                        </div>
-                    </fieldset>
-        
-    </div>
+                            <div class="row justify-content-center mt-5">
+                                <button name="elevate" value="Submit" type="submit" class="btn btn-outline-success active btn-sm">Receive</button>
+                                <button name="demote" value="Submit" type="submit" class="btn btn-outline-danger active btn-sm">Reject</button>
+                            </div>
+                        </fieldset>
+            
+        </div>
 
     </form>
   </div>

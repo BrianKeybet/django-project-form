@@ -91,6 +91,7 @@
                 <th>Form No.</th>
                 <th>DATE POSTED</th>
                 <th>SUBMITED BY</th>
+                <th>TO</th>
                 <th>STATUS</th>
                 <th>UPDATE/PRINT</th>
             </tr>
@@ -100,6 +101,7 @@
                     <td>{{goods_issue_note.id}}</td>
                     <td>{{ goods_issue_note.date_posted }}</td>
                     <td>{{ goods_issue_note.author }}</td>
+                    <td>{{ goods_issue_note.department_to }}</td>
 
                 {% if goods_issue_note.form_status == 0 %}
                     <td>Rejected</td>

@@ -19,6 +19,11 @@ class Supplier(models.Model):
 class Material(models.Model):
     name = models.CharField(max_length=40, blank=False)
     material_code = models.CharField(max_length=12, blank=False)
+    uom = models.CharField(max_length=20, null=True, blank=True, default='PC', verbose_name="UOM")
+
+    class Meta:
+        ordering = ['name'] 
+
     def __str__(self):
         return self.name 
 

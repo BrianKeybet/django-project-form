@@ -114,7 +114,53 @@
                         <legend class="center border-bottom mb-4">Items</legend>
                         {{ form.errors }}
                         {{ form.non_field_errors }}
-                        <div class="fieldWrapper">
+                        <table class="table">
+                            <tr>
+                              <th scope="col">Material</th>
+                              <th scope="col">Quantity</th>
+                            </tr>
+                            <tr>
+                              {{ form.item1.errors }}
+                              <td>{{ form.item1 }}</td>
+                              <td>{{ form.item_qty1 }}</td>
+                            </tr>
+                            <tr>
+                                {{ form.item2.errors }}
+                                <td>{{ form.item2 }}</td>
+                                <td>{{ form.item_qty2 }}</td>
+                            </tr>
+                            <tr>
+                                {{ form.item3.errors }}
+                                <td>{{ form.item3 }}</td>
+                                <td>{{ form.item_qty3 }}</td>
+                            </tr>
+                            <tr>
+                                {{ form.item4.errors }}
+                                <td>{{ form.item4 }}</td>
+                                <td>{{ form.item_qty4 }}</td>
+                            </tr>
+                            <tr>
+                                {{ form.item5.errors }}
+                                <td>{{ form.item5 }}</td>
+                                <td>{{ form.item_qty5 }}</td>
+                            </tr>
+                            <tr>
+                                {{ form.item6.errors }}
+                                <td>{{ form.item6 }}</td>
+                                <td>{{ form.item_qty6 }}</td>
+                            </tr>
+                            <tr>
+                                {{ form.item7.errors }}
+                                <td>{{ form.item7 }}</td>
+                                <td>{{ form.item_qty7 }}</td>
+                            </tr>
+                            <tr>
+                                {{ form.item8.errors }}
+                                <td>{{ form.item8 }}</td>
+                                <td>{{ form.item_qty8 }}</td>
+                            </tr>
+                          </table> 
+                        <!-- <div class="fieldWrapper">
                             {{ form.item1.errors }}
                             <label for="{{ form.item1.id_for_label }}">Material:</label>
                             {{ form.item1 }}
@@ -185,7 +231,7 @@
                             {{ form.item_qty8.errors }}
                             <label for="{{ form.item_qty8.id_for_label }}">Quantity:</label>
                             {{ form.item_qty8 }}
-                        </div>
+                        </div> -->
                         <div class="row justify-content-center mt-5">
                             <button name="elevate" value="Submit" type="submit" class="btn btn-outline-success active btn-sm">Submit</button>
                         </div>

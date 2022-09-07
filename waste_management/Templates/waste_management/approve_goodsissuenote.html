@@ -121,7 +121,30 @@
     <div class="item"> 
         <fieldset class="form-group">
             <legend class="center border-bottom mb-4">Items</legend>
-            {% if object.item1 == None %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Material</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">UOM</th>
+                        <th scope="col">Cost</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if object.item1 == None %}
+                    <tr></tr>
+                    {% else %}
+                    <tr>
+                        <td>{{ object.item1 }}</td>
+                        <td>{{ object.item_qty1 }}</td>
+                        <td>{{ object.item1.uom }}</td>
+                        <td>{{ object.item1.price }}</td>
+                        
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+            <!-- {% if object.item1 == None %}
                 <div></div>
             {% else %}
                 <div class="row">
@@ -191,7 +214,7 @@
                     <div class="col-8 text-left">Material: {{ object.item8 }}</div>
                     <div class="col text-left">Quantity: {{ object.item_qty8 }}</div>   
                 </div>
-            {% endif %}
+            {% endif %} -->
         </fieldset>
     </div>    
     <div class="item">
