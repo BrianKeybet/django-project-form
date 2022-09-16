@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from rts_forms.models import Supplier
 from django.urls import reverse
 
+import computed_property
+
 # Create your models here.
 
 class Material(models.Model):
@@ -112,9 +114,65 @@ class goods_issue_note(models.Model):
     approved_by = models.ForeignKey(User, null = True, on_delete = models.PROTECT,  related_name = 'Approved_by', blank= True)
     fm_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="FM comment")
     dept_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="Dept comment")
+    my_total = computed_property.ComputedIntegerField(compute_from='double_it', null=True, blank=True, verbose_name="Total")
 
     class Meta:
-        ordering = ['-id']   
+        ordering = ['-id']  
+
+    @property
+    def double_it(self):
+        if self.item_qty1 != None:
+            self.item_qty1 = self.item_qty1
+            i1 = round(self.item_qty1 * float(self.item1.price), 2)
+        else:
+            self.item_qty1 = 0
+            i1 = 0
+        if self.item_qty2 != None:
+            self.item_qty2 = self.item_qty2
+            i2 = round(self.item_qty2 * float(self.item2.price), 2)
+        else:
+            self.item_qty2 = 0
+            i2 = 0
+        if self.item_qty3 != None:
+            self.item_qty3 = self.item_qty3
+            i3 = round(self.item_qty3 * float(self.item3.price), 2)
+        else:
+            self.item_qty3 = 0
+            i3 = 0
+        if self.item_qty4 != None:
+            self.item_qty4 = self.item_qty4
+            i4 = round(self.item_qty4 * float(self.item4.price), 2)
+        else:   
+            self.item_qty4 = 0
+            i4 = 0
+        if self.item_qty5 != None:
+            self.item_qty5 = self.item_qty5
+            i5 = round(self.item_qty5 * float(self.item5.price), 2)
+        else:
+            self.item_qty5 = 0
+            i5 = 0
+        if self.item_qty6 != None:
+            self.item_qty6 = self.item_qty6
+            i6 = round(self.item_qty6 * float(self.item6.price), 2)
+        else:
+            self.item_qty6 = 0
+            i6 = 0
+        if self.item_qty7 != None:
+            self.item_qty7 = self.item_qty7
+            i7 = round(self.item_qty7 * float(self.item7.price), 2)
+        else:
+            self.item_qty7 = 0
+            i7 = 0
+        if self.item_qty8 != None:
+            self.item_qty8 = self.item_qty8
+            i8 = round(self.item_qty8 * float(self.item8.price), 2)
+        else:
+            self.item_qty8 = 0
+            i8 = 0
+ 
+        result = i1 + i2 + i3 + i4 + i5 + i6 + i7 + i8
+        return result
+
 
     def get_absolute_url(self):
         return reverse('gins')

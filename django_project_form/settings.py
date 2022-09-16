@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'rts_forms.apps.Rts_FormsConfig',
     'waste_management.apps.WasteManagementConfig',
+    'mathfilters',
+    'computed_property',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -169,3 +171,6 @@ EMAIL_HOST = '10.0.0.25'
 EMAIL_PORT = 25
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config('EMAIL_HOST_USER'),
+
+
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'

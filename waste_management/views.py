@@ -16,6 +16,8 @@ from django.shortcuts import get_object_or_404, redirect, HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 import nums_from_string
+import locale
+locale.setlocale(locale.LC_ALL, '')
 
 def dnotes_render_pdf_view(request, *args, **kwargs):
    pk = kwargs.get('pk')
@@ -353,10 +355,15 @@ class FM_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
     model = goods_issue_note
     fields = ['fm_comment']
 
-    #uom = goods_issue_note.objects.all().values_list('uom', flat=True)
+    # def get_context_data(self, **kwargs):
+    #     context = {'my_variable': 0}
+    #     return context
 
     def form_valid(self, form):
         form.instance.approved_by = self.request.user
+        
+        #print(form.instance.item_qty8)
+        #print(form.instance.item_qty8_sale)
 
         if ('elevate' in self.request.POST) and (form.instance.form_status == 2): #For internal forms, if the form is approved by the FM, the form status is increased by 2
             form.instance.form_status += 2 
