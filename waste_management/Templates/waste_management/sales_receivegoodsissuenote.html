@@ -2,6 +2,8 @@
 
 {% load crispy_forms_tags %}
 
+{% load mathfilters %}
+
 {% block content %}
 <style>
     * {
@@ -124,117 +126,151 @@
 
             <fieldset class="form-group">
                 <legend class="center border-bottom mb-4">Items</legend>
-                {% if object.item1 == None %}
-                    <div></div>
-                {% else %}
-                    <div class="row">
-                        <div class="col text-left">Material: {{ object.item1 }}</div>
-                        <div class="col text-left">Quantity: {{ object.item_qty1 }}</div>
-                        {% if object.item1.uom == "KG" %}
-                            <div class="col text-left">{{ form.item_qty1_sale|as_crispy_field }}</div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Material</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">UOM</th>
+                            <th scope="col">Cost</th>
+                            <th scope="col">WB Weight</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if object.item1 == None %}
+                        <tr></tr>
                         {% else %}
-                            <div></div>
-                        {% endif %}    
-                    </div>
-                {% endif %}
-
-                {% if object.item2 == None %}
-                    <div></div>
-                {% else %}
-                    <div class="row">
-                        <div class="col text-left">Material: {{ object.item2 }}</div>
-                        <div class="col text-left">Quantity: {{ object.item_qty2 }}</div>
-                        {% if object.item2.uom == "KG" %}
-                            <div class="col text-left">{{ form.item_qty2_sale|as_crispy_field }}</div>
+                        <tr>
+                            <td>{{ object.item1 }}</td>
+                            <td>{{ object.item_qty1 }}</td>
+                            <td>{{ object.item1.uom }}</td>
+                            <td>{{ object.item_qty1 | mul:object.item1.price |floatformat:2 }}</td>
+                            {% if object.item1.uom == "KG" %}
+                            <td>{{ form.item_qty1_sale|as_crispy_field }}</td>
+                            {% else %}
+                            <td></td>
+                            {% endif %}  
+                            
+                        </tr>
+                        {% endif %}
+                        {% if object.item2 == None %}
+                        <tr></tr>
                         {% else %}
-                            <div></div>
-                        {% endif %}     
-                    </div>
-                {% endif %}
-
-                {% if object.item3 == None %}
-                    <div></div>
-                {% else %}
-                    <div class="row">
-                        <div class="col text-left">Material: {{ object.item3 }}</div>
-                        <div class="col text-left">Quantity: {{ object.item_qty3 }}</div>
-                        {% if object.item3.uom == "KG" %}
-                            <div class="col text-left">{{ form.item_qty3_sale|as_crispy_field }}</div>
+                        <tr>
+                            <td>{{ object.item2 }}</td>
+                            <td>{{ object.item_qty2 }}</td>
+                            <td>{{ object.item2.uom }}</td>
+                            <td>{{ object.item_qty2 | mul:object.item2.price |floatformat:2 }}</td>
+                            {% if object.item2.uom == "KG" %}
+                            <td>{{ form.item_qty2_sale|as_crispy_field }}</td>
+                            {% else %}
+                            <td></td>
+                            {% endif %} 
+                            
+                        </tr>
+                        {% endif %}
+                        {% if object.item3 == None %}
+                        <tr></tr>
                         {% else %}
-                            <div></div>
-                        {% endif %}     
-                    </div>
-                {% endif %}
-
-                {% if object.item4 == None %}
-                    <div></div>
-                {% else %}
-                    <div class="row">
-                        <div class="col text-left">Material: {{ object.item4 }}</div>
-                        <div class="col text-left">Quantity: {{ object.item_qty4 }}</div>
-                        {% if object.item4.uom == "KG" %}
-                            <div class="col text-left">{{ form.item_qty4_sale|as_crispy_field }}</div>
+                        <tr>
+                            <td>{{ object.item3 }}</td>
+                            <td>{{ object.item_qty3 }}</td>
+                            <td>{{ object.item3.uom }}</td>
+                            <td>{{ object.item_qty3 | mul:object.item3.price |floatformat:2 }}</td>
+                            {% if object.item3.uom == "KG" %}
+                            <td>{{ form.item_qty3_sale|as_crispy_field }}</td>
+                            {% else %}
+                            <td></td>
+                            {% endif %} 
+                            
+                        </tr>
+                        {% endif %}
+                        {% if object.item4 == None %}
+                        <tr></tr>
                         {% else %}
-                            <div></div>
-                        {% endif %}     
-                    </div>
-                {% endif %}
-            
-                {% if object.item5 == None %}
-                    <div></div>
-                {% else %}
-                    <div class="row">
-                        <div class="col text-left">Material: {{ object.item5 }}</div>
-                        <div class="col text-left">Quantity: {{ object.item_qty5 }}</div>
-                        {% if object.item5.uom == "KG" %}
-                            <div class="col text-left">{{ form.item_qty5_sale|as_crispy_field }}</div>
+                        <tr>
+                            <td>{{ object.item4 }}</td>
+                            <td>{{ object.item_qty4 }}</td>
+                            <td>{{ object.item4.uom }}</td>
+                            <td>{{ object.item_qty4 | mul:object.item4.price |floatformat:2 }}</td>
+                            {% if object.item4.uom == "KG" %}
+                            <td>{{ form.item_qty4_sale|as_crispy_field }}</td>
+                            {% else %}
+                            <td></td>
+                            {% endif %} 
+                        </tr>
+                        {% endif %}
+                        {% if object.item5 == None %}
+                        <tr></tr>
                         {% else %}
-                            <div></div>
-                        {% endif %}     
-                    </div>
-                {% endif %}
-
-                {% if object.item6 == None %}
-                    <div></div>
-                {% else %}
-                    <div class="row">
-                        <div class="col text-left">Material: {{ object.item6 }}</div>
-                        <div class="col text-left">Quantity: {{ object.item_qty6 }}</div>
-                        {% if object.item6.uom == "KG" %}
-                            <div class="col text-left">{{ form.item_qty6_sale|as_crispy_field }}</div>
+                        <tr>
+                            <td>{{ object.item5 }}</td>
+                            <td>{{ object.item_qty5 }}</td>
+                            <td>{{ object.item5.uom }}</td>
+                            <td>{{ object.item_qty5 | mul:object.item5.price |floatformat:2 }}</td>
+                            {% if object.item5.uom == "KG" %}
+                            <td>{{ form.item_qty5_sale|as_crispy_field }}</td>
+                            {% else %}
+                            <td></td>
+                            {% endif %} 
+                        </tr>
+                        {% endif %}
+                        {% if object.item6 == None %}
+                        <tr></tr>
                         {% else %}
-                            <div></div>
-                        {% endif %}     
-                    </div>
-                {% endif %}
-
-                {% if object.item7 == None %}
-                    <div></div>
-                {% else %}
-                    <div class="row">
-                        <div class="col text-left">Material: {{ object.item7 }}</div>
-                        <div class="col text-left">Quantity: {{ object.item_qty7 }}</div>
-                        {% if object.item7.uom == "KG" %}
-                            <div class="col text-left">{{ form.item_qty7_sale|as_crispy_field }}</div>
+                        <tr>
+                            <td>{{ object.item6 }}</td>
+                            <td>{{ object.item_qty6 }}</td>
+                            <td>{{ object.item6.uom }}</td>
+                            <td>{{ object.item_qty6 | mul:object.item6.price |floatformat:2 }}</td>
+                            {% if object.item6.uom == "KG" %}
+                            <td>{{ form.item_qty6_sale|as_crispy_field }}</td>
+                            {% else %}
+                            <td></td>
+                            {% endif %} 
+                        </tr>
+                        {% endif %}
+                        {% if object.item7 == None %}
+                        <tr></tr>
                         {% else %}
-                            <div></div>
-                        {% endif %}     
-                    </div>
-                {% endif %}
-
-                {% if object.item8 == None %}
-                    <div></div>
-                {% else %}
-                    <div class="row">
-                        <div class="col text-left">Material: {{ object.item8 }}</div>
-                        <div class="col text-left">Quantity: {{ object.item_qty8 }}</div>
-                        {% if object.item8.uom == "KG" %}
-                            <div class="col text-left">{{ form.item_qty8_sale|as_crispy_field }}</div>
+                        <tr>
+                            <td>{{ object.item7 }}</td>
+                            <td>{{ object.item_qty7 }}</td>
+                            <td>{{ object.item7.uom }}</td>
+                            <td>{{ object.item_qty7 | mul:object.item7.price |floatformat:2 }}</td>
+                            {% if object.item7.uom == "KG" %}
+                            <td>{{ form.item_qty7_sale|as_crispy_field }}</td>
+                            {% else %}
+                            <td></td>
+                            {% endif %} 
+                        </tr>
+                        {% endif %}
+                        {% if object.item8 == None %}
+                        <tr></tr>
                         {% else %}
-                            <div></div>
-                        {% endif %}     
-                    </div>
-                {% endif %}
+                        <tr>
+                            <td>{{ object.item8 }}</td>
+                            <td>{{ object.item_qty8 }}</td>
+                            <td>{{ object.item8.uom }}</td>
+                            <td>{{ object.item_qty8 | mul:object.item8.price |floatformat:2  }}</td>
+                            {% if object.item8.uom == "KG" %}
+                            <td>{{ form.item_qty8_sale|as_crispy_field }}</td>
+                            {% else %}
+                            <td></td>
+                            {% endif %} 
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><strong>Estimated Total</strong></td>
+                            <td>KES {{ object.my_total }}</td>
+                        </tr>
+                    </tfoot>
+                </table>
             </fieldset>
     </div>    
         <div class="item">

@@ -121,77 +121,92 @@
     <div class="item"> 
         <fieldset class="form-group">
             <legend class="center border-bottom mb-4">Items</legend>
-            {% if object.item1 == None %}
-                <div></div>
-            {% else %}
-                <div class="row">
-                    <div class="col-8 text-left">Material: {{ object.item1 }}</div>
-                    <div class="col text-left">Quantity: {{ object.item_qty1 }}</div>   
-                </div>
-            {% endif %}
-
-            {% if object.item2 == None %}
-                <div></div>
-            {% else %}
-                <div class="row">
-                    <div class="col-8 text-left">Material: {{ object.item2 }}</div>
-                    <div class="col text-left">Quantity: {{ object.item_qty2 }}</div>   
-                </div>
-            {% endif %}
-
-            {% if object.item3 == None %}
-                <div></div>
-            {% else %}
-                <div class="row">
-                    <div class="col-8 text-left">Material: {{ object.item3 }}</div>
-                    <div class="col text-left">Quantity: {{ object.item_qty3 }}</div>   
-                </div>
-            {% endif %}
-
-            {% if object.item4 == None %}
-                <div></div>
-            {% else %}
-                <div class="row">
-                    <div class="col-8 text-left">Material: {{ object.item4 }}</div>
-                    <div class="col text-left">Quantity: {{ object.item_qty4 }}</div>   
-                </div>
-            {% endif %}
-        
-            {% if object.item5 == None %}
-                <div></div>
-            {% else %}
-                <div class="row">
-                    <div class="col-8 text-left">Material: {{ object.item5 }}</div>
-                    <div class="col text-left">Quantity: {{ object.item_qty5 }}</div>   
-                </div>
-            {% endif %}
-
-            {% if object.item6 == None %}
-                <div></div>
-            {% else %}
-                <div class="row">
-                    <div class="col-8 text-left">Material: {{ object.item6 }}</div>
-                    <div class="col text-left">Quantity: {{ object.item_qty6 }}</div>   
-                </div>
-            {% endif %}
-
-            {% if object.item7 == None %}
-                <div></div>
-            {% else %}
-                <div class="row">
-                    <div class="col-8 text-left">Material: {{ object.item7 }}</div>
-                    <div class="col text-left">Quantity: {{ object.item_qty7 }}</div>   
-                </div>
-            {% endif %}
-
-            {% if object.item8 == None %}
-                <div></div>
-            {% else %}
-                <div class="row">
-                    <div class="col-8 text-left">Material: {{ object.item8 }}</div>
-                    <div class="col text-left">Quantity: {{ object.item_qty8 }}</div>   
-                </div>
-            {% endif %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Material</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">UOM</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if object.item1 == None %}
+                    <tr></tr>
+                    {% else %}
+                    <tr>
+                        <td>{{ object.item1 }}</td>
+                        <td>{{ object.item_qty1 }}</td>
+                        <td>{{ object.item1.uom }}</td>
+                        
+                    </tr>
+                    {% endif %}
+                    {% if object.item2 == None %}
+                    <tr></tr>
+                    {% else %}
+                    <tr>
+                        <td>{{ object.item2 }}</td>
+                        <td>{{ object.item_qty2 }}</td>
+                        <td>{{ object.item2.uom }}</td>
+                        
+                    </tr>
+                    {% endif %}
+                    {% if object.item3 == None %}
+                    <tr></tr>
+                    {% else %}
+                    <tr>
+                        <td>{{ object.item3 }}</td>
+                        <td>{{ object.item_qty3 }}</td>
+                        <td>{{ object.item3.uom }}</td>
+                        
+                    </tr>
+                    {% endif %}
+                    {% if object.item4 == None %}
+                    <tr></tr>
+                    {% else %}
+                    <tr>
+                        <td>{{ object.item4 }}</td>
+                        <td>{{ object.item_qty4 }}</td>
+                        <td>{{ object.item4.uom }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if object.item5 == None %}
+                    <tr></tr>
+                    {% else %}
+                    <tr>
+                        <td>{{ object.item5 }}</td>
+                        <td>{{ object.item_qty5 }}</td>
+                        <td>{{ object.item5.uom }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if object.item6 == None %}
+                    <tr></tr>
+                    {% else %}
+                    <tr>
+                        <td>{{ object.item6 }}</td>
+                        <td>{{ object.item_qty6 }}</td>
+                        <td>{{ object.item6.uom }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if object.item7 == None %}
+                    <tr></tr>
+                    {% else %}
+                    <tr>
+                        <td>{{ object.item7 }}</td>
+                        <td>{{ object.item_qty7 }}</td>
+                        <td>{{ object.item7.uom }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if object.item8 == None %}
+                    <tr></tr>
+                    {% else %}
+                    <tr>
+                        <td>{{ object.item8 }}</td>
+                        <td>{{ object.item_qty8 }}</td>
+                        <td>{{ object.item8.uom }}</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
         </fieldset>
     </div>    
     <div class="item">

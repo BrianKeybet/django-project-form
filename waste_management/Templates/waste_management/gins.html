@@ -128,9 +128,9 @@
                 {% elif goods_issue_note.form_status == 4 %}
                     <td><a href="{% url 'goods_issue_note-update1' goods_issue_note.id %}">Update</a></td>
                 {% elif goods_issue_note.form_status == 5 %}
-                    <td><a href="#">Get PDF</a></td>
+                    <td><a href="{% url 'goods_issue_note_pdf_view1' goods_issue_note.id%}">Get PDF</a></td>
                 {% elif goods_issue_note.form_status == 6 %}
-                    <td><a href="#">Get PDF</a></td>
+                    <td><a href="{% url 'goods_issue_note_pdf_view' goods_issue_note.id%}">Get PDF</a></td>
                 {% endif %}
 
                 </tr>

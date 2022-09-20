@@ -19,5 +19,7 @@ urlpatterns = [
     path('gins/', views.Goods_issue_note_ListView.as_view(), name='gins'),
     path('IssueNote/<int:pk>/update/', views.FM_goods_issue_noteUpdateView.as_view(), name='goods_issue_note-update'),
     path('IssueNote/<int:pk>/update1/', views.Dept_goods_issue_noteUpdateView.as_view(), name='goods_issue_note-update1'),
-    path('IssueNote/<int:pk>/update2/', views.Sales_goods_issue_noteUpdateView.as_view(), name='goods_issue_note-update2'),     
+    path('IssueNote/<int:pk>/update2/', views.Sales_goods_issue_noteUpdateView.as_view(), name='goods_issue_note-update2'),
+    path('IssueNote/pdf/<pk>', views.goods_issue_note_render_pdf_view, name='goods_issue_note_pdf_view'), 
+    path('IssueNote/pdf1/<pk>', views.goods_issue_note_external_render_pdf_view, name='goods_issue_note_pdf_view1'),    
 ]

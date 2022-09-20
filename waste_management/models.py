@@ -79,6 +79,7 @@ class kgrn(models.Model):
         ordering = ['-id']
 
 class goods_issue_note(models.Model):
+    #id = models.AutoField(primary_key=True)
     date_posted = models.DateTimeField(default = timezone.now, verbose_name= "Date")
     department_from = models.CharField(max_length = 20, blank = True)
     department_to = models.CharField(max_length = 20, blank = True)
@@ -87,92 +88,103 @@ class goods_issue_note(models.Model):
     delivered_by = models.CharField(max_length=20, null = True, blank = True, verbose_name = "Delivered By")
     received_by = models.ForeignKey(User, null = True, blank = True, related_name = "Received_By", on_delete = models.PROTECT)
     item1 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material01', verbose_name = "Material Description")
-    item_qty1 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
-    item_qty1_sale = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "WB Weight:")
+    item_qty1 = models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
+    item_qty1_sale =models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
     item2 = models.ForeignKey(Material, on_delete = models.PROTECT,null = True, blank = True, related_name = 'material02', verbose_name = "Material Description")
-    item_qty2 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
-    item_qty2_sale = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "WB Weight:")
+    item_qty2 = models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
+    item_qty2_sale =models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
     item3 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material03', verbose_name = "Material Description")
-    item_qty3 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
-    item_qty3_sale = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "WB Weight:")
+    item_qty3 = models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
+    item_qty3_sale =models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
     item4 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material04', verbose_name = "Material Description")
-    item_qty4 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
-    item_qty4_sale = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "WB Weight:")
+    item_qty4 = models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
+    item_qty4_sale =models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
     item5 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material05', verbose_name = "Material Description")
-    item_qty5 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
-    item_qty5_sale = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "WB Weight:")
+    item_qty5 = models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
+    item_qty5_sale =models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
     item6 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material06', verbose_name = "Material Description")
-    item_qty6 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
-    item_qty6_sale = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "WB Weight:")
+    item_qty6 = models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
+    item_qty6_sale =models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
     item7 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material07', verbose_name = "Material Description")
-    item_qty7 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
-    item_qty7_sale = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "WB Weight:")
+    item_qty7 = models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
+    item_qty7_sale =models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
     item8 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material08', verbose_name = "Material Description")
-    item_qty8 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
-    item_qty8_sale = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "WB Weight:")
+    item_qty8 = models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
+    item_qty8_sale = models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
     isInternal = models.BooleanField(default=False, verbose_name = "Internal/External")
-    approved_by = models.ForeignKey(User, null = True, on_delete = models.PROTECT,  related_name = 'Approved_by', blank= True)
+    approved_by = models.ForeignKey(User, null = True, on_delete = models.PROTECT,  related_name = 'Approver', blank= True)
     fm_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="FM comment")
     dept_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="Dept comment")
-    my_total = computed_property.ComputedIntegerField(compute_from='double_it', null=True, blank=True, verbose_name="Total")
+    my_total = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, verbose_name="Total")
+
+    # my_total = computed_property.ComputedFloatField(compute_from='get_cost', null=True, default='0', verbose_name="Total")
+
+    # #https://django-computed-property.readthedocs.io/en/latest/
+    # @property
+    # def get_cost(self, *args, **kwargs):
+    #     if self.item1 != None:
+    #         if self.item_qty1_sale != None:
+    #             i1 = round(self.item_qty1_sale * float(self.item1.price), 2)
+    #         else:
+    #             i1 = round(self.item_qty1 * float(self.item1.price), 2)
+    #     else:
+    #         i1 = 0
+    #     if self.item2 != None:
+    #         if self.item_qty2_sale != None:
+    #             i2 = round(self.item_qty2_sale * float(self.item2.price), 2)
+    #         else:
+    #             i2 = round(self.item_qty2 * float(self.item2.price), 2)
+    #     else:
+    #         i2 = 0
+    #     if self.item3 != None:
+    #         if self.item_qty3_sale != None:
+    #             i3 = round(self.item_qty3_sale * float(self.item3.price), 2)
+    #         else:
+    #             i3 = round(self.item_qty3 * float(self.item3.price), 2)
+    #     else:
+    #         i3 = 0
+    #     if self.item4 != None:
+    #         if self.item_qty4_sale != None:
+    #             i4 = round(self.item_qty4_sale * float(self.item4.price), 2)
+    #         else:
+    #             i4 = round(self.item_qty4 * float(self.item4.price), 2)
+    #     else:   
+    #         i4 = 0
+    #     if self.item5 != None:
+    #         if self.item_qty5_sale != None:
+    #             i5 = round(self.item_qty5_sale * float(self.item5.price), 2)
+    #         else:
+    #             i5 = round(self.item_qty5 * float(self.item5.price), 2)
+    #     else:
+    #         i5 = 0
+    #     if self.item6 != None:
+    #         if self.item_qty6_sale != None:
+    #             i6 = round(self.item_qty6_sale * float(self.item6.price), 2)
+    #         else:
+    #             i6 = round(self.item_qty6 * float(self.item6.price), 2)
+    #     else:
+    #         i6 = 0
+    #     if self.item7 != None:
+    #         if self.item_qty7_sale != None:
+    #             i7 = round(self.item_qty7_sale * float(self.item7.price), 2)
+    #         else:
+    #             i7 = round(self.item_qty7 * float(self.item7.price), 2)
+    #     else:
+    #         i7 = 0
+    #     if self.item8 != None:
+    #         if self.item_qty8_sale != None:
+    #             i8 = round(self.item_qty8_sale * float(self.item8.price), 2)
+    #         else:
+    #             i8 = round(self.item_qty8 * float(self.item8.price), 2)
+    #     else:
+    #         i8 = 0
+ 
+    #     result = round(i1 + i2 + i3 + i4 + i5 + i6 + i7 + i8, 2)
+    #     #return f'{result:n}'
+    #     return result
 
     class Meta:
-        ordering = ['-id']  
-
-    @property
-    def double_it(self):
-        if self.item_qty1 != None:
-            self.item_qty1 = self.item_qty1
-            i1 = round(self.item_qty1 * float(self.item1.price), 2)
-        else:
-            self.item_qty1 = 0
-            i1 = 0
-        if self.item_qty2 != None:
-            self.item_qty2 = self.item_qty2
-            i2 = round(self.item_qty2 * float(self.item2.price), 2)
-        else:
-            self.item_qty2 = 0
-            i2 = 0
-        if self.item_qty3 != None:
-            self.item_qty3 = self.item_qty3
-            i3 = round(self.item_qty3 * float(self.item3.price), 2)
-        else:
-            self.item_qty3 = 0
-            i3 = 0
-        if self.item_qty4 != None:
-            self.item_qty4 = self.item_qty4
-            i4 = round(self.item_qty4 * float(self.item4.price), 2)
-        else:   
-            self.item_qty4 = 0
-            i4 = 0
-        if self.item_qty5 != None:
-            self.item_qty5 = self.item_qty5
-            i5 = round(self.item_qty5 * float(self.item5.price), 2)
-        else:
-            self.item_qty5 = 0
-            i5 = 0
-        if self.item_qty6 != None:
-            self.item_qty6 = self.item_qty6
-            i6 = round(self.item_qty6 * float(self.item6.price), 2)
-        else:
-            self.item_qty6 = 0
-            i6 = 0
-        if self.item_qty7 != None:
-            self.item_qty7 = self.item_qty7
-            i7 = round(self.item_qty7 * float(self.item7.price), 2)
-        else:
-            self.item_qty7 = 0
-            i7 = 0
-        if self.item_qty8 != None:
-            self.item_qty8 = self.item_qty8
-            i8 = round(self.item_qty8 * float(self.item8.price), 2)
-        else:
-            self.item_qty8 = 0
-            i8 = 0
- 
-        result = i1 + i2 + i3 + i4 + i5 + i6 + i7 + i8
-        return result
-
+        ordering = ['-id']
 
     def get_absolute_url(self):
         return reverse('gins')

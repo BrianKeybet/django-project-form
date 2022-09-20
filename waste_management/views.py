@@ -46,6 +46,60 @@ def dnotes_render_pdf_view(request, *args, **kwargs):
       return HttpResponse('We had some errors ' + html + '')
    return response
 
+def goods_issue_note_render_pdf_view(request, *args, **kwargs):
+   pk = kwargs.get('pk')
+   gin = get_object_or_404(goods_issue_note, pk=pk)
+
+   template_path = 'waste_management/generate_I_gin_pdf.html'
+   context = {'gin': gin}
+   # Create a Django response object, and specify content_type as pdf
+   response = HttpResponse(content_type='application/pdf')
+
+   # to directly download the pdf we need attachment 
+   # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+
+   # to view on browser we can remove attachment 
+   response['Content-Disposition'] = 'filename="report.pdf"'
+
+   # find the template and render it.
+   template = get_template(template_path)
+   html = template.render(context)
+
+   # create a pdf
+   pisa_status = pisa.CreatePDF(
+      html, dest=response)
+   # if error then show some funy view
+   if pisa_status.err:
+      return HttpResponse('We had some errors ' + html + '')
+   return response
+
+def goods_issue_note_external_render_pdf_view(request, *args, **kwargs):
+   pk = kwargs.get('pk')
+   gin = get_object_or_404(goods_issue_note, pk=pk)
+
+   template_path = 'waste_management/generate_E_gin_pdf.html'
+   context = {'gin': gin}
+   # Create a Django response object, and specify content_type as pdf
+   response = HttpResponse(content_type='application/pdf')
+
+   # to directly download the pdf we need attachment 
+   # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+
+   # to view on browser we can remove attachment 
+   response['Content-Disposition'] = 'filename="report.pdf"'
+
+   # find the template and render it.
+   template = get_template(template_path)
+   html = template.render(context)
+
+   # create a pdf
+   pisa_status = pisa.CreatePDF(
+      html, dest=response)
+   # if error then show some funy view
+   if pisa_status.err:
+      return HttpResponse('We had some errors ' + html + '')
+   return response       
+
 def checklists_render_pdf_view(request, *args, **kwargs):
    pk = kwargs.get('pk')
    checks = get_object_or_404(checklist, pk=pk)
@@ -321,6 +375,68 @@ class goods_issue_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, generi
     form_class = GoodsIssueNoteForm
 
     def form_valid(self,form):
+        #Calculate total cost
+        if form.instance.item1 != None:
+            if form.instance.item_qty1_sale != None:
+                i1 = round(form.instance.item_qty1_sale * form.instance.item1.price, 2)
+            else:
+                i1 = round(form.instance.item_qty1 * form.instance.item1.price, 2)
+        else:
+            i1 = 0
+        if form.instance.item2 != None:
+            if form.instance.item_qty2_sale != None:
+                i2 = round(form.instance.item_qty2_sale * form.instance.item2.price, 2)
+            else:
+                i2 = round(form.instance.item_qty2 * form.instance.item2.price, 2)
+        else:
+            i2 = 0
+        if form.instance.item3 != None:
+            if form.instance.item_qty3_sale != None:
+                i3 = round(form.instance.item_qty3_sale * form.instance.item3.price, 2)
+            else:
+                i3 = round(form.instance.item_qty3 * form.instance.item3.price, 2)
+        else:
+            i3 = 0
+        if form.instance.item4 != None:
+            if form.instance.item_qty4_sale != None:
+                i4 = round(form.instance.item_qty4_sale * form.instance.item4.price, 2)
+            else:
+                i4 = round(form.instance.item_qty4 * form.instance.item4.price, 2)
+        else:   
+            i4 = 0
+        if form.instance.item5 != None:
+            if form.instance.item_qty5_sale != None:
+                i5 = round(form.instance.item_qty5_sale * form.instance.item5.price, 2)
+            else:
+                i5 = round(form.instance.item_qty5 * form.instance.item5.price, 2)
+        else:
+            i5 = 0
+        if form.instance.item6 != None:
+            if form.instance.item_qty6_sale != None:
+                i6 = round(form.instance.item_qty6_sale * form.instance.item6.price, 2)
+            else:
+                i6 = round(form.instance.item_qty6 * form.instance.item6.price, 2)
+        else:
+            i6 = 0
+        if form.instance.item7 != None:
+            if form.instance.item_qty7_sale != None:
+                i7 = round(form.instance.item_qty7_sale * form.instance.item7.price, 2)
+            else:
+                i7 = round(form.instance.item_qty7 * form.instance.item7.price, 2)
+        else:
+            i7 = 0
+        if form.instance.item8 != None:
+            if form.instance.item_qty8_sale != None:
+                i8 = round(form.instance.item_qty8_sale * form.instance.item8.price, 2)
+            else:
+                i8 = round(form.instance.item_qty8 * form.instance.item8.price, 2)
+        else:
+            i8 = 0
+ 
+        result = round(i1 + i2 + i3 + i4 + i5 + i6 + i7 + i8, 2)
+
+        form.instance.my_total = result
+
         if form.instance.isInternal == True:
             form.instance.form_status = 2 #Increases the form status by 2
         else:
@@ -330,7 +446,9 @@ class goods_issue_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, generi
         form.instance.department_from = self.request.user.profile.department
 
         prev_serial_num = goods_issue_note.objects.count()
-        serial_num = prev_serial_num + 0 #Get next serial number to display in email
+        serial_num = prev_serial_num + 1 #Get next serial number to display in email
+
+        #form.instance.id = serial_num #Inserts the serial number into the new post
 
         dept = self.request.user.profile.department
         prof = Profile.objects.get(department=f'{dept}',level='2')
@@ -418,8 +536,69 @@ class Sales_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
     # form_class = GoodsIssueNoteForm
 
     def form_valid(self, form):
-        form.instance.approved_by = self.request.user
-        print(1)
+        # Calculate updated total price
+        if form.instance.item1 != None:
+            if form.instance.item_qty1_sale != None:
+                i1 = round(form.instance.item_qty1_sale * form.instance.item1.price, 2)
+            else:
+                i1 = round(form.instance.item_qty1 * form.instance.item1.price, 2)
+        else:
+            i1 = 0
+        if form.instance.item2 != None:
+            if form.instance.item_qty2_sale != None:
+                i2 = round(form.instance.item_qty2_sale * form.instance.item2.price, 2)
+            else:
+                i2 = round(form.instance.item_qty2 * form.instance.item2.price, 2)
+        else:
+            i2 = 0
+        if form.instance.item3 != None:
+            if form.instance.item_qty3_sale != None:
+                i3 = round(form.instance.item_qty3_sale * form.instance.item3.price, 2)
+            else:
+                i3 = round(form.instance.item_qty3 * form.instance.item3.price, 2)
+        else:
+            i3 = 0
+        if form.instance.item4 != None:
+            if form.instance.item_qty4_sale != None:
+                i4 = round(form.instance.item_qty4_sale * form.instance.item4.price, 2)
+            else:
+                i4 = round(form.instance.item_qty4 * form.instance.item4.price, 2)
+        else:   
+            i4 = 0
+        if form.instance.item5 != None:
+            if form.instance.item_qty5_sale != None:
+                i5 = round(form.instance.item_qty5_sale * form.instance.item5.price, 2)
+            else:
+                i5 = round(form.instance.item_qty5 * form.instance.item5.price, 2)
+        else:
+            i5 = 0
+        if form.instance.item6 != None:
+            if form.instance.item_qty6_sale != None:
+                i6 = round(form.instance.item_qty6_sale * form.instance.item6.price, 2)
+            else:
+                i6 = round(form.instance.item_qty6 * form.instance.item6.price, 2)
+        else:
+            i6 = 0
+        if form.instance.item7 != None:
+            if form.instance.item_qty7_sale != None:
+                i7 = round(form.instance.item_qty7_sale * form.instance.item7.price, 2)
+            else:
+                i7 = round(form.instance.item_qty7 * form.instance.item7.price, 2)
+        else:
+            i7 = 0
+        if form.instance.item8 != None:
+            if form.instance.item_qty8_sale != None:
+                i8 = round(form.instance.item_qty8_sale * form.instance.item8.price, 2)
+            else:
+                i8 = round(form.instance.item_qty8 * form.instance.item8.price, 2)
+        else:
+            i8 = 0
+ 
+        result = round(i1 + i2 + i3 + i4 + i5 + i6 + i7 + i8, 2)
+
+        form.instance.my_total = result
+
+        form.instance.received_by = self.request.user
 
         if ('elevate' in self.request.POST) and (form.instance.form_status == 3):
             form.instance.form_status += 2
