@@ -73,6 +73,8 @@ class kgrn(models.Model):
     form_serials = models.CharField(max_length = 100, blank = True) 
     date_posted = models.DateTimeField(default = timezone.now, verbose_name= "Date")
     author = models.ForeignKey(User, null = True, on_delete = models.PROTECT)
+    hod = models.ForeignKey(User, null = True, on_delete = models.PROTECT, related_name = 'H_O_D', blank= True)
+    hod_comment = models.CharField(max_length=100, null=True, blank=True,verbose_name="Head Of Dept comment")
     kgrn_status = models.IntegerField(null=True, default='0')
 
     class Meta:
@@ -83,6 +85,8 @@ class goods_issue_note(models.Model):
     date_posted = models.DateTimeField(default = timezone.now, verbose_name= "Date")
     department_from = models.CharField(max_length = 20, blank = True)
     department_to = models.CharField(max_length = 20, blank = True)
+    time_in = models.TimeField(auto_now=False, auto_now_add=False, blank = True, null = True)
+    time_out = models.TimeField(auto_now=False, auto_now_add=False, blank = True, null = True)
     form_status = models.IntegerField(null=True, default='0')
     author = models.ForeignKey(User, null = True, on_delete = models.PROTECT)
     delivered_by = models.CharField(max_length=20, null = True, blank = True, verbose_name = "Delivered By")
@@ -112,10 +116,13 @@ class goods_issue_note(models.Model):
     item_qty8 = models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
     item_qty8_sale = models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
     isInternal = models.BooleanField(default=False, verbose_name = "Internal/External")
+    hod = models.ForeignKey(User, null = True, on_delete = models.PROTECT,  related_name = 'HOD', blank= True)
+    hod_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="HOD comment")
     approved_by = models.ForeignKey(User, null = True, on_delete = models.PROTECT,  related_name = 'Approver', blank= True)
     fm_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="FM comment")
     dept_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="Dept comment")
     my_total = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, verbose_name="Total")
+    gross_total = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, verbose_name="Gross Total")
 
     # my_total = computed_property.ComputedFloatField(compute_from='get_cost', null=True, default='0', verbose_name="Total")
 

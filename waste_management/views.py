@@ -368,6 +368,101 @@ class KGRNListView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         return models.kgrn.objects.all()
 
+class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'waste_management/approve_kgrn_hod.html'
+    model = kgrn
+    fields = ['hod_comment']
+
+    def get_context_data(self, *args, **kwargs):
+        pk = kwargs.get('pk')
+        checks = get_object_or_404(kgrn, pk=pk)
+        my_stringlist = checks.form_serials #Pick list of serial numbers from the checklist as a string
+        print(f'Initial list {my_stringlist} type {type(my_stringlist)}')
+        #my_list = my_stringlist.strip('][').split(',') #Split the string into list of individual items but each item as a string
+        my_list = [nums_from_string.get_nums(my_stringlist)] #Split the string into list of individual items as integers
+        print(f'Second list {my_list} type {type(my_list)}')
+        my_list = [x for xs in my_list for x in xs] #Flatten the list of lists into a single list
+        print(f'Third list {my_list} type {type(my_list)}')
+
+        dnotes_list = []
+        for num in my_list: #For each item in the new list
+            dnote = get_object_or_404(waste_delivery_note, pk=num) #Find the corresponding delivery note
+            print(f'{num} {dnote}')
+            dnotes_list.append(dnote) #Add the delivery note to the list
+            print(f'{dnotes_list}')
+
+        template_path = 'waste_management/approve_kgrn_hod.html'
+        context = {'dnotes_list': dnotes_list, 'checks': checks, 'dnote': dnote}
+        return context
+
+    def form_valid(self, form):
+        form.instance.hod = self.request.user #Inserts the author into the new post
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 2): #If the HOD has clicked the button to elevate the form to the next level
+            form.instance.form_status += 2 #Increases the form status by 2
+
+            email = EmailMessage(
+            subject=f'{form.instance.department} department KGRN',
+            body=f'KGRN number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            from_email=config('EMAIL_HOST_USER'),
+            to=[config('BRIAN_EMAIL')],
+            cc=[config('BRIAN_EMAIL')],
+            reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            )
+            # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
+            email.send()
+            messages.success(self.request,'Form submitted and mail sent!')
+            return super().form_valid(form)
+            
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 3):
+            form.instance.form_status += 1
+            email = EmailMessage(
+            subject=f'{form.instance.department} department KGRN',
+            body=f'KGRN number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            from_email=config('EMAIL_HOST_USER'),
+            to=[config('BRIAN_EMAIL')],
+            cc=[config('BRIAN_EMAIL')],
+            reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            )
+            # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
+            email.send()
+            messages.success(self.request,'Form submitted and mail sent!')
+            return super().form_valid(form)
+
+        if ('demote' in self.request.POST) and (form.instance.form_status == 2):
+            form.instance.form_status -= 1
+
+            email = EmailMessage(
+            subject=f'{form.instance.department} department KGRN',
+            body=f'KGRN number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            from_email=config('EMAIL_HOST_USER'),
+            to=[config('BRIAN_EMAIL')],
+            cc=[config('BRIAN_EMAIL')],
+            reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            )
+            # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
+            email.send()
+            messages.success(self.request,'Form submitted and mail sent!')
+            return super().form_valid(form)
+            
+        if ('demote' in self.request.POST) and (form.instance.form_status == 3):
+            form.instance.form_status -= 2
+
+            email = EmailMessage(
+            subject=f'{form.instance.department} department KGRN',
+            body=f'KGRN number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            from_email=config('EMAIL_HOST_USER'),
+            to=[config('BRIAN_EMAIL')],
+            cc=[config('BRIAN_EMAIL')],
+            reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            )
+            # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
+            email.send()
+            messages.success(self.request,'Form submitted and mail sent!')
+            return super().form_valid(form)
+
+        else:
+            return HttpResponse('Error')
+
 class goods_issue_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
     template_name = 'waste_management/raise_goodsissuenote.html'
     success_message = 'Form Submitted Successfully!'
@@ -435,6 +530,8 @@ class goods_issue_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, generi
  
         result = round(i1 + i2 + i3 + i4 + i5 + i6 + i7 + i8, 2)
 
+        form.instance.gross_total = result * int(1.16)
+
         form.instance.my_total = result
 
         if form.instance.isInternal == True:
@@ -468,6 +565,45 @@ class goods_issue_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, generi
         # messages.success(self.request, 'Form submitted and mail sent!')
         return super().form_valid(form)
 
+class HOD_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'waste_management/approve_hod_gin.html'
+    model = goods_issue_note
+    fields = ['hod_comment']
+
+    # def get_context_data(self, **kwargs):
+    #     context = {'my_variable': 0}
+    #     return context
+
+    def form_valid(self, form):
+        form.instance.hod = self.request.user
+        
+        #print(form.instance.item_qty8)
+        #print(form.instance.item_qty8_sale)
+
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 2): #For internal forms, if the form is approved by the HOD, the form status is increased by 2
+            form.instance.form_status += 2 
+
+            return super().form_valid(form)
+
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 1): #For external forms, if the form is approved by the HOD, the form status is increased by 2
+            form.instance.form_status += 2 
+
+            return super().form_valid(form)    
+
+
+        if ('demote' in self.request.POST) and (form.instance.form_status == 2): #For internal forms, if the form is rejected by the HOD, the form status is decreased by 2
+            form.instance.form_status -= 2 
+
+            return super().form_valid(form)
+
+        if ('demote' in self.request.POST) and (form.instance.form_status == 1): #For external forms, if the form is rejected by the HOD, the form status is decreased by 1
+            form.instance.form_status -= 1 
+
+            return super().form_valid(form)  
+
+        else:
+            return HttpResponse('Error')
+
 class FM_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'waste_management/approve_goodsissuenote.html'
     model = goods_issue_note
@@ -483,12 +619,12 @@ class FM_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
         #print(form.instance.item_qty8)
         #print(form.instance.item_qty8_sale)
 
-        if ('elevate' in self.request.POST) and (form.instance.form_status == 2): #For internal forms, if the form is approved by the FM, the form status is increased by 2
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 4): #For internal forms, if the form is approved by the FM, the form status is increased by 2
             form.instance.form_status += 2 
 
             return super().form_valid(form)
 
-        if ('elevate' in self.request.POST) and (form.instance.form_status == 1): #For external forms, if the form is approved by the FM, the form status is increased by 2
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 3): #For external forms, if the form is approved by the FM, the form status is increased by 2
             form.instance.form_status += 2 
 
             return super().form_valid(form)    
@@ -516,13 +652,13 @@ class Dept_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         form.instance.approved_by = self.request.user
 
-        if ('elevate' in self.request.POST) and (form.instance.form_status == 4):
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 6):
             form.instance.form_status += 2 
 
             return super().form_valid(form)
 
-        if ('demote' in self.request.POST) and (form.instance.form_status == 4):
-            form.instance.form_status -= 4 
+        if ('demote' in self.request.POST) and (form.instance.form_status == 6):
+            form.instance.form_status -= 6 
 
             return super().form_valid(form)
 
@@ -598,16 +734,18 @@ class Sales_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
         form.instance.my_total = result
 
+        form.instance.total_cost = result * int(1.16)
+
         form.instance.received_by = self.request.user
 
-        if ('elevate' in self.request.POST) and (form.instance.form_status == 3):
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 5):
             form.instance.form_status += 2
             print(2) 
 
             return super().form_valid(form)
 
-        if ('demote' in self.request.POST) and (form.instance.form_status == 3):
-            form.instance.form_status -= 3 
+        if ('demote' in self.request.POST) and (form.instance.form_status == 5):
+            form.instance.form_status -= 5 
 
             return super().form_valid(form)
         else:

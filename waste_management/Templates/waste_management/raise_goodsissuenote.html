@@ -95,7 +95,7 @@
         <form method="POST" action="" {% if form.is_multipart %} enctype="multipart/form-data" {% endif %}>
                 {% csrf_token %}
                     <fieldset>
-                        <div class="fieldWrapper">
+                        <!-- <div class="fieldWrapper">
                             {{ form.isInternal.errors }}
                             <label for="{{ form.isInternal.id_for_label }}"><strong>Internal:</strong></label>
                             {{ form.isInternal}}
@@ -109,6 +109,36 @@
                             {{ form.delivered_by }}
                         </div>   
                     </fieldset><hr>
+                    <div class="fieldWrapper">
+                        {{ form.time_in.errors }}
+                        <label for="{{ form.time_in.id_for_label }}"><strong>Time in:</strong></label>
+                        {{ form.time_in}}
+
+                        {{ form.time_out.errors }}
+                        <label for="{{ form.time_out.id_for_label }}"><strong>Time out:</strong></label>
+                        {{ form.time_out }}
+                    </div> -->
+                    <table class="table">
+                        <!-- <thead>
+                            <tr>
+                                <th scope="col">Internal:</th>
+                                <th scope="col">To:</th>
+                                <th scope="col">Delivered By:</th>
+                            </tr>
+                        </thead> -->
+                        <tr><td>Internal: {{ form.isInternal}}</td><td>To: {{ form.department_to }}</td><td>Delivered By: {{ form.delivered_by }}</td></tr>
+                    </table>
+                    <table class="table">
+                        <!-- <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Time in:</th>
+                                <th scope="col">Time out:</th>
+                            </tr>
+                        </thead> -->
+                        <tr><td></td><td>Time in: {{ form.time_in}}</td><td>Time out: {{ form.time_out }}</td></tr>
+                    </table>    
+                    </fieldset>
                     
                     <fieldset class="form-group">
                         <legend class="center border-bottom mb-4">Items</legend>

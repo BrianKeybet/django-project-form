@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'waste_management.apps.WasteManagementConfig',
     'mathfilters',
     'computed_property',
+    'django.contrib.humanize',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

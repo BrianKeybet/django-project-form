@@ -110,7 +110,7 @@
                 {% endif %}
 
                 {% if kgrn.kgrn_status == 0 %}
-                    <td><a href="#">Update</a></td>
+                    <td><a href="{% url 'kgrn-update' kgrn.id %}">Update</a></td>
                 {% elif kgrn.kgrn_status == 2 %}
                     <td><a href="#">Update</a></td>
                 {% elif kgrn.kgrn_status == 4 %}
