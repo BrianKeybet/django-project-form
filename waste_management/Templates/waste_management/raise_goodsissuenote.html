@@ -45,6 +45,13 @@
     /* grid-auto-rows: minmax(200px, auto); */
     /* grid-template-rows: repeat(3, 1fr); */
     }
+    .my_table {
+    table-layout: fixed;
+    width: 100%;
+    margin: 0 auto;
+    margin-left:0px;
+    overflow: hidden;
+    }
 
     .item {
     background: white;
@@ -95,99 +102,71 @@
         <form method="POST" action="" {% if form.is_multipart %} enctype="multipart/form-data" {% endif %}>
                 {% csrf_token %}
                     <fieldset>
-                        <!-- <div class="fieldWrapper">
-                            {{ form.isInternal.errors }}
-                            <label for="{{ form.isInternal.id_for_label }}"><strong>Internal:</strong></label>
-                            {{ form.isInternal}}
-
-                            {{ form.department_to.errors }}
-                            <label for="{{ form.department_to.id_for_label }}"><strong>To:</strong></label>
-                            {{ form.department_to }}
-    
-                            {{ form.delivered_by.errors }}
-                            <label for="{{ form.waste_loader.id_for_label }}"><strong>Delivered By:</strong></label>
-                            {{ form.delivered_by }}
-                        </div>   
-                    </fieldset><hr>
-                    <div class="fieldWrapper">
-                        {{ form.time_in.errors }}
-                        <label for="{{ form.time_in.id_for_label }}"><strong>Time in:</strong></label>
-                        {{ form.time_in}}
-
-                        {{ form.time_out.errors }}
-                        <label for="{{ form.time_out.id_for_label }}"><strong>Time out:</strong></label>
-                        {{ form.time_out }}
-                    </div> -->
-                    <table class="table">
-                        <!-- <thead>
-                            <tr>
-                                <th scope="col">Internal:</th>
-                                <th scope="col">To:</th>
-                                <th scope="col">Delivered By:</th>
-                            </tr>
-                        </thead> -->
-                        <tr><td>Internal: {{ form.isInternal}}</td><td>To: {{ form.department_to }}</td><td>Delivered By: {{ form.delivered_by }}</td></tr>
-                    </table>
-                    <table class="table">
-                        <!-- <thead>
-                            <tr>
-                                <th scope="col"></th>
-                                <th scope="col">Time in:</th>
-                                <th scope="col">Time out:</th>
-                            </tr>
-                        </thead> -->
-                        <tr><td></td><td>Time in: {{ form.time_in}}</td><td>Time out: {{ form.time_out }}</td></tr>
-                    </table>    
+                        <table class="table">
+                            <tr><td>Internal: {{ form.isInternal}}</td><td>To: {{ form.department_to }}</td><td>Delivered By: {{ form.delivered_by }}</td></tr>
+                        </table>
+                        <table class="table">
+                            <tr><td></td><td>Time in W/H : {{ form.time_in}}</td><td>Time out W/H: {{ form.time_out }}</td></tr>
+                        </table>    
                     </fieldset>
                     
                     <fieldset class="form-group">
                         <legend class="center border-bottom mb-4">Items</legend>
                         {{ form.errors }}
                         {{ form.non_field_errors }}
-                        <table class="table">
+                        <table  class="table my_table">
                             <tr>
-                              <th scope="col">Material</th>
-                              <th scope="col">Quantity</th>
+                              <th scope="col" style="width:50%">Material</th>
+                              <th scope="col" style="width:25%">Quantity</th>
+                              <th scope="col" style="width:25%">W/H Weight</th>
                             </tr>
                             <tr>
                               {{ form.item1.errors }}
                               <td>{{ form.item1 }}</td>
                               <td>{{ form.item_qty1 }}</td>
+                              <td>{{ form.item_qty1_wh }}</td>
                             </tr>
                             <tr>
                                 {{ form.item2.errors }}
                                 <td>{{ form.item2 }}</td>
                                 <td>{{ form.item_qty2 }}</td>
+                                <td>{{ form.item_qty2_wh }}</td>
                             </tr>
                             <tr>
                                 {{ form.item3.errors }}
                                 <td>{{ form.item3 }}</td>
                                 <td>{{ form.item_qty3 }}</td>
+                                <td>{{ form.item_qty3_wh }}</td>
                             </tr>
                             <tr>
                                 {{ form.item4.errors }}
                                 <td>{{ form.item4 }}</td>
                                 <td>{{ form.item_qty4 }}</td>
+                                <td>{{ form.item_qty4_wh }}</td>
                             </tr>
                             <tr>
                                 {{ form.item5.errors }}
                                 <td>{{ form.item5 }}</td>
                                 <td>{{ form.item_qty5 }}</td>
+                                <td>{{ form.item_qty5_wh }}</td>
                             </tr>
                             <tr>
                                 {{ form.item6.errors }}
                                 <td>{{ form.item6 }}</td>
                                 <td>{{ form.item_qty6 }}</td>
+                                <td>{{ form.item_qty6_wh }}</td>
                             </tr>
                             <tr>
                                 {{ form.item7.errors }}
                                 <td>{{ form.item7 }}</td>
                                 <td>{{ form.item_qty7 }}</td>
+                                <td>{{ form.item_qty7_wh }}</td>
                             </tr>
                             <tr>
                                 {{ form.item8.errors }}
                                 <td>{{ form.item8 }}</td>
                                 <td>{{ form.item_qty8 }}</td>
+                                <td>{{ form.item_qty8_wh }}</td>
                             </tr>
                           </table> 
                         <!-- <div class="fieldWrapper">

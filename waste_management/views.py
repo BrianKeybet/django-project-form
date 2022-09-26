@@ -141,6 +141,47 @@ def checklists_render_pdf_view(request, *args, **kwargs):
       return HttpResponse('We had some errors ' + html + '')
    return response
 
+def kgrns_render_pdf_view(request, *args, **kwargs):
+   pk = kwargs.get('pk')
+   checks = get_object_or_404(kgrn, pk=pk)
+   my_stringlist = checks.form_serials #Pick list of serial numbers from the checklist as a string
+   print(f'Initial list {my_stringlist} type {type(my_stringlist)}')
+   #my_list = my_stringlist.strip('][').split(',') #Split the string into list of individual items but each item as a string
+   my_list = [nums_from_string.get_nums(my_stringlist)] #Split the string into list of individual items as integers
+   print(f'Second list {my_list} type {type(my_list)}')
+   my_list = [x for xs in my_list for x in xs] #Flatten the list of lists into a single list
+   print(f'Third list {my_list} type {type(my_list)}')
+
+   dnotes_list = []
+   for num in my_list: #For each item in the new list
+    dnote = get_object_or_404(waste_delivery_note, pk=num) #Find the corresponding delivery note
+    print(f'{num} {dnote}')
+    dnotes_list.append(dnote) #Add the delivery note to the list
+    print(f'{dnotes_list}')
+
+   template_path = 'waste_management/generatekgrn_pdf.html'
+   context = {'dnotes_list': dnotes_list, 'checks': checks, 'dnote': dnote}
+   # Create a Django response object, and specify content_type as pdf
+   response = HttpResponse(content_type='application/pdf')
+
+   # to directly download the pdf we need attachment 
+   # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+
+   # to view on browser we can remove attachment 
+   response['Content-Disposition'] = 'filename="report.pdf"'
+
+   # find the template and render it.
+   template = get_template(template_path)
+   html = template.render(context)
+
+   # create a pdf
+   pisa_status = pisa.CreatePDF(
+      html, dest=response)
+   # if error then show some funy view
+   if pisa_status.err:
+      return HttpResponse('We had some errors ' + html + '')
+   return response
+
 # Create your views here.
 class waste_delivery_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
     template_name = 'waste_management/waste_dnote.html'
@@ -356,10 +397,10 @@ def create_kgrn(request):
     if request.method == 'POST':
         check = request.POST.getlist('checks[]')
         print(f'Initial list {check} type {type(check)}')
-        kgrn_instance = kgrn.objects.create(form_serials = check, date_posted = datetime.now(), author = request.user)
+        kgrn_instance = kgrn.objects.create(form_serials = check, date_posted = datetime.now(), author = request.user, department = request.user.profile.department)
         kgrn_instance.save()
 
-    return redirect('dnotes_kgrn')
+    return redirect('kgrns')
 
 class KGRNListView(LoginRequiredMixin, generic.ListView):
     context_object_name = 'kgrns'
@@ -374,7 +415,7 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
     fields = ['hod_comment']
 
     def get_context_data(self, *args, **kwargs):
-        pk = kwargs.get('pk')
+        pk = self.kwargs.get('pk')
         checks = get_object_or_404(kgrn, pk=pk)
         my_stringlist = checks.form_serials #Pick list of serial numbers from the checklist as a string
         print(f'Initial list {my_stringlist} type {type(my_stringlist)}')
@@ -397,8 +438,8 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.hod = self.request.user #Inserts the author into the new post
-        if ('elevate' in self.request.POST) and (form.instance.form_status == 2): #If the HOD has clicked the button to elevate the form to the next level
-            form.instance.form_status += 2 #Increases the form status by 2
+        if ('elevate' in self.request.POST) and (form.instance.kgrn_status == 0): #If the HOD has clicked the button to elevate the form to the next level
+            form.instance.kgrn_status += 2 #Increases the form status by 2
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
@@ -413,8 +454,8 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
             messages.success(self.request,'Form submitted and mail sent!')
             return super().form_valid(form)
             
-        if ('elevate' in self.request.POST) and (form.instance.form_status == 3):
-            form.instance.form_status += 1
+        if ('elevate' in self.request.POST) and (form.instance.kgrn_status == 3):
+            form.instance.kgrn_status += 1
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
             body=f'KGRN number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
@@ -428,8 +469,8 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
             messages.success(self.request,'Form submitted and mail sent!')
             return super().form_valid(form)
 
-        if ('demote' in self.request.POST) and (form.instance.form_status == 2):
-            form.instance.form_status -= 1
+        if ('demote' in self.request.POST) and (form.instance.kgrn_status == 2):
+            form.instance.kgrn_status -= 1
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
@@ -444,8 +485,102 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
             messages.success(self.request,'Form submitted and mail sent!')
             return super().form_valid(form)
             
-        if ('demote' in self.request.POST) and (form.instance.form_status == 3):
-            form.instance.form_status -= 2
+        if ('demote' in self.request.POST) and (form.instance.kgrn_status == 3):
+            form.instance.kgrn_status -= 2
+
+            email = EmailMessage(
+            subject=f'{form.instance.department} department KGRN',
+            body=f'KGRN number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            from_email=config('EMAIL_HOST_USER'),
+            to=[config('BRIAN_EMAIL')],
+            cc=[config('BRIAN_EMAIL')],
+            reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            )
+            # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
+            email.send()
+            messages.success(self.request,'Form submitted and mail sent!')
+            return super().form_valid(form)
+
+        else:
+            return HttpResponse('Error')
+
+class KGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'waste_management/approve_kgrn_purchase.html'
+    model = kgrn
+    fields = ['purchase_comment']
+
+    def get_context_data(self, *args, **kwargs):
+        pk = self.kwargs.get('pk')
+        checks = get_object_or_404(kgrn, pk=pk)
+        my_stringlist = checks.form_serials #Pick list of serial numbers from the checklist as a string
+        print(f'Initial list {my_stringlist} type {type(my_stringlist)}')
+        #my_list = my_stringlist.strip('][').split(',') #Split the string into list of individual items but each item as a string
+        my_list = [nums_from_string.get_nums(my_stringlist)] #Split the string into list of individual items as integers
+        print(f'Second list {my_list} type {type(my_list)}')
+        my_list = [x for xs in my_list for x in xs] #Flatten the list of lists into a single list
+        print(f'Third list {my_list} type {type(my_list)}')
+
+        dnotes_list = []
+        for num in my_list: #For each item in the new list
+            dnote = get_object_or_404(waste_delivery_note, pk=num) #Find the corresponding delivery note
+            print(f'{num} {dnote}')
+            dnotes_list.append(dnote) #Add the delivery note to the list
+            print(f'{dnotes_list}')
+
+        context = {'dnotes_list': dnotes_list, 'checks': checks, 'dnote': dnote}
+        return context
+
+    def form_valid(self, form):
+        form.instance.purchase_rep = self.request.user #Inserts the author into the new post
+        if ('elevate' in self.request.POST) and (form.instance.kgrn_status == 2): #If the HOD has clicked the button to elevate the form to the next level
+            form.instance.kgrn_status += 2 #Increases the form status by 2
+
+            email = EmailMessage(
+            subject=f'{form.instance.department} department KGRN',
+            body=f'KGRN number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            from_email=config('EMAIL_HOST_USER'),
+            to=[config('BRIAN_EMAIL')],
+            cc=[config('BRIAN_EMAIL')],
+            reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            )
+            # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
+            email.send()
+            messages.success(self.request,'Form submitted and mail sent!')
+            return super().form_valid(form)
+            
+        if ('elevate' in self.request.POST) and (form.instance.kgrn_status == 3):
+            form.instance.kgrn_status += 1
+            email = EmailMessage(
+            subject=f'{form.instance.department} department KGRN',
+            body=f'KGRN number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            from_email=config('EMAIL_HOST_USER'),
+            to=[config('BRIAN_EMAIL')],
+            cc=[config('BRIAN_EMAIL')],
+            reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            )
+            # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
+            email.send()
+            messages.success(self.request,'Form submitted and mail sent!')
+            return super().form_valid(form)
+
+        if ('demote' in self.request.POST) and (form.instance.kgrn_status == 2):
+            form.instance.kgrn_status -= 1
+
+            email = EmailMessage(
+            subject=f'{form.instance.department} department KGRN',
+            body=f'KGRN number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            from_email=config('EMAIL_HOST_USER'),
+            to=[config('BRIAN_EMAIL')],
+            cc=[config('BRIAN_EMAIL')],
+            reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            )
+            # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
+            email.send()
+            messages.success(self.request,'Form submitted and mail sent!')
+            return super().form_valid(form)
+            
+        if ('demote' in self.request.POST) and (form.instance.kgrn_status == 3):
+            form.instance.kgrn_status -= 2
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
@@ -534,6 +669,42 @@ class goods_issue_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, generi
 
         form.instance.my_total = result
 
+        #Calculate total warehouse weight
+        if form.instance.item1 != None:
+            w1 = form.instance.item_qty1_wh
+        else:
+            w1 = 0
+        if form.instance.item2 != None:
+            w2 = form.instance.item_qty2_wh
+        else:
+            w2 = 0
+        if form.instance.item3 != None:
+            w3 = form.instance.item_qty3_wh
+        else:
+            w3 = 0
+        if form.instance.item4 != None:
+            w4 = form.instance.item_qty4_wh
+        else:
+            w4 = 0
+        if form.instance.item5 != None:
+            w5 = form.instance.item_qty5_wh
+        else:
+            w5 = 0
+        if form.instance.item6 != None:
+            w6 = form.instance.item_qty6_wh
+        else:
+            w6 = 0
+        if form.instance.item7 != None:
+            w7 = form.instance.item_qty7_wh
+        else:
+            w7 = 0
+        if form.instance.item8 != None:
+            w8 = form.instance.item_qty8_wh
+        else:
+            w8 = 0
+ 
+        form.instance.total_weight_wh = round(w1 + w2 + w3 + w4 + w5 + w6 + w7 + w8, 2)
+
         if form.instance.isInternal == True:
             form.instance.form_status = 2 #Increases the form status by 2
         else:
@@ -553,7 +724,7 @@ class goods_issue_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, generi
  
         email = EmailMessage(
         subject=f'{form.instance.department_from} department Goods Issue Note',
-        body=f'Goods Issue Note number {serial_num} has been submitted by {form.instance.author}.\nKindly log on to the portal to view it.\vIn case of any challenges, feel free to contact IT for further assistance.',
+        body=f'Goods Issue Note number {serial_num} has been submitted by {form.instance.author}.\nKindly log on to the portal to view it.\vIn case of any challenges, feel free to contact IT for further assistance. \n To: {form.instance.department_to}',
         from_email=config('EMAIL_HOST_USER'),
         # to=[f'{em}'],
         to=[config('BRIAN_EMAIL')],
@@ -668,7 +839,7 @@ class Dept_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 class Sales_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'waste_management/sales_receivegoodsissuenote.html'
     model = goods_issue_note
-    fields = ['item_qty1_sale','item_qty2_sale','item_qty3_sale','item_qty4_sale','item_qty5_sale','item_qty6_sale','item_qty7_sale','item_qty8_sale','received_by','dept_comment']
+    fields = ['item_qty1_sale','item_qty2_sale','item_qty3_sale','item_qty4_sale','item_qty5_sale','item_qty6_sale','item_qty7_sale','item_qty8_sale','received_by','dept_comment','total_weight_wb']
     # form_class = GoodsIssueNoteForm
 
     def form_valid(self, form):

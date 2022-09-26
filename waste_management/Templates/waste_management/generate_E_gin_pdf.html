@@ -261,22 +261,22 @@
                         <tfoot>
                             <tr></tr>
                             <tr>
-                                <td></td>
-                                <td></td>
+                                <td><strong>WAREHOUSE WEIGHT:</strong></td>
+                                <td style="text-align: right;"><strong>{{ gin.total_weight_wh}} KG</strong></td>
                                 <td></td>
                                 <td><strong>NET VALUE:</strong></td>
                                 <td style="text-align: right;"><strong>{{ gin.my_total |intcomma}}</strong></td>
                             </tr>
                             <tr>
-                                <td></td>
-                                <td></td>
+                                <td><strong>WEIGHBRIDGE WEIGHT:</strong></td>
+                                <td style="text-align: right;"><strong>{{ gin.total_weight_wb}} KG</strong></td>
                                 <td></td>
                                 <td><strong>VAT (16%):</strong></td>
                                 <td style="text-align: right;"><strong>{{ 0.16 | mul:gin.my_total |floatformat:2 |intcomma}}</strong></td>
                             </tr>
                             <tr>
-                                <td></td>
-                                <td></td>
+                                <td><strong>WEIGHT DIFFERENCE:</strong></td>
+                                <td style="text-align: right;"><strong>{{ gin.total_weight_wb | sub:gin.total_weight_wh |floatformat:2|intcomma }} KG</strong></td>
                                 <td></td>
                                 <td><strong>GROSS VALUE:</strong></td>
                                 <td style="text-align: right;"><strong><u>{{ 1.16 | mul:gin.my_total |floatformat:2 |intcomma }}</u></strong></td>
@@ -290,29 +290,26 @@
         <fieldset class ="bottom_row">
             <table>
                 <tr>
-                    <td><strong>Prepared by:</strong>
+                    <td colspan ="2"><strong>Prepared by:</strong>
                         {{ gin.author }}
                     </td>
-                    <td></td><td></td>
-                    <td><strong>H.O.D / Representative:</strong>
+                    <td colspan ="2"><strong>H.O.D / Representative:</strong>
                         {{ gin.hod }}
                     </td>
                 </tr>
                 <tr>
-                    <td><strong>Time in Warehouse:</strong>
+                    <td colspan ="2"><strong>Time in Warehouse:</strong>
                         {{ gin.time_in }}
                     </td>
-                    <td></td><td></td>
-                    <td><strong>FM / Management:</strong>
+                    <td  colspan ="2"><strong>FM / Management:</strong>
                         {{ gin.approved_by }}
                     </td>
                 </tr>
                 <tr>
-                    <td><strong>Time out Warehouse:</strong>
+                    <td colspan ="2"><strong>Time out Warehouse:</strong>
                         {{ gin.time_out }}
                     </td>
-                    <td></td><td></td>
-                    <td><strong>Received by:</strong>
+                    <td  colspan ="2"><strong>Received by:</strong>
                         {{ gin.received_by }}
                     </td>
                 </tr>

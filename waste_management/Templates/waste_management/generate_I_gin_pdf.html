@@ -20,8 +20,11 @@
     <style type="text/css">
 
         @page {
-            background-image: url("http://10.10.1.71:8000/media/Goods_Issue_NoteA5.png");
-            size: A5 landscape;
+            background-image: url("http://10.10.1.71:8000/media/Goods_Issue_NoteA4.jpg");
+            size: A4 portrait;
+            margin-left: 1.5cm;
+            margin-right: 2.8cm;
+            margin-top: 2.4cm;
         }
         body {
             font-weight: 200;
@@ -37,6 +40,16 @@
         }
         th {
             text-align: left;
+        }
+        .my_table {
+            border: 1px solid rgba(207, 204, 204, 0.014);
+            border-collapse: collapse;
+            padding-top: 5px;
+            padding-right: 5px;
+            padding-left: 5px;
+        }
+        .my_table > thead > tr > th {
+            background-color: #808080;
         }
          .top_row {
             padding-top: 100px;
@@ -62,7 +75,7 @@
 
 <body>
   <div class="container">
-                <fieldset>
+                <fieldset style="padding-left: 10px;">
                     <p class="top_row">
                         <strong>Serial Number:</strong>
                         {{ gin.id }}
@@ -82,7 +95,7 @@
                     </p>
                 </fieldset>
                 <fieldset>
-                    <table class="table table-striped">
+                    <table class="table table-striped my_table">
                         <thead>
                             <tr>
                                 <th scope="col">Material</th>
@@ -155,30 +168,29 @@
                 </fieldset>
                 <fieldset  class="bottom_row">
                     <table>
-                        <tr>
-                            <td><strong>Prepared by:</strong>
-                                {{ gin.author }}
-                            </td>
-                            <td><strong>Received by:</strong>
-                                {{ gin.received_by }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>Time in:</strong>
-                                ___________________
-                            </td>
-                            <td><strong>Signature:</strong>
-                                ___________________
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>Time out:</strong>
-                                ___________________
-                            </td>
-                            <td><strong>Designation</strong>
-                                ___________________
-                            </td>
-                        </tr>
+                        <td colspan ="2"><strong>Prepared by:</strong>
+                            {{ gin.author }}
+                        </td>
+                        <td colspan ="2"><strong>H.O.D / Representative:</strong>
+                            {{ gin.hod }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan ="2"><strong>Time in Warehouse:</strong>
+                            {{ gin.time_in }}
+                        </td>
+                        <td  colspan ="2"><strong>FM / Management:</strong>
+                            {{ gin.approved_by }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan ="2"><strong>Time out Warehouse:</strong>
+                            {{ gin.time_out }}
+                        </td>
+                        <td  colspan ="2"><strong>Received by:</strong>
+                            {{ gin.received_by }}
+                        </td>
+                    </tr>
                     </table>
                 </fieldset> 
  

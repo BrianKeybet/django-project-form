@@ -69,7 +69,7 @@ class RTSForm(LoginRequiredMixin, SuccessMessageMixin,  generic.CreateView):
 
         email = EmailMessage(
         subject=f'{form.instance.department} department R.T.S form',
-        body=f'R.T.S form number {serial_num} has been submitted by {form.instance.author}, kindly log on to the portal on http://10.10.1.195:8000/forms/home/ to view it.  In case of any challenges feel free to contact IT for further assistance.',
+        body=f'R.T.S form number {serial_num} has been submitted by {form.instance.author}, kindly log on to the portal on http://10.10.1.195:8000/forms/home/ to view it.  \n Supplier name: {form.instance.supplier.name}.\n Product name: {form.instance.material_description.name}. \n Nature of complaint: {form.instance.quality_issue}.\nIn case of any challenges, feel free to contact IT for further assistance.',
         from_email=config('EMAIL_HOST_USER'),
         # to=[f'{em}'],
         to=[config('BRIAN_EMAIL')],

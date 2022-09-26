@@ -32,17 +32,8 @@
     margin: auto auto;
     padding: 0;
     display: grid;
-    /* grid-template-columns: repeat(5, 1fr); */
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 10px;
-
-    /* align-items: end;
-    justify-content: end; */
-
-    /* column-gap: 10px;
-    row-gap: 10px; */
-    /* grid-auto-rows: minmax(200px, auto); */
-    /* grid-template-rows: repeat(3, 1fr); */
     }
 
     .item {
@@ -61,19 +52,6 @@
     grid-column: 1 / 5;
     text-align: center;
     }
-
-
-
-
-    /* .item:nth-of-type(3) {
-    background: #333;
-    grid-row: 2 / 4;
-    }
-
-    .item:nth-of-type(4) {
-    background: #333;
-    grid-row: 2 / 4;
-    } */
 
     @media (max-width: 500px) {
     .container {
@@ -96,6 +74,7 @@
                 <th>UPDATE/PRINT</th>
             </tr>
             </thead>
+            <tbody>
             {% for kgrn in kgrns %}
                 <tr>
                     <td>{{kgrn.id}}</td>
@@ -105,20 +84,29 @@
 
                 {% if kgrn.kgrn_status == 0 %}
                     <td>Submitted to HOD</td>
+                {% elif kgrn.kgrn_status == 1 %}
+                    <td>Rejected by HOD</td>
                 {% elif kgrn.kgrn_status == 2 %}
                     <td>Submitted to Purchasing</td>
+                {% elif kgrn.kgrn_status == 3 %}
+                    <td>Rejected by Purchasing</td>
+                {% elif kgrn.kgrn_status == 4 %}
+                    <td>Approved by Purchasing</td>
                 {% endif %}
 
                 {% if kgrn.kgrn_status == 0 %}
                     <td><a href="{% url 'kgrn-update' kgrn.id %}">Update</a></td>
+                {% elif kgrn.kgrn_status == 3 %}
+                    <td><a href="{% url 'kgrn-update' kgrn.id %}">Update</a></td>                    
                 {% elif kgrn.kgrn_status == 2 %}
-                    <td><a href="#">Update</a></td>
+                    <td><a href="{% url 'kgrn-update1' kgrn.id %}">Update</a></td>
                 {% elif kgrn.kgrn_status == 4 %}
-                    <td><a href="#">Print</a></td>
+                    <td><a href="{% url 'kgrn_pdf_view' kgrn.id %}">Get PDF</a></td>
                 {% endif %}
-
                 </tr>
+
             {% endfor %}
+            </tbody>
         </table>
         </font>
     </div>

@@ -7,7 +7,7 @@
     
 
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
 
     <!--Bottstrap CSS-->
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
@@ -20,8 +20,7 @@
     <style type="text/css">
 
         @page {
-            background-image: url("http://10.10.1.71:8000/media/Waste_Delivery_Note2.png");
-            size: A5 landscape;
+            background-image: url("http://10.10.1.71:8000/media/KGRN_A4.png");
         }
         body {
             font-weight: 200;
@@ -34,6 +33,7 @@
             /* padding-right: 30px; */
             /* padding-bottom: 50px; */
             padding-left: 40px;
+            padding-bottom: 1px;
         }
         /* .legend1 {
             padding-top: 50px;
@@ -42,7 +42,7 @@
             padding-left: 40px;
         } */
          .top_row {
-            padding-top: 100px;
+            padding-top: 170px;
         }
         .top_row_field {
             padding-top: 20px;
@@ -53,48 +53,46 @@
         .top_row_resolution {
             padding-top: 80px;
         }
-        .bottom_row {
-            padding-top: 5px;
-            position:absolute;
-            bottom: 0px;
-            padding-bottom: 0px;
-        }
 
     </style>
 </head>
 
 <body>
   <div class="container">
+            <div class="media-body">
                 <fieldset>
                     <p class="top_row">
-                        <strong>Serial Number:</strong>
-                        {{ dnote.id }}
+                        <strong>KGRN No.:</strong>
+                        {{ checks.id }}
                     </p>
                     <p>
-                        <strong>Date Posted:</strong>
-                        {{ dnote.date_posted|date:"F d, Y" }}
+                        <strong>D/Notes Serials:</strong>
+                        {{ checks.form_serials }}
+                    </p>
+                    <p>
+                        <strong>Date Created:</strong>
+                        {{ checks.date_posted|date:"F d, Y" }}
                         
                     </p>
-                    <p>
+                    <p >
                         <strong>Department:</strong>
-                        {{ dnote.department }} 
+                        {{ checks.department }} 
                     </p>
                 </fieldset>
                 <fieldset>
-                    <table>
+                    <table class='table'>
                         <thead>
                         <tr>
-                            <th style="text-align: Left; width: 30%;">SUPPLIER</th>
-                            <th style="text-align: Left; width: 40%;">ITEM</th>
-                            <th style="text-align: Left; width: 10%;">UOM</th>
-                            <th style="text-align: Left; width: 10%;">QUANTITY</th>
+                            <th style="text-align: Left">SUPPLIER</th>
+                            <th style="text-align: Left">ITEM</th>
+                            <th style="text-align: Left">QUANTITY</th>
                         </tr>    
                         </thead>
+                    {% for dnote in dnotes_list %}
                         {% if dnote.item1 != null %}
                         <tr>
                             <td>{{ dnote.supplier }}</td>
                             <td>{{ dnote.item1 }}</td>
-                            <td>{{ dnote.item1.uom }}</td>
                             <td>{{ dnote.item_qty1 }}</td>            
                         </tr>
                         {% endif %}
@@ -102,7 +100,6 @@
                         <tr>
                             <td>{{ dnote.supplier }}</td>
                             <td>{{ dnote.item2 }}</td>
-                            <td>{{ dnote.item2.uom }}</td>
                             <td>{{ dnote.item_qty2 }}</td>            
                         </tr>
                         {% endif %}
@@ -110,7 +107,6 @@
                         <tr>
                             <td>{{ dnote.supplier }}</td>
                             <td>{{ dnote.item3 }}</td>
-                            <td>{{ dnote.item3.uom }}</td>
                             <td>{{ dnote.item_qty3 }}</td>            
                         </tr>
                         {% endif %}
@@ -118,7 +114,6 @@
                         <tr>
                             <td>{{ dnote.supplier }}</td>
                             <td>{{ dnote.item4 }}</td>
-                            <td>{{ dnote.item4.uom }}</td>
                             <td>{{ dnote.item_qty4 }}</td>            
                         </tr>
                         {% endif %}
@@ -126,7 +121,6 @@
                         <tr>
                             <td>{{ dnote.supplier }}</td>
                             <td>{{ dnote.item5 }}</td>
-                            <td>{{ dnote.item5.uom }}</td>
                             <td>{{ dnote.item_qty5 }}</td>            
                         </tr>
                         {% endif %}
@@ -134,7 +128,6 @@
                         <tr>
                             <td>{{ dnote.supplier }}</td>
                             <td>{{ dnote.item6 }}</td>
-                            <td>{{ dnote.item6.uom }}</td>
                             <td>{{ dnote.item_qty6 }}</td>            
                         </tr>
                         {% endif %}
@@ -142,7 +135,6 @@
                         <tr>
                             <td>{{ dnote.supplier }}</td>
                             <td>{{ dnote.item7 }}</td>
-                            <td>{{ dnote.item7.uom }}</td>
                             <td>{{ dnote.item_qty7 }}</td>            
                         </tr>
                         {% endif %}
@@ -150,70 +142,27 @@
                         <tr>
                             <td>{{ dnote.supplier }}</td>
                             <td>{{ dnote.item8 }}</td>
-                            <td>{{ dnote.item8.uom }}</td>
                             <td>{{ dnote.item_qty8 }}</td>            
                         </tr>
                         {% endif %}
+                    {% endfor %}
                     </table>
+                    <p >
+                        <strong>Created by:</strong>
+                        {{ checks.author }} 
+                    </p>
+                    <p >
+                        <strong>Loaded by:</strong>
+                        {{ dnote.waste_loader }} 
+                    </p>
+                    <p >
+                        <strong>Received by: </strong>
+                        Name____________________Signature_______________Date_____________
+                        <!-- <strong>Received by (Name & Signature) :____________________</strong> -->
+                    </p>
                 </fieldset>
-                <fieldset  class="bottom_row">
-                    <table>
-                        <tr>
-                            <th style="text-align: Left">DEPARTMENT</th>
-                            <th style="text-align: Left">WAREHOUSE</th>
-                        </tr>
-                        <tr>
-                            <td><strong>Loaded by:</strong>
-                                {{ dnote.waste_loader }}
-                            </td>
-                            <td><strong>Received by:</strong>
-                                {{ dnote.waste_offloader }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>Form Submitted by:</strong>
-                                {{ dnote.author }}
-                            </td>
-                            <td><strong>H.O.D / Representative:</strong>
-                                {{ dnote.warehouse_hod }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>H.O.D:</strong>
-                                {{ dnote.hod }}
-                            </td>
-                            <td>
-                            </td>
-                        </tr>
-                    </table>
-                    <!-- <div>
-                        <p>
-                            <strong>Loaded by:</strong>
-                            {{ dnote.waste_loader }}
-                        </p>
-                        <p>
-                            <strong>Form Submitted by:</strong>
-                            {{ dnote.author }}
-                        </p>
-                        <p>
-                            <strong>Department HOD:</strong>
-                            {{ dnote.hod }}
-                        </p>
-                        <p >
-                            <strong>Received by (Warehouse Clerk):</strong>
-                            {{ dnote.waste_offloader }}
-                        </p>
-                        <p >
-                            <strong>Warehouse HOD / Representative:</strong>
-                            {{ dnote.warehouse_hod }}
-                        </p>
-                    </div> -->
-                </fieldset> 
- 
-    </div>
-    <div>
-        
-    </div>
+
+</div>
 
   <!--jQuery then Popper.js then Bootstrap js-->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

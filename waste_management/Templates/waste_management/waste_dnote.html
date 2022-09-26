@@ -110,136 +110,52 @@
                         <legend class="center border-bottom mb-4">Items Disposed</legend>
                         {{ form.errors }}
                         {{ form.non_field_errors }}
-                        <div class="fieldWrapper">
-                            {{ form.item1.errors }}
-                            <label for="{{ form.item1.id_for_label }}">Material:</label>
-                            {{ form.item1 }}
-
-                            {{ form.item_qty1.errors }}
-                            <label for="{{ form.item_qty1.id_for_label }}">Quantity:</label>
-                            {{ form.item_qty1 }}
-                        </div>
-                        <div class="fieldWrapper">
-                            {{ form.item2.errors }}
-                            <label for="{{ form.item2.id_for_label }}">Material:</label>
-                            {{ form.item2 }}
-
-                            {{ form.item_qty2.errors }}
-                            <label for="{{ form.item_qty2.id_for_label }}">Quantity:</label>
-                            {{ form.item_qty2 }}
-                        </div>
-                        <div class="fieldWrapper">
-                            {{ form.item3.errors }}
-                            <label for="{{ form.item3.id_for_label }}">Material:</label>
-                            {{ form.item3 }}
-
-                            {{ form.item_qty3.errors }}
-                            <label for="{{ form.item_qty3.id_for_label }}">Quantity:</label>
-                            {{ form.item_qty3 }}
-                        </div>
-                        <div class="fieldWrapper">
-                            {{ form.item4.errors }}
-                            <label for="{{ form.item4.id_for_label }}">Material:</label>
-                            {{ form.item4 }}
-
-                            {{ form.item_qty4.errors }}
-                            <label for="{{ form.item_qty4.id_for_label }}">Quantity:</label>
-                            {{ form.item_qty4 }}
-                        </div>
-                        <div class="fieldWrapper">
-                            {{ form.item5.errors }}
-                            <label for="{{ form.item5.id_for_label }}">Material:</label>
-                            {{ form.item5 }}
-
-                            {{ form.item_qty5.errors }}
-                            <label for="{{ form.item_qty5.id_for_label }}">Quantity:</label>
-                            {{ form.item_qty5 }}
-                        </div>
-                        <div class="fieldWrapper">
-                            {{ form.item6.errors }}
-                            <label for="{{ form.item6.id_for_label }}">Material:</label>
-                            {{ form.item6 }}
-
-                            {{ form.item_qty6.errors }}
-                            <label for="{{ form.item_qty6.id_for_label }}">Quantity:</label>
-                            {{ form.item_qty6 }}
-                        </div>
-                        <div class="fieldWrapper">
-                            {{ form.item7.errors }}
-                            <label for="{{ form.item7.id_for_label }}">Material:</label>
-                            {{ form.item7 }}
-
-                            {{ form.item_qty7.errors }}
-                            <label for="{{ form.item_qty7.id_for_label }}">Quantity:</label>
-                            {{ form.item_qty7 }}
-                        </div>
-                        <div class="fieldWrapper">
-                            {{ form.item8.errors }}
-                            <label for="{{ form.item8.id_for_label }}">Material:</label>
-                            {{ form.item8 }}
-
-                            {{ form.item_qty8.errors }}
-                            <label for="{{ form.item_qty8.id_for_label }}">Quantity:</label>
-                            {{ form.item_qty8 }}
-                        </div>
-
-                        <!-- <table>
+                        <table  class="table my_table">
                             <tr>
-                               <td><label for="mat1">Material: </label</td>
-                               <td><input type="text" id="mat1" value="{{ form.item1.value }}" name="item1" placeholder="Material" size="30"></td>
-                               <td><label for="qty1">Quantity: </label</td>
-                               <td><input type="number" id="qty1" value="{{ form.item_qty1.value }}" name="item_qty1"></td> 
-                             </tr>
-
-                             <tr>
-                                <td><label for="mat2">Material: </label</td>
-                                <td><input type="text" id="mat2" value="{{ form.item2.value }}" name="item2" size="30"></td> 
-                                <td><label for="qty2">Quantity: </label</td>
-                                <td><input type="number" id="qty2" value="{{ form.item_qty2.value }}" name="item_qty2" size="2"></td> 
-                              </tr>
-
-                              <tr>
-                                <td><label for="mat3">Material: </label</td>
-                                <td><input type="text" id="mat3" value="{{ form.item3.value }}" name="item3" size="30"></td> 
-                                <td><label for="qty3">Quantity: </label</td>
-                                <td><input type="number" id="qty3" value="{{ form.item_qty3.value }}" name="item_qty3" size="2"></td> 
-                              </tr>
-
-                              <tr>
-                                <td><label for="mat4">Material: </label</td>
-                                <td><input type="text" id="mat4" value="{{ form.item4.value }}" name="item4" size="30"></td> 
-                                <td><label for="qty4">Quantity: </label</td>
-                                <td><input type="number" id="qty4" value="{{ form.item_qty4.value }}" name="item_qty4" size="2"></td> 
-                              </tr>
-
-                              <tr>
-                                <td><label for="mat5">Material: </label</td>
-                                <td><input type="text" id="mat5" value="{{ form.item5.value }}" name="item5" size="30"></td> 
-                                <td><label for="qty5">Quantity: </label</td>
-                                <td><input type="number" id="qty5" value="{{ form.item_qty5.value }}" name="item_qty5" size="2"></td> 
-                              </tr>
-
-                              <tr>
-                                <td><label for="mat6">Material: </label</td>
-                                <td><input type="text" id="mat6" value="{{ form.item6.value }}" name="item6" size="30"></td> 
-                                <td><label for="qty6">Quantity: </label</td>
-                                <td><input type="number" id="qty6" value="{{ form.item_qty6.value }}" name="item_qty6" size="2"></td> 
-                              </tr>
-
-                              <tr>
-                                <td><label for="mat7">Material: </label</td>
-                                <td><input type="text" id="mat7" value="{{ form.item7.value }}" name="item7" size="30"></td> 
-                                <td><label for="qty7">Quantity: </label</td>
-                                <td><input type="number" id="qty7" value="{{ form.item_qty7.value }}" name="item_qty7" size="2"></td> 
-                              </tr>
-
-                              <tr>
-                                <td><label for="mat8">Material: </label</td>
-                                <td><input type="text" id="mat8" value="{{ form.item8.value }}" name="item8" size="30"></td> 
-                                <td><label for="qty8">Quantity: </label</td>
-                                <td><input type="number" id="qty8" value="{{ form.item_qty8.value }}" name="item_qty8" size="2"></td> 
-                              </tr>
-                        </table> -->
+                              <th scope="col">Material</th>
+                              <th scope="col">Quantity</th>
+                            </tr>
+                            <tr>
+                              {{ form.item1.errors }}
+                              <td>{{ form.item1 }}</td>
+                              <td>{{ form.item_qty1 }}</td>
+                            </tr>
+                            <tr>
+                                {{ form.item2.errors }}
+                                <td>{{ form.item2 }}</td>
+                                <td>{{ form.item_qty2 }}</td>
+                            </tr>
+                            <tr>
+                                {{ form.item3.errors }}
+                                <td>{{ form.item3 }}</td>
+                                <td>{{ form.item_qty3 }}</td>
+                            </tr>
+                            <tr>
+                                {{ form.item4.errors }}
+                                <td>{{ form.item4 }}</td>
+                                <td>{{ form.item_qty4 }}</td>
+                            </tr>
+                            <tr>
+                                {{ form.item5.errors }}
+                                <td>{{ form.item5 }}</td>
+                                <td>{{ form.item_qty5 }}</td>
+                            </tr>
+                            <tr>
+                                {{ form.item6.errors }}
+                                <td>{{ form.item6 }}</td>
+                                <td>{{ form.item_qty6 }}</td>
+                            </tr>
+                            <tr>
+                                {{ form.item7.errors }}
+                                <td>{{ form.item7 }}</td>
+                                <td>{{ form.item_qty7 }}</td>
+                            </tr>
+                            <tr>
+                                {{ form.item8.errors }}
+                                <td>{{ form.item8 }}</td>
+                                <td>{{ form.item_qty8 }}</td>
+                            </tr>
+                          </table> 
                         <div class="row justify-content-center mt-5">
                             <button name="elevate" value="Submit" type="submit" class="btn btn-outline-success active btn-sm">Submit</button>
                             <!-- <button name="demote" value="Submit" type="submit" class="btn btn-outline-danger active btn-sm">Cancel</button> -->
