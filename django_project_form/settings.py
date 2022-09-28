@@ -158,20 +158,17 @@ LOGIN_REDIRECT_URL = 'rtsforms'
 
 LOGIN_URL = 'login'
 
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-#EMAIL_HOST = 'smtp.gmail.com'
-#EMAIL_PORT = 587
-#EMAIL_USE_TLS = True
-#EMAIL_HOST_USER = 'briankmoike@gmail.com'
-#EMAIL_HOST_PASSWORD = 'gdftnbzmkoqeffxc'
-#EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
-#EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = '10.0.0.25'
 EMAIL_PORT = 25
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config('EMAIL_HOST_USER'),
+
+ADMINS = [('Brian', config('BRIAN_EMAIL'))] 
+#('ICT', config('ADMIN_EMAIL'))]
+
+SERVER_EMAIL = config('ADMIN_EMAIL')
 
 
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'

@@ -207,82 +207,13 @@
                     {% endif %}
                 </tbody>
                 </table>
-            <!-- {% if object.item1 == None %}
-                <div></div>
-            {% else %}
-                <div class="row">
-                    <div class="col-8 text-left">Material: {{ object.item1 }}</div>
-                    <div class="col text-left">Quantity: {{ object.item_qty1 }}</div>   
-                </div>
-            {% endif %}
-
-            {% if object.item2 == None %}
-                <div></div>
-            {% else %}
-                <div class="row">
-                    <div class="col-8 text-left">Material: {{ object.item2 }}</div>
-                    <div class="col text-left">Quantity: {{ object.item_qty2 }}</div>   
-                </div>
-            {% endif %}
-
-            {% if object.item3 == None %}
-                <div></div>
-            {% else %}
-                <div class="row">
-                    <div class="col-8 text-left">Material: {{ object.item3 }}</div>
-                    <div class="col text-left">Quantity: {{ object.item_qty3 }}</div>   
-                </div>
-            {% endif %}
-
-            {% if object.item4 == None %}
-                <div></div>
-            {% else %}
-                <div class="row">
-                    <div class="col-8 text-left">Material: {{ object.item4 }}</div>
-                    <div class="col text-left">Quantity: {{ object.item_qty4 }}</div>   
-                </div>
-            {% endif %}
-        
-            {% if object.item5 == None %}
-                <div></div>
-            {% else %}
-                <div class="row">
-                    <div class="col-8 text-left">Material: {{ object.item5 }}</div>
-                    <div class="col text-left">Quantity: {{ object.item_qty5 }}</div>   
-                </div>
-            {% endif %}
-
-            {% if object.item6 == None %}
-                <div></div>
-            {% else %}
-                <div class="row">
-                    <div class="col-8 text-left">Material: {{ object.item6 }}</div>
-                    <div class="col text-left">Quantity: {{ object.item_qty6 }}</div>   
-                </div>
-            {% endif %}
-
-            {% if object.item7 == None %}
-                <div></div>
-            {% else %}
-                <div class="row">
-                    <div class="col-8 text-left">Material: {{ object.item7 }}</div>
-                    <div class="col text-left">Quantity: {{ object.item_qty7 }}</div>   
-                </div>
-            {% endif %}
-
-            {% if object.item8 == None %}
-                <div></div>
-            {% else %}
-                <div class="row">
-                    <div class="col-8 text-left">Material: {{ object.item8 }}</div>
-                    <div class="col text-left">Quantity: {{ object.item_qty8 }}</div>   
-                </div>
-            {% endif %} -->
         </fieldset>
     </div>    
     <div class="item">
         <form method="POST" action="" {% if form.is_multipart %} enctype="multipart/form-data" {% endif %}>
                 {% csrf_token %}
+
+                    {% if request.user.profile.level > 2 %}
                     <fieldset class="form-group">
 
                         <div>{{ form|crispy }}</div>
@@ -292,6 +223,13 @@
                             <button name="demote" value="Submit" type="submit" class="btn btn-outline-danger active btn-sm">Reject</button>
                         </div>
                     </fieldset>
+                    {% else %}
+                    <fieldset class="form-group" disabled>
+                        <legend class="border-bottom mb-4">Only HODs can fill</legend>
+                        {{ form|crispy }}
+                    </fieldset>
+                    {% endif %}
+
         </form>
     </div>
   </div>

@@ -202,13 +202,16 @@ class waste_delivery_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, gen
         prof = Profile.objects.get(department=f'{dept}',level='2')
         em = prof.email #Gets email account of the HOD from the logged in user's department
 
+        dept2 = self.request.user.profile.department
+        prof2 = Profile.objects.get(department=f'{dept2}',level='22')
+        em2 = prof2.email #Gets email account of the Assistant HOD from the logged in user's department
+
         email = EmailMessage(
         subject=f'{form.instance.department} department Waste Delivery Note',
-        body=f'Waste Delivery Note number {serial_num} has been submitted by {form.instance.author}.\nKindly log on to the portal to view it.\vIn case of any challenges, feel free to contact IT for further assistance.',
+        body=f'Waste Delivery Note number {serial_num} has been submitted by {form.instance.author}.\nKindly log on to the portal on http://10.10.1.71:8000/waste/dnotes/ to view it.\vIn case of any challenges, feel free to contact IT for further assistance.',
         from_email=config('EMAIL_HOST_USER'),
-        # to=[f'{em}'],
-        to=[config('BRIAN_EMAIL')],
-        cc=[config('BRIAN_EMAIL')],
+        to=[f'{em}',f'{em2}'],
+        cc=['ict@kapa-oil.com'],
         reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
         )
         # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -237,7 +240,7 @@ class DnoteHODUpdateView(LoginRequiredMixin, UpdateView):
             subject=f'{form.instance.department} department Waste Delivery Note',
             body=f'Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
-            to=[config('BRIAN_EMAIL')],
+            to=[form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
@@ -252,7 +255,7 @@ class DnoteHODUpdateView(LoginRequiredMixin, UpdateView):
             subject=f'{form.instance.department} department Waste Delivery Note',
             body=f'Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
-            to=[config('BRIAN_EMAIL')],
+            to=[form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
@@ -268,7 +271,7 @@ class DnoteHODUpdateView(LoginRequiredMixin, UpdateView):
             subject=f'{form.instance.department} department Waste Delivery Note',
             body=f'Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
-            to=[config('BRIAN_EMAIL')],
+            to=[form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
@@ -284,7 +287,7 @@ class DnoteHODUpdateView(LoginRequiredMixin, UpdateView):
             subject=f'{form.instance.department} department Waste Delivery Note',
             body=f'Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
-            to=[config('BRIAN_EMAIL')],
+            to=[form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
@@ -304,6 +307,14 @@ class DnoteWHUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         form.instance.warehouse_hod = self.request.user
 
+        dept = self.request.user.profile.department
+        prof = Profile.objects.get(department=f'{dept}',level='2')
+        em = prof.email #Gets email account of the HOD from the logged in user's department
+
+        dept2 = self.request.user.profile.department
+        prof2 = Profile.objects.get(department=f'{dept2}',level='22')
+        em2 = prof2.email #Gets email account of the Assistant HOD from the logged in user's department
+
         if ('elevate' in self.request.POST) and (form.instance.form_status == 8): #If the WH HOD has clicked the button to elevate the form to the next level
             form.instance.form_status += 2 
 
@@ -311,7 +322,7 @@ class DnoteWHUpdateView(LoginRequiredMixin, UpdateView):
             subject=f'{form.instance.department} department Waste Delivery Note',
             body=f'Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
-            to=[config('BRIAN_EMAIL')],
+            to=[f'{em}',f'{em2}'],
             cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
@@ -328,7 +339,7 @@ class DnoteWHUpdateView(LoginRequiredMixin, UpdateView):
             subject=f'{form.instance.department} department Waste Delivery Note',
             body=f'Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
-            to=[config('BRIAN_EMAIL')],
+            to=[f'{em}',f'{em2}'],
             cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
@@ -376,6 +387,26 @@ def accept_checklist(request):
 
         for num in my_list_flat: #for each serial number in the list
             waste_delivery_note.objects.filter(id=num).update(form_status=8, waste_offloader=request.user) #update the form status to 8, meaning accepted
+
+        dept = request.user.profile.department
+        prof = Profile.objects.get(department=f'{dept}',level='2')
+        em = prof.email #Gets email account of the HOD from the logged in user's department
+
+        dept2 = request.user.profile.department
+        prof2 = Profile.objects.get(department=f'{dept2}',level='22')
+        em2 = prof2.email #Gets email account of the Assistant HOD from the logged in user's department
+
+        email = EmailMessage(
+        subject=f'{dept} department Waste Delivery Note',
+        body=f'Waste Delivery Note number {my_list_string} has been accepted by {request.user}.\nKindly log on to the portal on http://10.10.1.71:8000/waste/dnotes/ to view it.\vIn case of any challenges, feel free to contact IT for further assistance.',
+        from_email=config('EMAIL_HOST_USER'),
+        to=[f'{em}',f'{em2}'],
+        cc=[config('BRIAN_EMAIL'), 'warehse.user4@kapa-oil.com'],
+        reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+        )
+        # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
+        email.send()
+        # messages.success(self.request, 'Form submitted and mail sent!')
 
     return redirect('checklists')
 
