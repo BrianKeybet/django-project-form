@@ -103,7 +103,7 @@
                 {% csrf_token %}
                     <fieldset>
                         <table class="table">
-                            <tr><td>Internal: {{ form.isInternal}}</td><td>To: {{ form.department_to }}</td><td>Delivered By: {{ form.delivered_by }}</td></tr>
+                            <tr><td>For Sale?: {{ form.isInternal}}</td><td>To: {{ form.department_to }}</td><td>Delivered By: {{ form.delivered_by }}</td></tr>
                         </table>
                         <table class="table">
                             <tr><td></td><td>Time in W/H : {{ form.time_in}}</td><td>Time out W/H: {{ form.time_out }}</td></tr>

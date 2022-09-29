@@ -119,9 +119,15 @@
         </table>
         </font>
     </div>
+    {% if request.user.profile.department == 'Warehouse' %}
     <div class="row justify-content-center">
         <button name="accept" value="Submit" type="submit" class="btn btn-outline-success active btn-sm">Accept Checklist</button>
     </div>
+    {% else %}
+    <div class="row justify-content-center">
+        <button name="accept" value="Submit" type="submit" class="btn btn-outline-success active btn-sm" disabled>Accept Checklist</button>
+    </div>
+    {% endif %}
     </form>  
 </div>
 

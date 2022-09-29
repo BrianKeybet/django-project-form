@@ -1,4 +1,6 @@
 from django.shortcuts import redirect, render
+from django.conf import settings
+from decouple  import config
 from .models import checklist, waste_delivery_note, kgrn, goods_issue_note
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,6 +10,7 @@ from .forms import WasteForm, GoodsIssueNoteForm
 from . import models
 from users.models import Profile
 from django.core.mail import EmailMessage
+from django.core.mail import send_mail
 from django.contrib import messages
 from decouple  import config
 from django.urls import reverse, reverse_lazy
@@ -199,24 +202,19 @@ class waste_delivery_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, gen
         serial_num = prev_serial_num + 15 #Get next serial number to display in email
 
         dept = self.request.user.profile.department
-        prof = Profile.objects.get(department=f'{dept}',level='2')
-        em = prof.email #Gets email account of the HOD from the logged in user's department
+        profs = Profile.objects.filter(department=f'{dept}',level='2')
 
-        dept2 = self.request.user.profile.department
-        prof2 = Profile.objects.get(department=f'{dept2}',level='22')
-        em2 = prof2.email #Gets email account of the Assistant HOD from the logged in user's department
+        print(f'Profiles {profs}')
+        for prof in profs:
+            print(f'Each email: {prof.user.email}')
+            print(f'Each name: {prof.user.first_name}')
+            print(f'Host email: {settings.EMAIL_HOST_USER}')
+            subject = 'Waste Delivery Note'
+            message = f'Hello {prof.user.first_name}, a new Waste Delivery Note has been submitted for your approval. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. The serial number is {serial_num}.'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [prof.user.email, config('ADMIN_EMAIL'), config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+            send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
-        email = EmailMessage(
-        subject=f'{form.instance.department} department Waste Delivery Note',
-        body=f'Waste Delivery Note number {serial_num} has been submitted by {form.instance.author}.\nKindly log on to the portal on http://10.10.1.71:8000/waste/dnotes/ to view it.\vIn case of any challenges, feel free to contact IT for further assistance.',
-        from_email=config('EMAIL_HOST_USER'),
-        to=[f'{em}',f'{em2}'],
-        cc=['ict@kapa-oil.com'],
-        reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
-        )
-        # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
-        email.send()
-        # messages.success(self.request, 'Form submitted and mail sent!')
         return super().form_valid(form)
 
 class DnotesListView(LoginRequiredMixin, generic.ListView):
@@ -241,7 +239,7 @@ class DnoteHODUpdateView(LoginRequiredMixin, UpdateView):
             body=f'Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.author.profile.email],
-            cc=[config('BRIAN_EMAIL')],
+            cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
             reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -256,7 +254,7 @@ class DnoteHODUpdateView(LoginRequiredMixin, UpdateView):
             body=f'Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.author.profile.email],
-            cc=[config('BRIAN_EMAIL')],
+            cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -272,7 +270,7 @@ class DnoteHODUpdateView(LoginRequiredMixin, UpdateView):
             body=f'Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.author.profile.email],
-            cc=[config('BRIAN_EMAIL')],
+            cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -288,7 +286,7 @@ class DnoteHODUpdateView(LoginRequiredMixin, UpdateView):
             body=f'Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.author.profile.email],
-            cc=[config('BRIAN_EMAIL')],
+            cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -307,44 +305,32 @@ class DnoteWHUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         form.instance.warehouse_hod = self.request.user
 
-        dept = self.request.user.profile.department
-        prof = Profile.objects.get(department=f'{dept}',level='2')
-        em = prof.email #Gets email account of the HOD from the logged in user's department
-
-        dept2 = self.request.user.profile.department
-        prof2 = Profile.objects.get(department=f'{dept2}',level='22')
-        em2 = prof2.email #Gets email account of the Assistant HOD from the logged in user's department
+        dept = form.instance.author.profile.department
+        profs = Profile.objects.filter(department=f'{dept}',level='2')
 
         if ('elevate' in self.request.POST) and (form.instance.form_status == 8): #If the WH HOD has clicked the button to elevate the form to the next level
-            form.instance.form_status += 2 
+            form.instance.form_status += 2
 
-            email = EmailMessage(
-            subject=f'{form.instance.department} department Waste Delivery Note',
-            body=f'Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
-            from_email=config('EMAIL_HOST_USER'),
-            to=[f'{em}',f'{em2}'],
-            cc=[config('BRIAN_EMAIL')],
-            reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
-            )
-            # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
-            email.send()
+            for prof in profs:
+                subject = 'Waste Delivery Note'
+                message = f'Hello {prof.user.first_name}, Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.'
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [prof.user.email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                send_mail(subject, message, email_from, recipient_list, fail_silently=False)
+           
             messages.success(self.request,'Form submitted and mail sent!')
             return super().form_valid(form)
-
 
         if ('demote' in self.request.POST) and (form.instance.form_status == 8): #
             form.instance.form_status -= 1 #If the WH HOD has clicked the button to demote the form to the previous level
 
-            email = EmailMessage(
-            subject=f'{form.instance.department} department Waste Delivery Note',
-            body=f'Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
-            from_email=config('EMAIL_HOST_USER'),
-            to=[f'{em}',f'{em2}'],
-            cc=[config('BRIAN_EMAIL')],
-            reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
-            )
-            # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
-            email.send()
+            for prof in profs:
+                subject = 'Waste Delivery Note'
+                message = f'Hello {prof.user.first_name}, Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.'
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [prof.user.email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                send_mail(subject, message, email_from, recipient_list, fail_silently=False)
+
             messages.success(self.request,'Form submitted and mail sent!')
             return super().form_valid(form)
 
@@ -389,24 +375,14 @@ def accept_checklist(request):
             waste_delivery_note.objects.filter(id=num).update(form_status=8, waste_offloader=request.user) #update the form status to 8, meaning accepted
 
         dept = request.user.profile.department
-        prof = Profile.objects.get(department=f'{dept}',level='2')
-        em = prof.email #Gets email account of the HOD from the logged in user's department
+        profs = Profile.objects.filter(department=f'{dept}',level='2')
 
-        dept2 = request.user.profile.department
-        prof2 = Profile.objects.get(department=f'{dept2}',level='22')
-        em2 = prof2.email #Gets email account of the Assistant HOD from the logged in user's department
-
-        email = EmailMessage(
-        subject=f'{dept} department Waste Delivery Note',
-        body=f'Waste Delivery Note number {my_list_string} has been accepted by {request.user}.\nKindly log on to the portal on http://10.10.1.71:8000/waste/dnotes/ to view it.\vIn case of any challenges, feel free to contact IT for further assistance.',
-        from_email=config('EMAIL_HOST_USER'),
-        to=[f'{em}',f'{em2}'],
-        cc=[config('BRIAN_EMAIL'), 'warehse.user4@kapa-oil.com'],
-        reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
-        )
-        # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
-        email.send()
-        # messages.success(self.request, 'Form submitted and mail sent!')
+        for prof in profs:
+            subject = 'Waste Delivery Note'
+            message = f'Hello {prof.user.first_name}, Waste delivery note number {my_list_string} has been accepted by {request.user}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [prof.user.email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+            send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
     return redirect('checklists')
 
@@ -747,24 +723,16 @@ class goods_issue_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, generi
         prev_serial_num = goods_issue_note.objects.count()
         serial_num = prev_serial_num + 1 #Get next serial number to display in email
 
-        #form.instance.id = serial_num #Inserts the serial number into the new post
-
         dept = self.request.user.profile.department
-        prof = Profile.objects.get(department=f'{dept}',level='2')
-        em = prof.email #Gets email account of the HOD from the logged in user's department
- 
-        email = EmailMessage(
-        subject=f'{form.instance.department_from} department Goods Issue Note',
-        body=f'Goods Issue Note number {serial_num} has been submitted by {form.instance.author}.\nKindly log on to the portal to view it.\vIn case of any challenges, feel free to contact IT for further assistance. \n To: {form.instance.department_to}',
-        from_email=config('EMAIL_HOST_USER'),
-        # to=[f'{em}'],
-        to=[config('BRIAN_EMAIL')],
-        cc=[config('BRIAN_EMAIL')],
-        reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
-        )
-        # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
-        email.send()
-        # messages.success(self.request, 'Form submitted and mail sent!')
+        profs = Profile.objects.filter(department=f'{dept}',level='2')
+
+        for prof in profs:
+            subject = 'Goods Issue Note'
+            message = f'Hello {prof.user.first_name}, a new Goods Issue Note has been submitted by {form.instance.author} for your approval. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. \n  The serial number is {serial_num}. \n To: {form.instance.department_to}'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [prof.user.email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+            send_mail(subject, message, email_from, recipient_list, fail_silently=False)
+
         return super().form_valid(form)
 
 class HOD_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
@@ -772,34 +740,62 @@ class HOD_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
     model = goods_issue_note
     fields = ['hod_comment']
 
-    # def get_context_data(self, **kwargs):
-    #     context = {'my_variable': 0}
-    #     return context
-
     def form_valid(self, form):
         form.instance.hod = self.request.user
-        
-        #print(form.instance.item_qty8)
-        #print(form.instance.item_qty8_sale)
 
         if ('elevate' in self.request.POST) and (form.instance.form_status == 2): #For internal forms, if the form is approved by the HOD, the form status is increased by 2
-            form.instance.form_status += 2 
+            form.instance.form_status += 2
+            dept = form.instance.department_to
+            profs = Profile.objects.filter(department=f'{dept}',level='2')
+
+            for prof in profs:
+                subject = 'Goods Issue Note'
+                message = f'Hello {prof.user.first_name}, a Goods Issue Note has been submitted by {form.instance.hod} for your approval. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. \n  The serial number is {form.instance.id}. \n To: {form.instance.department_to}'
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [prof.user.email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)
 
         if ('elevate' in self.request.POST) and (form.instance.form_status == 1): #For external forms, if the form is approved by the HOD, the form status is increased by 2
-            form.instance.form_status += 2 
+            form.instance.form_status += 2
+
+            profs = Profile.objects.filter(level='4')
+
+            for prof in profs:
+                subject = 'Goods Issue Note'
+                message = f'Hello {prof.user.first_name}, a Goods Issue Note has been submitted by {form.instance.hod} for your approval. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. \n  The serial number is {form.instance.id}. \n To: {form.instance.department_to}'
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [prof.user.email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)    
 
 
         if ('demote' in self.request.POST) and (form.instance.form_status == 2): #For internal forms, if the form is rejected by the HOD, the form status is decreased by 2
-            form.instance.form_status -= 2 
+            form.instance.form_status -= 2
+            author_name = form.instance.author.profile.first_name
+            author_email = form.instance.author.profile.email
+
+            subject = 'Goods Issue Note'
+            message = f'Hello {author_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [author_email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+            send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)
 
         if ('demote' in self.request.POST) and (form.instance.form_status == 1): #For external forms, if the form is rejected by the HOD, the form status is decreased by 1
             form.instance.form_status -= 1 
+
+            author_name = form.instance.author.profile.first_name
+            author_email = form.instance.author.profile.email
+
+            subject = 'Goods Issue Note'
+            message = f'Hello {author_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [author_email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+            send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)  
 
@@ -821,7 +817,7 @@ class FM_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
         #print(form.instance.item_qty8)
         #print(form.instance.item_qty8_sale)
 
-        if ('elevate' in self.request.POST) and (form.instance.form_status == 4): #For internal forms, if the form is approved by the FM, the form status is increased by 2
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 4): #No longer applicable ## For internal forms, if the form is approved by the FM, the form status is increased by 2
             form.instance.form_status += 2 
 
             return super().form_valid(form)
@@ -829,16 +825,39 @@ class FM_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
         if ('elevate' in self.request.POST) and (form.instance.form_status == 3): #For external forms, if the form is approved by the FM, the form status is increased by 2
             form.instance.form_status += 2 
 
+            profs = Profile.objects.filter(level='3')
+
+            for prof in profs:
+                subject = 'Goods Issue Note'
+                message = f'Hello {prof.user.first_name}, a Goods Issue Note has been submitted by {form.instance.department_from}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. \n  The serial number is {form.instance.id}. \n To: {form.instance.department_to}'
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [prof.user.email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                send_mail(subject, message, email_from, recipient_list, fail_silently=False)
+
+
             return super().form_valid(form)    
 
 
-        if ('demote' in self.request.POST) and (form.instance.form_status == 2): #For internal forms, if the form is rejected by the FM, the form status is decreased by 2
+        if ('demote' in self.request.POST) and (form.instance.form_status == 2): #No longer applicable ## For internal forms, if the form is rejected by the FM, the form status is decreased by 2
             form.instance.form_status -= 2 
 
             return super().form_valid(form)
 
         if ('demote' in self.request.POST) and (form.instance.form_status == 1): #For external forms, if the form is rejected by the FM, the form status is decreased by 1
             form.instance.form_status -= 1 
+
+            author_name = form.instance.author.profile.first_name
+            author_email = form.instance.author.profile.email
+
+            dept = form.instance.author.profile.department
+            profs = Profile.objects.filter(department=f'{dept}',level='2')
+
+            for prof in profs:
+                subject = 'Goods Issue Note'
+                message = f'Hello {prof.user.first_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [author_email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)  
 

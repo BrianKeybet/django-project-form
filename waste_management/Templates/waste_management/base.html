@@ -30,16 +30,31 @@
       <p  class='text-muted'>
         <ul  class="list-group">
         <li class="list-group-item list-group-item-light"><a href="http://10.10.1.71:8000/admin/">Admin</a></li>
+        {% if request.user.profile.level > 4 %}
         <li class="list-group-item list-group-item-light"><a href="{% url 'forms-home' %}">Home</a></li>
+        {% else %}
+        <li class="list-group-item list-group-item-light"><a href="#">Home</a></li>
+        {% endif %}
         <li class="list-group-item list-group-item-light"><a href="{% url 'dnotes' %}">Back</a></li>
+        {% if request.user.profile.level > 4 %}
         <li class="list-group-item list-group-item-light"><a href="http://10.0.0.7:3000/question/367" target="_blank">Reports</a></li>
+        {% else %}
+        <li class="list-group-item list-group-item-light"><a href="#">Reports</a></li>
+        {% endif %}
         <li class="list-group-item list-group-item-light"><a href="{% url 'waste_delivery_note-create' %}">New D/Note Form</a></li>
         <li class="list-group-item list-group-item-light"><a href="{% url 'dnotes' %}">D/Notes Summary</a></li>
         <li class="list-group-item list-group-item-light"><a href="{% url 'checklists' %}">D/Notes Checklists</a></li>
+        {% if request.user.profile.level > 4 or request.user.profile.department == 'Warehouse' %}
         <li class="list-group-item list-group-item-light"><a href="{% url 'dnotes_kgrn' %}">Raise KGRN</a></li>
         <li class="list-group-item list-group-item-light"><a href="{% url 'kgrns' %}">KGRN Summary</a></li>
         <li class="list-group-item list-group-item-light"><a href="{% url 'goods_issue_note-create' %}">Raise Goods Issue Note</a></li>
         <li class="list-group-item list-group-item-light"><a href="{% url 'gins' %}">Goods Issue Note Summary</a></li>
+        {% else %}
+        <li class="list-group-item list-group-item-light"><a href="#">Raise KGRN</a></li>
+        <li class="list-group-item list-group-item-light"><a href="#">KGRN Summary</a></li>
+        <li class="list-group-item list-group-item-light"><a href="#">Raise Goods Issue Note</a></li>
+        <li class="list-group-item list-group-item-light"><a href="#">Goods Issue Note Summary</a></li>
+        {% endif %}
       </ul>
     </p>
     </nav>
