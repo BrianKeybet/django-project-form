@@ -121,13 +121,13 @@
                     <td>Complete</td>
                 {% endif %}
 
-                {% if goods_issue_note.form_status == 1 and request.user.profile.level == 2 %}
+                {% if goods_issue_note.form_status == 1 and request.user.profile.level > 2 %}
                     <td><a href="{% url 'goods_issue_note-hodupdate' goods_issue_note.id %}">Update</a></td>
-                {% elif goods_issue_note.form_status == 2 and request.user.profile.level == 2 %}
-                    <td><a href="{% url 'goods_issue_note-hodupdate' goods_issue_note.id %}">Update</a></td>
+                {% elif goods_issue_note.form_status == 2 and request.user.profile.level > 1 %}
+                    <td><a href="{% url 'goods_issue_note-hodupdate1' goods_issue_note.id %}">Update</a></td>
                 {% elif goods_issue_note.form_status == 3 and request.user.profile.level > 3 %}
                     <td><a href="{% url 'goods_issue_note-update' goods_issue_note.id %}">Update</a></td>
-                {% elif goods_issue_note.form_status == 4 and request.user.profile.department == goods_issue_note.department_to %}
+                {% elif goods_issue_note.form_status == 4 and request.user.profile.department == goods_issue_note.department_internal %}
                     <td><a href="{% url 'goods_issue_note-update1' goods_issue_note.id %}">Update</a></td>
                 {% elif goods_issue_note.form_status == 5 and request.user.profile.level > 3 %}
                     <td><a href="{% url 'goods_issue_note-update2' goods_issue_note.id%}">Update</a></td>

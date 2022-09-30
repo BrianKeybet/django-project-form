@@ -21,6 +21,7 @@ urlpatterns = [
     path('newIssueNote/', views.goods_issue_noteCreateView.as_view(), name='goods_issue_note-create'),
     path('gins/', views.Goods_issue_note_ListView.as_view(), name='gins'),
     path('IssueNote/<int:pk>/hodupdate/', views.HOD_goods_issue_noteUpdateView.as_view(), name='goods_issue_note-hodupdate'),
+    path('IssueNote/<int:pk>/hodupdate1/', views.HOD_internal_goods_issue_noteUpdateView.as_view(), name='goods_issue_note-hodupdate1'),
     path('IssueNote/<int:pk>/update/', views.FM_goods_issue_noteUpdateView.as_view(), name='goods_issue_note-update'),
     path('IssueNote/<int:pk>/update1/', views.Dept_goods_issue_noteUpdateView.as_view(), name='goods_issue_note-update1'),
     path('IssueNote/<int:pk>/update2/', views.Sales_goods_issue_noteUpdateView.as_view(), name='goods_issue_note-update2'),

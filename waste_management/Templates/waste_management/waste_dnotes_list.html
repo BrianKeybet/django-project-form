@@ -130,7 +130,7 @@
                 <td><a href="{% url 'waste_delivery_note-create' %}">Update</a></td>
                 {% elif waste_delivery_note.form_status == 1 %}
                 <td><a href="{% url 'dnotes' waste_delivery_note.id%}" style="color: red">Invalid Form</a></td>
-                {% elif waste_delivery_note.form_status == 2 and request.user.profile.level > 2 %}
+                {% elif waste_delivery_note.form_status == 2 and request.user.profile.level > 1 %}
                 <td><a href="{% url 'dnote-update' waste_delivery_note.id%}">Update</a></td>
                 {% elif waste_delivery_note.form_status == 4 %}
                 <td><a href="#">Create Checklist</a></td>

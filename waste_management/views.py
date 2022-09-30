@@ -712,7 +712,7 @@ class goods_issue_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, generi
  
         form.instance.total_weight_wh = round(w1 + w2 + w3 + w4 + w5 + w6 + w7 + w8, 2)
 
-        if form.instance.isInternal == True:
+        if form.instance.isInternal == False:
             form.instance.form_status = 2 #Increases the form status by 2
         else:
             form.instance.form_status = 1 #Increases the form status by 1
@@ -746,6 +746,73 @@ class HOD_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
         if ('elevate' in self.request.POST) and (form.instance.form_status == 2): #For internal forms, if the form is approved by the HOD, the form status is increased by 2
             form.instance.form_status += 2
             dept = form.instance.department_to
+            profs = Profile.objects.filter(department=f'{dept}',level='2')
+
+            for prof in profs:
+                subject = 'Goods Issue Note'
+                message = f'Hello {prof.user.first_name}, a Goods Issue Note has been submitted by {form.instance.hod} for your approval. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. \n  The serial number is {form.instance.id}. \n To: {form.instance.department_to}'
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [prof.user.email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                send_mail(subject, message, email_from, recipient_list, fail_silently=False)
+
+            return super().form_valid(form)
+
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 1): #For external forms, if the form is approved by the HOD, the form status is increased by 2
+            form.instance.form_status += 2
+
+            profs = Profile.objects.filter(level='5')
+
+            for prof in profs:
+                subject = 'Goods Issue Note'
+                message = f'Hello {prof.user.first_name},\nA Goods Issue Note has been submitted by {form.instance.hod} for your approval. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. \n  The serial number is {form.instance.id}. \nIssued To: {form.instance.department_to}. \n Issued By: {form.instance.department_from}. \n Net Value: {form.instance.my_total}'
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [prof.user.email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                send_mail(subject, message, email_from, recipient_list, fail_silently=False)
+
+            return super().form_valid(form)    
+
+
+        if ('demote' in self.request.POST) and (form.instance.form_status == 2): #For internal forms, if the form is rejected by the HOD, the form status is decreased by 2
+            form.instance.form_status -= 2
+            author_name = form.instance.author.profile.first_name
+            author_email = form.instance.author.profile.email
+
+            subject = 'Goods Issue Note'
+            message = f'Hello {author_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [author_email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+            send_mail(subject, message, email_from, recipient_list, fail_silently=False)
+
+            return super().form_valid(form)
+
+        if ('demote' in self.request.POST) and (form.instance.form_status == 1): #For external forms, if the form is rejected by the HOD, the form status is decreased by 1
+            form.instance.form_status -= 1 
+
+            author_name = form.instance.author.profile.first_name
+            author_email = form.instance.author.profile.email
+
+            subject = 'Goods Issue Note'
+            message = f'Hello {author_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [author_email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+            send_mail(subject, message, email_from, recipient_list, fail_silently=False)
+
+            return super().form_valid(form)  
+
+        else:
+            return HttpResponse('Error')
+
+class HOD_internal_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'waste_management/approve_hod_gin_internal.html'
+    model = goods_issue_note
+    fields = ['department_internal','hod_comment']
+
+    def form_valid(self, form):
+        form.instance.hod = self.request.user
+
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 2): #For internal forms, if the form is approved by the HOD, the form status is increased by 2
+            form.instance.form_status += 2
+            dept = form.instance.department_internal
             profs = Profile.objects.filter(department=f'{dept}',level='2')
 
             for prof in profs:
@@ -854,9 +921,9 @@ class FM_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
             for prof in profs:
                 subject = 'Goods Issue Note'
-                message = f'Hello {prof.user.first_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
+                message = f'Hello {prof.user.first_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.approved_by}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
                 email_from = settings.EMAIL_HOST_USER
-                recipient_list = [author_email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                recipient_list = [prof.user.email, author_email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)  
@@ -873,13 +940,37 @@ class Dept_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         form.instance.approved_by = self.request.user
 
-        if ('elevate' in self.request.POST) and (form.instance.form_status == 6):
-            form.instance.form_status += 2 
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 4):
+            form.instance.form_status += 4
+
+            author_email = form.instance.author.profile.email
+
+            dept = form.instance.author.profile.department
+            profs = Profile.objects.filter(department=f'{dept}',level='2')
+
+            for prof in profs:
+                subject = 'Goods Issue Note'
+                message = f'Hello {prof.user.first_name}, Goods Issue Note number {form.instance.id} has been accepted by {form.instance.approved_by}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [prof.user.email, author_email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)
 
-        if ('demote' in self.request.POST) and (form.instance.form_status == 6):
-            form.instance.form_status -= 6 
+        if ('demote' in self.request.POST) and (form.instance.form_status == 4):
+            form.instance.form_status -= 4 
+
+            author_email = form.instance.author.profile.email
+
+            dept = form.instance.author.profile.department
+            profs = Profile.objects.filter(department=f'{dept}',level='2')
+
+            for prof in profs:
+                subject = 'Goods Issue Note'
+                message = f'Hello {prof.user.first_name}, Goods Issue Note number {form.instance.id} has been rejected by {form.instance.approved_by}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [prof.user.email, author_email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)
 
@@ -961,12 +1052,35 @@ class Sales_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
         if ('elevate' in self.request.POST) and (form.instance.form_status == 5):
             form.instance.form_status += 2
-            print(2) 
+            
+            author_email = form.instance.author.profile.email
+
+            dept = form.instance.author.profile.department
+            profs = Profile.objects.filter(department=f'{dept}',level='2')
+
+            for prof in profs:
+                subject = 'Goods Issue Note'
+                message = f'Hello {prof.user.first_name}, Goods Issue Note number {form.instance.id} has been accepted by {form.instance.received_by}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [prof.user.email, author_email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)
 
         if ('demote' in self.request.POST) and (form.instance.form_status == 5):
             form.instance.form_status -= 5 
+
+            author_email = form.instance.author.profile.email
+
+            dept = form.instance.author.profile.department
+            profs = Profile.objects.filter(department=f'{dept}',level='2')
+
+            for prof in profs:
+                subject = 'Goods Issue Note'
+                message = f'Hello {prof.user.first_name}, Goods Issue Note number {form.instance.id} has been rejected by {form.instance.received_by}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [prof.user.email, author_email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)
         else:

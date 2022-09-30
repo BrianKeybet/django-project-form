@@ -7,6 +7,11 @@ from django.urls import reverse
 import computed_property
 
 # Create your models here.
+class Department(models.Model):
+    name = models.CharField(max_length=40, blank=False)
+    department_code = models.CharField(max_length=12, blank=False)
+    def __str__(self):
+        return self.name 
 
 class Material(models.Model):
     name = models.CharField(max_length=80, blank=False)
@@ -91,6 +96,7 @@ class goods_issue_note(models.Model):
     date_posted = models.DateTimeField(default = timezone.now, verbose_name= "Date")
     department_from = models.CharField(max_length = 20, blank = True)
     department_to = models.CharField(max_length = 20, blank = True)
+    department_internal = models.ForeignKey(Department, on_delete = models.PROTECT, null = True, blank = True, related_name = 'Department_Internal')
     time_in = models.TimeField(auto_now=False, auto_now_add=False, blank = True, null = True)
     time_out = models.TimeField(auto_now=False, auto_now_add=False, blank = True, null = True)
     form_status = models.IntegerField(null=True, default='0')

@@ -2,6 +2,10 @@
 
 {% load crispy_forms_tags %}
 
+{% load mathfilters %}
+
+{% load humanize %}
+
 {% block content %}
 <style>
     * {
@@ -36,20 +40,18 @@
     /* grid-template-columns: repeat(5, 1fr); */
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 10px;
-
-    /* align-items: end;
-    justify-content: end; */
-
-    /* column-gap: 10px;
-    row-gap: 10px; */
-    /* grid-auto-rows: minmax(200px, auto); */
-    /* grid-template-rows: repeat(3, 1fr); */
     }
 
+    th {
+        text-align: center;
+    }
+    td {
+        text-align: left;
+    }
     .item {
     background: white;
     color: black;
-    font-size: 20px;
+    font-size: 15px;
     padding: 20px;
     border: skyblue 1px solid;
     }
@@ -111,22 +113,25 @@
 }
 </style>
 <div class="container">
-    <div class="item"><h2>Waste Delivery Note</h2></div>
-    <div class="item"><strong>KAPA/ENG/0010</strong></div>
-    <div class="item"><strong>Department:</strong> {{ object.department }}</div>
+    <div class="item"><h2>Internal Goods Issue Note</h2></div>
+    <div class="item"><strong>KAPA/WHS/0010</strong></div>
+    <div class="item"><strong>To: </strong>{{ object.department_to }}</div>
     <div class="item"><strong>Serial Number:</strong> {{ object.id }}</div> 
-    <div class="item"><strong>Raised on:</strong> {{ object.date_posted|date:"F d, Y"  }}</div> 
-    <div class="item"><strong>Loaded by:</strong> {{ object.waste_loader }}</div>
-    <div class="item"><strong>Raised by:</strong> {{ object.author }}</div>
+    <div class="item"><strong>Raised on: </strong>{{ object.date_posted|date:"F d, Y"  }}</div> 
+    <div class="item"><strong>Delivered by: </strong>{{ object.delivered_by }}</div>
+    <div class="item"><strong>Raised by: </strong>{{ object.author }}</div>
     <div class="item"> 
         <fieldset class="form-group">
-            <legend class="center border-bottom mb-4" style="text-align: center">Items Disposed</legend>
+            <legend class="center border-bottom mb-4" style="text-align: center;">Item Details</legend>
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th scope="col">Material</th>
-                        <th scope="col" style="text-align: center;">Quantity</th>
-                        <th scope="col" style="text-align: center;">UOM</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">UOM</th>
+                        <th scope="col">W/H Weight</th>
+                        <th scope="col">Unit Price</th>
+                        <th scope="col">Total Price (KES)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -137,7 +142,9 @@
                         <td>{{ object.item1 }}</td>
                         <td style="text-align: center;">{{ object.item_qty1 }}</td>
                         <td style="text-align: center;">{{ object.item1.uom }}</td>
-                       
+                        <td style="text-align: center;">{{ object.item_qty1_wh }}</td>
+                        <td style="text-align: right;">{{ object.item1.price }}</td>
+                        <td style="text-align: right;">{{ object.item_qty1 | mul:object.item1.price |floatformat:2 |intcomma}}</td>                        
                     </tr>
                     {% endif %}
                     {% if object.item2 == None %}
@@ -147,6 +154,9 @@
                         <td>{{ object.item2 }}</td>
                         <td style="text-align: center;">{{ object.item_qty2 }}</td>
                         <td style="text-align: center;">{{ object.item2.uom }}</td>
+                        <td style="text-align: center;">{{ object.item_qty2_wh }}</td>
+                        <td style="text-align: right;">{{ object.item2.price }}</td>
+                        <td style="text-align: right;">{{ object.item_qty2 | mul:object.item2.price |floatformat:2 |intcomma}}</td>
                         
                     </tr>
                     {% endif %}
@@ -157,6 +167,9 @@
                         <td>{{ object.item3 }}</td>
                         <td style="text-align: center;">{{ object.item_qty3 }}</td>
                         <td style="text-align: center;">{{ object.item3.uom }}</td>
+                        <td style="text-align: center;">{{ object.item_qty3_wh }}</td>
+                        <td style="text-align: right;">{{ object.item3.price }}</td>
+                        <td style="text-align: right;">{{ object.item_qty3 | mul:object.item3.price |floatformat:2 |intcomma}}</td>
                         
                     </tr>
                     {% endif %}
@@ -167,6 +180,9 @@
                         <td>{{ object.item4 }}</td>
                         <td style="text-align: center;">{{ object.item_qty4 }}</td>
                         <td style="text-align: center;">{{ object.item4.uom }}</td>
+                        <td style="text-align: center;">{{ object.item_qty4_wh }}</td>
+                        <td style="text-align: right;">{{ object.item4.price }}</td>
+                        <td style="text-align: right;">{{ object.item_qty4 | mul:object.item4.price |floatformat:2 |intcomma}}</td>
                     </tr>
                     {% endif %}
                     {% if object.item5 == None %}
@@ -176,6 +192,9 @@
                         <td>{{ object.item5 }}</td>
                         <td style="text-align: center;">{{ object.item_qty5 }}</td>
                         <td style="text-align: center;">{{ object.item5.uom }}</td>
+                        <td style="text-align: center;">{{ object.item_qty5_wh }}</td>
+                        <td style="text-align: right;">{{ object.item4.price }}</td>
+                        <td style="text-align: right;">{{ object.item_qty5 | mul:object.item5.price |floatformat:2 |intcomma}}</td>
                     </tr>
                     {% endif %}
                     {% if object.item6 == None %}
@@ -185,6 +204,9 @@
                         <td>{{ object.item6 }}</td>
                         <td style="text-align: center;">{{ object.item_qty6 }}</td>
                         <td style="text-align: center;">{{ object.item6.uom }}</td>
+                        <td style="text-align: center;">{{ object.item_qty6_wh }}</td>
+                        <td style="text-align: right;">{{ object.item6.price }}</td>
+                        <td style="text-align: right;">{{ object.item_qty6 | mul:object.item6.price |floatformat:2 |intcomma}}</td>
                     </tr>
                     {% endif %}
                     {% if object.item7 == None %}
@@ -194,6 +216,9 @@
                         <td>{{ object.item7 }}</td>
                         <td style="text-align: center;">{{ object.item_qty7 }}</td>
                         <td style="text-align: center;">{{ object.item7.uom }}</td>
+                        <td style="text-align: center;">{{ object.item_qty7_wh }}</td>
+                        <td style="text-align: right;">{{ object.item7.price }}</td>
+                        <td style="text-align: right;">{{ object.item_qty7 | mul:object.item7.price |floatformat:2 |intcomma}}</td>
                     </tr>
                     {% endif %}
                     {% if object.item8 == None %}
@@ -203,17 +228,40 @@
                         <td>{{ object.item8 }}</td>
                         <td style="text-align: center;">{{ object.item_qty8 }}</td>
                         <td style="text-align: center;">{{ object.item8.uom }}</td>
+                        <td style="text-align: center;">{{ object.item_qty8_wh }}</td>
+                        <td style="text-align: right;">{{ object.item8.price }}</td>
+                        <td style="text-align: right;">{{ object.item_qty8 | mul:object.item8.price |floatformat:2|intcomma }}</td>
                     </tr>
                     {% endif %}
                 </tbody>
-                </table>
+            </table>
+            <!-- <table>
+                <tfoot>
+                    <tr>
+                        <td style="width:25% ; text-align: right;"><strong>WAREHOUSE WEIGHT: &nbsp;</strong></td>
+                        <td style="width:25% ; text-align: left;"><strong>{{ object.total_weight_wh}} KG</strong></td>
+                        <td style="width:25%" ><strong>ESTIMATED VALUE:</strong></td>
+                        <td style="width:25% ; text-align: right;"><strong>{{ object.my_total |intcomma}}</strong></td>
+                    </tr>
+                    <tr>
+                        <td style="width:50%"></td>
+                        <td style="width:25%" ></td>
+                        <td style="width:25%" ><strong>VAT (16%):</strong></td>
+                        <td  style="width:25% ; text-align: right;"><strong>{{ 0.16 | mul:object.my_total |floatformat:2 |intcomma}}</strong></td>
+                    </tr>
+                    <tr>
+                        <td style="width:25%"></td>
+                        <td style="width:25%"></td>
+                        <td style="width:25%"><strong>GROSS ESTIMATED VALUE:</strong></td>
+                        <td style="width:25% ; text-align: right;"><strong>{{ 1.16 | mul:object.my_total |floatformat:2 |intcomma }}</strong></td>
+                    </tr>
+                </tfoot>
+            </table> -->
         </fieldset>
     </div>    
     <div class="item">
         <form method="POST" action="" {% if form.is_multipart %} enctype="multipart/form-data" {% endif %}>
                 {% csrf_token %}
-
-                    {% if request.user.profile.level > 1 %}
                     <fieldset class="form-group">
 
                         <div>{{ form|crispy }}</div>
@@ -223,13 +271,6 @@
                             <button name="demote" value="Submit" type="submit" class="btn btn-outline-danger active btn-sm">Reject</button>
                         </div>
                     </fieldset>
-                    {% else %}
-                    <fieldset class="form-group" disabled>
-                        <legend class="border-bottom mb-4">Only HODs can fill</legend>
-                        {{ form|crispy }}
-                    </fieldset>
-                    {% endif %}
-
         </form>
     </div>
   </div>
