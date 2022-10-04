@@ -89,7 +89,42 @@ class kgrn(models.Model):
         ordering = ['-id']
 
     def get_absolute_url(self):
-        return reverse('kgrns')        
+        return reverse('kgrns')
+
+class kgrn_item(models.Model):
+    date_posted = models.DateTimeField(default = timezone.now, verbose_name= "Date")
+    department = models.CharField(max_length = 20, blank = True)
+    form_status = models.IntegerField(null=True, default='0')
+    author = models.ForeignKey(User, null = True, on_delete = models.PROTECT)
+    hod = models.ForeignKey(User, null = True, on_delete = models.PROTECT, related_name = 'Head_of_Dept', blank= True)
+    supplier = models.ForeignKey(Supplier, on_delete=models.PROTECT, null = True, blank = True)
+    waste_loader = models.CharField(max_length=20, null = True, blank = True, verbose_name = "Loaded By")
+    collected_by = models.CharField(max_length=20, null = True, blank = True, verbose_name = "Collected By")
+    id_number = models.CharField(max_length = 20, blank = True, verbose_name = "ID Number")
+    vehicle_no = models.CharField(max_length=20, null = True, blank = True, verbose_name = "Vehicle No")
+    item1 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material001', verbose_name = "Material Description")
+    item_qty1 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
+    item2 = models.ForeignKey(Material, on_delete = models.PROTECT,null = True, blank = True, related_name = 'material002', verbose_name = "Material Description")
+    item_qty2 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
+    item3 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material003', verbose_name = "Material Description")
+    item_qty3 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
+    item4 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material004', verbose_name = "Material Description")
+    item_qty4 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
+    item5 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material005', verbose_name = "Material Description")
+    item_qty5 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
+    item6 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material006', verbose_name = "Material Description")
+    item_qty6 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
+    item7 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material007', verbose_name = "Material Description")
+    item_qty7 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
+    item8 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material008', verbose_name = "Material Description")
+    item_qty8 = models.FloatField(max_length = 40, null = True, blank = True, verbose_name = "Estimated Quantity")
+    hod_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="HOD comment")
+
+    class Meta:
+        ordering = ['-id']   
+
+    def get_absolute_url(self):
+        return reverse('kgrns')
 
 class goods_issue_note(models.Model):
     #id = models.AutoField(primary_key=True)

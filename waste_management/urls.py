@@ -13,6 +13,7 @@ urlpatterns = [
     path('checklists/', views.CheckListView.as_view(), name='checklists'),
     path('checklists/pdf/<pk>', views.checklists_render_pdf_view, name='checklist_pdf_view'),
     path('dnoteskgrn/', views.Dnotes_KGRN_ListView.as_view(), name='dnotes_kgrn'),
+    path('kgrn/new/', views.BlankKGRN_CreateView.as_view(), name='blank_kgrn-create'),
     path('dnoteskgrn/kgrn', views.create_kgrn, name='create_kgrn'),
     path('kgrn/<int:pk>/update/', views.KGRNHODUpdateView.as_view(), name='kgrn-update'),
     path('kgrn/<int:pk>/update1/', views.KGRNPurchaseUpdateView.as_view(), name='kgrn-update1'),

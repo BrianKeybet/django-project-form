@@ -19,4 +19,11 @@ class GoodsIssueNoteForm(ModelForm):
     def __init__(self,  *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['time_in'].widget.attrs.update({'placeholder': 'HH:MM'})
-        self.fields['time_out'].widget.attrs.update({'placeholder': 'HH:MM'})   
+        self.fields['time_out'].widget.attrs.update({'placeholder': 'HH:MM'})
+
+class KGRNForm(ModelForm):
+    class Meta:
+        model = models.kgrn_item
+        fields = ['item1', 'item_qty1', 'item2', 'item_qty2', 'item3', 'item_qty3', 'item4', 'item_qty4',
+                 'item5', 'item_qty5', 'item6', 'item_qty6', 'item7', 'item_qty7', 'item8', 'item_qty8', 
+                 'supplier', 'waste_loader','collected_by', 'id_number', 'vehicle_no']

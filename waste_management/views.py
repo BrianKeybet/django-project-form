@@ -1,12 +1,12 @@
 from django.shortcuts import redirect, render
 from django.conf import settings
 from decouple  import config
-from .models import checklist, waste_delivery_note, kgrn, goods_issue_note
+from .models import checklist, waste_delivery_note, kgrn, goods_issue_note, kgrn_item
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from datetime import date, datetime
-from .forms import WasteForm, GoodsIssueNoteForm
+from .forms import WasteForm, GoodsIssueNoteForm, KGRNForm
 from . import models
 from users.models import Profile
 from django.core.mail import EmailMessage
@@ -236,7 +236,7 @@ class DnoteHODUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department Waste Delivery Note',
-            body=f'Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to create checklist http://10.10.1.71:8000/waste/dnotes/ .\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
@@ -604,6 +604,37 @@ class KGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
 
         else:
             return HttpResponse('Error')
+
+class BlankKGRN_CreateView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
+    template_name = 'waste_management/raise_blankkgrn.html'
+    success_message = 'Form Submitted Successfully!'
+    model = kgrn_item
+    form_class = KGRNForm
+
+    def form_valid(self,form):
+        form.instance.form_status = 2 #Increases the form status by 2
+
+        form.instance.author = self.request.user #Inserts the author into the new post
+        form.instance.department = self.request.user.profile.department
+
+        prev_serial_num = kgrn_item.objects.count()
+        serial_num = prev_serial_num + 15 #Get next serial number to display in email
+
+        dept = self.request.user.profile.department
+        profs = Profile.objects.filter(department=f'{dept}',level='2')
+
+        print(f'Profiles {profs}')
+        for prof in profs:
+            print(f'Each email: {prof.user.email}')
+            print(f'Each name: {prof.user.first_name}')
+            print(f'Host email: {settings.EMAIL_HOST_USER}')
+            subject = 'Waste Delivery Note'
+            message = f'Hello {prof.user.first_name}, a new Waste Delivery Note has been submitted for your approval. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. The serial number is {serial_num}.'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [prof.user.email, config('ADMIN_EMAIL'), config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+            send_mail(subject, message, email_from, recipient_list, fail_silently=False)
+
+        return super().form_valid(form)
 
 class goods_issue_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
     template_name = 'waste_management/raise_goodsissuenote.html'
