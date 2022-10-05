@@ -10,7 +10,7 @@ from django.contrib import messages
 class RTSForm(ModelForm):
     class Meta:
         model = models.RTSform
-        fields = ['supplier', 'vehicle_number', 'dnote_number','dnote_date','material_description', 'quality_issue', 'reason_for_rejection', 'delivery_quantity', 'sampled_quantity', 'quantity_affected', 'acceptable_level','batches_sampled', 'mould']
+        fields = ['supplier','department_internal', 'vehicle_number', 'dnote_number','dnote_date','material_description', 'quality_issue', 'reason_for_rejection', 'delivery_quantity', 'sampled_quantity', 'quantity_affected', 'acceptable_level','batches_sampled', 'mould']
         
     def __init__(self,  *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -30,7 +30,7 @@ class RTSForm(ModelForm):
                     #Div('serial_number',css_class='col-sm-3',),
 
                     #Div('author',css_class='col-sm-3',),
-                    Div(HTML('<h5>Department :  {{ request.user.profile.department }}</h5>'),css_class='col-sm-3'),
+                    Div(HTML('<h5>Department:  {{ request.user.profile.department }}</h5>'),css_class='col-sm-3'),
                     
                     # Div('department', css_class='col-sm-3'), 
                     

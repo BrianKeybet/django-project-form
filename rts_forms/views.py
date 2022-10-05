@@ -63,9 +63,9 @@ class RTSForm(LoginRequiredMixin, SuccessMessageMixin,  generic.CreateView):
         prev_serial_num = RTSform.objects.count()
         serial_num = prev_serial_num + 1 #Get next serial number to display in email
 
-        dept = self.request.user.profile.department
-        prof = Profile.objects.get(department=f'{dept}',level='2')
-        em = prof.email #Gets email account of the HOD from the logged in user's department
+        #dept = self.request.user.profile.department
+        #prof = Profile.objects.get(department=f'{dept}',level='2')
+        #em = prof.email #Gets email account of the HOD from the logged in user's department
 
         email = EmailMessage(
         subject=f'{form.instance.department} department R.T.S form',
@@ -95,7 +95,7 @@ class FormsDetailView(DetailView):
 class FormsHODUpdateView(UpdateView):
     template_name = 'forms/rtsform_update.html'
     model = RTSform
-    fields = ['hod_comment','image']
+    fields = ['hod_comment','image','department_internal']
 
     def form_valid(self, form):
         if ('elevate' in self.request.POST) and (form.instance.form_status == 0):

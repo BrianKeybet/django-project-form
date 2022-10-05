@@ -1,0 +1,160 @@
+{% extends "waste_management/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<style>
+    * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    }
+
+    button {
+    margin: 5px;
+    }
+
+    label {
+    box-sizing: border-box;
+    padding: 5px;
+    margin: 0;
+    }
+
+    body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    background: #f5f5f5;
+    }
+
+    .container-fluid {
+    margin: auto auto;
+    padding: 0;
+    display: grid;
+    /* grid-template-columns: repeat(5, 1fr); */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+
+    /* align-items: end;
+    justify-content: end; */
+
+    /* column-gap: 10px;
+    row-gap: 10px; */
+    /* grid-auto-rows: minmax(200px, auto); */
+    /* grid-template-rows: repeat(3, 1fr); */
+    }
+
+    .item {
+    background: white;
+    color: black;
+    font-size: 20px;
+    padding: 20px;
+    border: skyblue 1px solid;
+    }
+
+    .item:nth-of-type(1) {
+    grid-column: 1 / 5;
+    text-align: center;
+    }
+    .item:nth-of-type(2) {
+    grid-column: 1 / 5;
+    text-align: center;
+    }
+
+
+
+
+    /* .item:nth-of-type(3) {
+    background: #333;
+    grid-row: 2 / 4;
+    }
+
+    .item:nth-of-type(4) {
+    background: #333;
+    grid-row: 2 / 4;
+    } */
+
+    @media (max-width: 500px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+<div class="container">
+    <form method="POST" action="{%url 'create_checklist' %}" {% if form.is_multipart %} enctype="multipart/form-data" {% endif %}>
+    {% csrf_token %}
+    {{form.as_p}}
+    <div class="item"><h2>Goods Returned To Supplier Summary</h2></div>
+    <div class="item">
+        <font size="3" face="Times New Roman" >
+        <table class='table'>
+            <thead>
+            <tr>
+                <th>SERIAL NUMBER</th>
+                <th>DEPARTMENT</th>
+                <th>SUPPLIER</th>
+                <th>DATE POSTED</th>
+                <th>SUBMITED BY</th>
+                <th>STATUS</th>
+                <th>UPDATE / VIEW</th>
+            </tr>
+            </thead>
+        {% for kgrn_item in kgrn_items %}
+            <tr>
+                <td>{{ kgrn_item.id }}</td>
+                <td>{{ kgrn_item.department }}</td>
+                <td>{{ kgrn_item.supplier }}</td>
+                <td>{{ kgrn_item.date_posted }}</td>
+                <td>{{ kgrn_item.author }}</td>
+
+                {% if kgrn_item.form_status == 2 %}
+                <td>Submitted to HOD</td>
+                {% elif kgrn_item.form_status == 1 %}
+                <td>Rejected by HOD</td>
+                {% elif kgrn_item.form_status == 4 %}
+                <td>Submitted to Purchasing</td>
+                {% elif kgrn_item.form_status == 3 %}
+                <td>Rejected by Warehouse</td>
+                {% elif kgrn_item.form_status == 6 %}
+                <td>Submitted to Warehouse Clerk</td>
+                {% elif kgrn_item.form_status == 8 %}
+                <td>Submitted to Warehouse HOD</td>
+                {% elif kgrn_item.form_status == 10 %}
+                <td>Delivery note ready</td>
+                {% else %}
+                <td>Error</td>
+                {% endif %}
+
+                {% if kgrn_item.form_status == 0 %}
+                <td><a href="{% url 'kgrn_item-create' %}">Update</a></td>
+                {% elif kgrn_item.form_status == 1 %}
+                <td><a href="#" style="color: red">Invalid Form</a></td>
+                {% elif kgrn_item.form_status == 2 and request.user.profile.level > 1 %}
+                <td><a href="{% url 'bkgrn-update' kgrn_item.id%}">Update</a></td>
+                {% elif kgrn_item.form_status == 4 %}
+                <td><a href="{% url 'bkgrn-update' kgrn_item.id%}">Update</a></td>
+                {% elif kgrn_item.form_status == 3 %}
+                <td><a href="#">Rejected</a></td>
+                {% elif kgrn_item.form_status == 6 %}
+                <td><a href="{% url 'checklists' %}">Accept Checklist</a></td>
+                {% elif kgrn_item.form_status == 8 and request.user.profile.level > 1 and request.user.profile.department == 'Warehouse' %}
+                <td><a href="{% url 'dnote-update1' kgrn_item.id%}">Update</a></td>
+                {% elif kgrn_item.form_status == 10 %}
+                <td><a href="{% url 'dnote_pdf_view' kgrn_item.id%}">Get PDF</a></td>
+                {% else %}
+                <td><a href="#">Awaiting Approval ...</a></td>
+                {% endif %}
+
+
+            </tr>
+        {% endfor %}
+        </table>
+        </font>
+    </div>
+
+    </form>
+  
+</div>
+
+{% endblock content %}
