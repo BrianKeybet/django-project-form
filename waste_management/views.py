@@ -185,6 +185,33 @@ def kgrns_render_pdf_view(request, *args, **kwargs):
       return HttpResponse('We had some errors ' + html + '')
    return response
 
+def blank_kgrns_render_pdf_view(request, *args, **kwargs):
+   pk = kwargs.get('pk')
+   bkgrn = get_object_or_404(kgrn_item, pk=pk)
+
+   template_path = 'waste_management/generate_bkgrn_pdf.html'
+   context = {'bkgrn': bkgrn}
+   # Create a Django response object, and specify content_type as pdf
+   response = HttpResponse(content_type='application/pdf')
+
+   # to directly download the pdf we need attachment 
+   # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+
+   # to view on browser we can remove attachment 
+   response['Content-Disposition'] = 'filename="report.pdf"'
+
+   # find the template and render it.
+   template = get_template(template_path)
+   html = template.render(context)
+
+   # create a pdf
+   pisa_status = pisa.CreatePDF(
+      html, dest=response)
+   # if error then show some funy view
+   if pisa_status.err:
+      return HttpResponse('We had some errors ' + html + '')
+   return response     
+
 # Create your views here.
 class waste_delivery_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
     template_name = 'waste_management/waste_dnote.html'
@@ -513,9 +540,16 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
 class KGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'waste_management/approve_kgrn_purchase.html'
     model = kgrn
-    fields = ['purchase_comment']
+    fields = ['resolution','purchase_comment']
+
+    # def get(self, request, *args, **kwargs):
+    #     ## important ##
+    #     super(KGRNPurchaseUpdateView, self).get(self, request, *args, **kwargs)
+    #     form = self.form_class
+    #     return self.render_to_response(self.get_context_data(form=form))
 
     def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
         pk = self.kwargs.get('pk')
         checks = get_object_or_404(kgrn, pk=pk)
         my_stringlist = checks.form_serials #Pick list of serial numbers from the checklist as a string
@@ -533,7 +567,8 @@ class KGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
             dnotes_list.append(dnote) #Add the delivery note to the list
             print(f'{dnotes_list}')
 
-        context = {'dnotes_list': dnotes_list, 'checks': checks, 'dnote': dnote}
+        context.update({'dnotes_list': dnotes_list, 'checks': checks, 'dnote': dnote})
+
         return context
 
     def form_valid(self, form):
@@ -718,7 +753,7 @@ class BlankKGRNHODUpdateView(LoginRequiredMixin, UpdateView):
 class BlankKGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'waste_management/approve_kgrn_item_purchase.html'
     model = kgrn_item
-    fields = ['purchase_comment']
+    fields = ['purchase_comment','resolution1', 'resolution2', 'resolution3', 'resolution4', 'resolution5', 'resolution6', 'resolution7', 'resolution8']
 
     def form_valid(self, form):
         form.instance.purchase_rep = self.request.user #Inserts the author into the new post

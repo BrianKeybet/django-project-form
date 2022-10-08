@@ -115,13 +115,9 @@
                 {% elif kgrn_item.form_status == 4 %}
                 <td>Submitted to Purchasing</td>
                 {% elif kgrn_item.form_status == 3 %}
-                <td>Rejected by Warehouse</td>
+                <td>Rejected by Purchasing</td>
                 {% elif kgrn_item.form_status == 6 %}
-                <td>Submitted to Warehouse Clerk</td>
-                {% elif kgrn_item.form_status == 8 %}
-                <td>Submitted to Warehouse HOD</td>
-                {% elif kgrn_item.form_status == 10 %}
-                <td>Delivery note ready</td>
+                <td>Approved by Purchasing</td>
                 {% else %}
                 <td>Error</td>
                 {% endif %}
@@ -133,15 +129,11 @@
                 {% elif kgrn_item.form_status == 2 and request.user.profile.level > 1 %}
                 <td><a href="{% url 'bkgrn-update' kgrn_item.id%}">Update</a></td>
                 {% elif kgrn_item.form_status == 4 %}
-                <td><a href="{% url 'bkgrn-update' kgrn_item.id%}">Update</a></td>
+                <td><a href="{% url 'bkgrn-update1' kgrn_item.id%}">Update</a></td>
                 {% elif kgrn_item.form_status == 3 %}
-                <td><a href="#">Rejected</a></td>
+                <td><a href="{% url 'bkgrn-update' kgrn_item.id%}">Rejected</a></td>
                 {% elif kgrn_item.form_status == 6 %}
-                <td><a href="{% url 'checklists' %}">Accept Checklist</a></td>
-                {% elif kgrn_item.form_status == 8 and request.user.profile.level > 1 and request.user.profile.department == 'Warehouse' %}
-                <td><a href="{% url 'dnote-update1' kgrn_item.id%}">Update</a></td>
-                {% elif kgrn_item.form_status == 10 %}
-                <td><a href="{% url 'dnote_pdf_view' kgrn_item.id%}">Get PDF</a></td>
+                <td><a href="#">Get PDF</a></td>
                 {% else %}
                 <td><a href="#">Awaiting Approval ...</a></td>
                 {% endif %}

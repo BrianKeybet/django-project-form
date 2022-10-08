@@ -73,8 +73,12 @@ class checklist(models.Model):
     class Meta:
         ordering = ['-id']
 
+class Resolve(models.Model):
+    name = models.CharField(max_length=40, blank=True)
+    def __str__(self):
+        return self.name 
+
 class kgrn(models.Model):
-    
     form_serials = models.CharField(max_length = 100, blank = True) 
     date_posted = models.DateTimeField(default = timezone.now, verbose_name= "Date")
     author = models.ForeignKey(User, null = True, on_delete = models.PROTECT)
@@ -83,6 +87,7 @@ class kgrn(models.Model):
     purchase_rep = models.ForeignKey(User, null = True, on_delete = models.PROTECT, related_name = 'Purchasing_Rep', blank= True)
     hod_comment = models.CharField(max_length=100, null=True, blank=True,verbose_name="Head Of Dept comment")
     purchase_comment = models.CharField(max_length=100, null=True, blank=True,verbose_name="Purchase comment")
+    resolution = models.ForeignKey(Resolve, on_delete=models.PROTECT, null=True, blank = True, related_name = 'resolution', verbose_name = "Resolution")
     kgrn_status = models.IntegerField(null=True, default='0')
 
     class Meta:
@@ -105,22 +110,31 @@ class kgrn_item(models.Model):
     vehicle_no = models.CharField(max_length=20, null = True, blank = True, verbose_name = "Vehicle No")
     item1 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material001', verbose_name = "Material Description")
     item_qty1 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
+    resolution1 = models.ForeignKey(Resolve, on_delete=models.PROTECT, null=True, related_name = 'resolution1', verbose_name = "")
     item2 = models.ForeignKey(Material, on_delete = models.PROTECT,null = True, blank = True, related_name = 'material002', verbose_name = "Material Description")
     item_qty2 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
+    resolution2 = models.ForeignKey(Resolve, on_delete=models.PROTECT, null=True, blank = True, related_name = 'resolution2', verbose_name = "")
     item3 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material003', verbose_name = "Material Description")
     item_qty3 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
+    resolution3 = models.ForeignKey(Resolve, on_delete=models.PROTECT, null=True, blank = True, related_name = 'resolution3', verbose_name = "")
     item4 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material004', verbose_name = "Material Description")
     item_qty4 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
+    resolution4 = models.ForeignKey(Resolve, on_delete=models.PROTECT, null=True, blank = True, related_name = 'resolution4', verbose_name = "")
     item5 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material005', verbose_name = "Material Description")
     item_qty5 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
+    resolution5 = models.ForeignKey(Resolve, on_delete=models.PROTECT, null=True, blank = True, related_name = 'resolution5', verbose_name = "")
     item6 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material006', verbose_name = "Material Description")
     item_qty6 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
+    resolution6 = models.ForeignKey(Resolve, on_delete=models.PROTECT, null=True, blank = True, related_name = 'resolution6', verbose_name = "")
     item7 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material007', verbose_name = "Material Description")
     item_qty7 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
+    resolution7 = models.ForeignKey(Resolve, on_delete=models.PROTECT, null=True, blank = True, related_name = 'resolution7', verbose_name = "")
     item8 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material008', verbose_name = "Material Description")
     item_qty8 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
+    resolution8 = models.ForeignKey(Resolve, on_delete=models.PROTECT, null=True, blank = True, related_name = 'resolution8', verbose_name = "")
     hod_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="HOD comment")
     purchase_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="Purchasing comment")
+    
 
     class Meta:
         ordering = ['-id']   
@@ -132,7 +146,7 @@ class goods_issue_note(models.Model):
     #id = models.AutoField(primary_key=True)
     date_posted = models.DateTimeField(default = timezone.now, verbose_name= "Date")
     department_from = models.CharField(max_length = 20, blank = True)
-    department_to = models.CharField(max_length = 20, blank = True)
+    department_to = models.CharField(max_length = 30, blank = True)
     department_internal = models.ForeignKey(Department, on_delete = models.PROTECT, null = True, blank = True, related_name = 'Department_Internal')
     time_in = models.TimeField(auto_now=False, auto_now_add=False, blank = True, null = True)
     time_out = models.TimeField(auto_now=False, auto_now_add=False, blank = True, null = True)
