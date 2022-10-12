@@ -98,19 +98,24 @@ class FormsHODUpdateView(UpdateView):
     fields = ['hod_comment','image','department_internal']
 
     def form_valid(self, form):
+        dept = form.instance.department_internal
+        profs = Profile.objects.filter(department=f'{dept}',level='2')
+        #em = prof.values_list('email', flat=True) #Gets email account of the HOD from the logged in user's department
+
         if ('elevate' in self.request.POST) and (form.instance.form_status == 0):
             form.instance.form_status += 2
 
-            email = EmailMessage(
-            subject=f'{form.instance.department} department R.T.S form',
-            body=f'R.T.S form number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}, kindly log on to http://10.10.1.195:8000/forms/home/ to view it.  In case of any challenges feel free to contact IT for further assistance.',
-            from_email=config('EMAIL_HOST_USER'),
-            to=[config('BRIAN_EMAIL')],
-            cc=[config('BRIAN_EMAIL')],
-            reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
-            )
-            # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
-            email.send()
+            for prof in profs:
+                email = EmailMessage(
+                subject=f'{form.instance.department} department R.T.S form',
+                body=f'R.T.S form number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}, kindly log on to http://10.10.1.195:8000/forms/home/ to view it.  In case of any challenges feel free to contact IT for further assistance.',
+                from_email=config('EMAIL_HOST_USER'),
+                to=[prof.user.email, config('BRIAN_EMAIL')],
+                cc=[config('BRIAN_EMAIL')],
+                reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+                )
+                # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
+                email.send()
             messages.success(self.request,'Form submitted and mail sent!')
             return super().form_valid(form)
             

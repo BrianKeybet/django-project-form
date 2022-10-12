@@ -133,7 +133,7 @@
                 {% elif kgrn_item.form_status == 3 %}
                 <td><a href="{% url 'bkgrn-update' kgrn_item.id%}">Rejected</a></td>
                 {% elif kgrn_item.form_status == 6 %}
-                <td><a href="#">Get PDF</a></td>
+                <td><a href="{% url 'bkgrn_pdf_view' kgrn_item.id%}">Get PDF</a></td>
                 {% else %}
                 <td><a href="#">Awaiting Approval ...</a></td>
                 {% endif %}

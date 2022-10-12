@@ -16,6 +16,7 @@ urlpatterns = [
     path('kgrn/new/', views.BlankKGRN_CreateView.as_view(), name='blank_kgrn-create'),
     path('bkgrn/<int:pk>/update/', views.BlankKGRNHODUpdateView.as_view(), name='bkgrn-update'),
     path('bkgrn/<int:pk>/update1/', views.BlankKGRNPurchaseUpdateView.as_view(), name='bkgrn-update1'),
+    path('bkgrn/pdf/<pk>', views.blank_kgrns_render_pdf_view, name='bkgrn_pdf_view'),
     path('kgrns/items/', views.KGRN_ItemsListView.as_view(), name='kgrn_items'),
     path('dnoteskgrn/kgrn', views.create_kgrn, name='create_kgrn'),
     path('kgrn/<int:pk>/update/', views.KGRNHODUpdateView.as_view(), name='kgrn-update'),

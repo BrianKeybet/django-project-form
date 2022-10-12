@@ -20,11 +20,11 @@
     <style type="text/css">
 
         @page {
-            background-image: url("http://10.10.1.71:8000/media/KGRN_A4.jpg");
+            background-image: url("http://10.10.1.71:8000/media/KGRN_A4.png");
             size: A4 portrait;
             margin-left: 1.5cm;
-            margin-right: 2.8cm;
-            margin-top: 2.4cm;
+            margin-right: 0.8cm;
+            margin-top: 2.9cm;
         }
         body {
             font-weight: 200;
@@ -78,119 +78,131 @@
                 <fieldset style="padding-left: 10px;">
                     <p class="top_row">
                         <strong>Serial Number:</strong>
-                        {{ gin.id }}
+                        {{ bkgrn.id }}
                     </p>
                     <p>
                         <strong>Date Posted:</strong>
-                        {{ gin.date_posted|date:"F d, Y" }}
+                        {{ bkgrn.date_posted|date:"F d, Y" }}
                         
                     </p>
                     <p>
-                        <strong>Department to:</strong>
-                        {{ gin.department_to }} 
+                        <strong>Supplier:</strong>
+                        {{ bkgrn.supplier }} 
                     </p>
                     <p>
-                        <strong>Delivered by:</strong>
-                        {{ gin.delivered_by }} 
+                        <strong>Department:</strong>
+                        {{ bkgrn.department }} 
                     </p>
                 </fieldset>
-                <fieldset>
-                    <table class="table table-striped my_table">
+                    <table class="my_table">
                         <thead>
                             <tr>
-                                <th scope="col">Material</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">UOM</th>
+                                <th scope="col" style="width:50%">Material</th>
+                                <th scope="col" style="width:10%">Quantity</th>
+                                <th scope="col" style="width:10%">UOM</th>
+                                <th scope="col" style="width:30%">Resolution</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% if gin.item1 != null %}
+                            {% if bkgrn.item1 != null %}
                             <tr>
-                                <td>{{ gin.item1 }}</td>
-                                <td>{{ gin.item_qty1 }}</td>
-                                <td>{{ gin.item1.uom }}</td>
+                                <td>{{ bkgrn.item1 }}</td>
+                                <td>{{ bkgrn.item_qty1 }}</td>
+                                <td>{{ bkgrn.item1.uom }}</td>
+                                <td>{{ bkgrn.resolution1 }}</td>
                                 
                             </tr>
                             {% endif %}
-                            {% if gin.item2 != null %}
+                            {% if bkgrn.item2 != null %}
                             <tr>
-                                <td>{{ gin.item2 }}</td>
-                                <td>{{ gin.item_qty2 }}</td>
-                                <td>{{ gin.item2.uom }}</td>
+                                <td>{{ bkgrn.item2 }}</td>
+                                <td>{{ bkgrn.item_qty2 }}</td>
+                                <td>{{ bkgrn.item2.uom }}</td>
+                                <td>{{ bkgrn.resolution2 }}</td>
                                 
                             </tr>
                             {% endif %}
-                            {% if gin.item3 != null %}
+                            {% if bkgrn.item3 != null %}
                             <tr>
-                                <td>{{ gin.item3 }}</td>
-                                <td>{{ gin.item_qty3 }}</td>
-                                <td>{{ gin.item3.uom }}</td>
+                                <td>{{ bkgrn.item3 }}</td>
+                                <td>{{ bkgrn.item_qty3 }}</td>
+                                <td>{{ bkgrn.item3.uom }}</td>
+                                <td>{{ bkgrn.resolution3 }}</td>
                                 
                             </tr>
                             {% endif %}
-                            {% if gin.item4 != null %}
+                            {% if bkgrn.item4 != null %}
                             <tr>
-                                <td>{{ gin.item4 }}</td>
-                                <td>{{ gin.item_qty4 }}</td>
-                                <td>{{ gin.item4.uom }}</td>
+                                <td>{{ bkgrn.item4 }}</td>
+                                <td>{{ bkgrn.item_qty4 }}</td>
+                                <td>{{ bkgrn.item4.uom }}</td>
+                                <td>{{ bkgrn.resolution4 }}</td>
                             </tr>
                             {% endif %}
-                            {% if gin.item5 != null %}
+                            {% if bkgrn.item5 != null %}
                             <tr>
-                                <td>{{ gin.item5 }}</td>
-                                <td>{{ gin.item_qty5 }}</td>
-                                <td>{{ gin.item5.uom }}</td>
+                                <td>{{ bkgrn.item5 }}</td>
+                                <td>{{ bkgrn.item_qty5 }}</td>
+                                <td>{{ bkgrn.item5.uom }}</td>
+                                <td>{{ bkgrn.resolution5 }}</td>
                             </tr>
                             {% endif %}
-                            {% if gin.item6 != null %}
+                            {% if bkgrn.item6 != null %}
                             <tr>
-                                <td>{{ gin.item6 }}</td>
-                                <td>{{ gin.item_qty6 }}</td>
-                                <td>{{ gin.item6.uom }}</td>
+                                <td>{{ bkgrn.item6 }}</td>
+                                <td>{{ bkgrn.item_qty6 }}</td>
+                                <td>{{ bkgrn.item6.uom }}</td>
+                                <td>{{ bkgrn.resolution6 }}</td>
                             </tr>
                             {% endif %}
-                            {% if gin.item7 != null %}
+                            {% if bkgrn.item7 != null %}
                             <tr>
-                                <td>{{ gin.item7 }}</td>
-                                <td>{{ gin.item_qty7 }}</td>
-                                <td>{{ gin.item7.uom }}</td>
+                                <td>{{ bkgrn.item7 }}</td>
+                                <td>{{ bkgrn.item_qty7 }}</td>
+                                <td>{{ bkgrn.item7.uom }}</td>
+                                <td>{{ bkgrn.resolution7 }}</td>
                             </tr>
                             {% endif %}
-                            {% if gin.item8 != null %}
+                            {% if bkgrn.item8 != null %}
                             <tr>
-                                <td>{{ gin.item8 }}</td>
-                                <td>{{ gin.item_qty8 }}</td>
-                                <td>{{ gin.item8.uom }}</td>
+                                <td>{{ bkgrn.item8 }}</td>
+                                <td>{{ bkgrn.item_qty8 }}</td>
+                                <td>{{ bkgrn.item8.uom }}</td>
+                                <td>{{ bkgrn.resolution8 }}</td>
                             </tr>
                             {% endif %}
                         </tbody>
                     </table>
-                </fieldset>
                 <fieldset  class="bottom_row">
                     <table>
-                        <td colspan ="2"><strong>Prepared by:</strong>
-                            {{ gin.author }}
-                        </td>
-                        <td colspan ="2"><strong>H.O.D / Representative:</strong>
-                            {{ gin.hod }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan ="2"><strong>Time in Warehouse:</strong>
-                            {{ gin.time_in }}
-                        </td>
-                        <td  colspan ="2"><strong>Receiving H.O.D:</strong>
-                            {{ gin.approved_by }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan ="2"><strong>Time out Warehouse:</strong>
-                            {{ gin.time_out }}
-                        </td>
-                        <td  colspan ="2"><strong>Received by:</strong>
-                            {{ gin.received_by }}
-                        </td>
-                    </tr>
+                        <tr>
+                            <th style="text-align: Left">KAPA</th>
+                            <th style="text-align: Left">COLLECTED BY:</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Prepared by:</strong>
+                                {{ bkgrn.author }}
+                            </td>
+                            <td><strong>Name:</strong>
+                                {{ bkgrn.hod }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>H.O.D / Representative:</strong>
+                                {{ bkgrn.hod }}
+                            </td>
+                            <td ><strong>ID Number:</strong>
+                                {{ bkgrn.id_number }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Purchasing Rep.:</strong>
+                                {{ bkgrn.purchase_rep }}
+                            </td>
+                            <td ><strong>Vehicle number:</strong>
+                                {{ bkgrn.vehicle_no }}
+                            </td>
+                        </tr>
                     </table>
                 </fieldset> 
  
