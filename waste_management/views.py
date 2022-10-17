@@ -434,6 +434,16 @@ def create_kgrn(request):
         kgrn_instance = kgrn.objects.create(form_serials = check, date_posted = datetime.now(), author = request.user, department = request.user.profile.department)
         kgrn_instance.save()
 
+        dept = request.user.profile.department
+        profs = Profile.objects.filter(department=f'{dept}',level='2')
+
+        for prof in profs:
+            subject = 'KGRN'
+            message = f'Hello {prof.user.first_name}, a new KGRN has been submitted for your approval. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. The serial number is {serial_num}.'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [prof.user.email, config('ADMIN_EMAIL'), config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+            send_mail(subject, message, email_from, recipient_list, fail_silently=False)
+
     return redirect('kgrns')
 
 class KGRNListView(LoginRequiredMixin, generic.ListView):
@@ -651,18 +661,15 @@ class BlankKGRN_CreateView(LoginRequiredMixin, SuccessMessageMixin, generic.Crea
         form.instance.author = self.request.user #Inserts the author into the new post
         form.instance.department = self.request.user.profile.department
 
-        prev_serial_num = kgrn_item.objects.count()
-        serial_num = prev_serial_num + 15 #Get next serial number to display in email
+        kgrn_sum = kgrn_item.objects.count()
+        kgrn_sum1 = kgrn.objects.count()
+        serial_num = kgrn_sum + kgrn_sum1 #Get next serial number to display in email
 
         dept = self.request.user.profile.department
         profs = Profile.objects.filter(department=f'{dept}',level='2')
 
-        print(f'Profiles {profs}')
         for prof in profs:
-            print(f'Each email: {prof.user.email}')
-            print(f'Each name: {prof.user.first_name}')
-            print(f'Host email: {settings.EMAIL_HOST_USER}')
-            subject = 'Waste Delivery Note'
+            subject = 'KGRN'
             message = f'Hello {prof.user.first_name}, a new KGRN has been submitted for your approval. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. The serial number is {serial_num}.'
             email_from = settings.EMAIL_HOST_USER
             recipient_list = [prof.user.email, config('ADMIN_EMAIL'), config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]

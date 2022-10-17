@@ -45,6 +45,13 @@
     /* grid-auto-rows: minmax(200px, auto); */
     /* grid-template-rows: repeat(3, 1fr); */
     }
+    .my_table {
+    table-layout: fixed;
+    width: 100%;
+    /* margin: 0 auto;
+    margin-left:0px; */
+    overflow: hidden;
+    }
 
     .item {
     background: white;
@@ -89,7 +96,7 @@
 </style>
 <div class="container">
     <div class="item"><h2>GOODS RETURNED TO SUPPLIER (ADMIN MISC)</h2></div>
-    <div class="item">KAPA/PSD/0020</div>
+    <div class="item">KAPA/PSD/0020  &nbsp; &nbsp; KP-SA-FM-20(0)</div>
     <div class="item">Department: {{ request.user.profile.department }}</div>  
     <div class="item">
         <form method="POST" action="" {% if form.is_multipart %} enctype="multipart/form-data" {% endif %}>
@@ -103,56 +110,81 @@
                             {{ form.waste_loader.errors }}
                             <label for="{{ form.waste_loader.id_for_label }}"><strong>Loaded By:</strong></label>
                             {{ form.waste_loader }}
+                        </div> 
+                    </fieldset><hr>
+
+                    <fieldset>
+                        <legend class="center border-bottom mb-4">Driver Details</legend>
+                        <div class="fieldWrapper">
+                            {{ form.collected_by.errors }}
+                            <!-- <label for="{{ form.collected_by.id_for_label }}"><strong>Name:</strong></label> -->
+                            {{ form.collected_by }}
+    
+                            {{ form.id_number.errors }}
+                            <!-- <label for="{{ form.id_number.id_for_label }}"><strong>ID Number:</strong></label> -->
+                            {{ form.id_number }}
+
+                            {{ form.vehicle_no.errors }}
+                            <!-- <label for="{{ form.vehicle_no.id_for_label }}"><strong>Vehicle Number:</strong></label> -->
+                            {{ form.vehicle_no }}
                         </div>   
                     </fieldset><hr>
                     
                     <fieldset class="form-group">
-                        <legend class="center border-bottom mb-4">Items Disposed</legend>
                         {{ form.errors }}
                         {{ form.non_field_errors }}
                         <table  class="table my_table">
                             <tr>
-                              <th scope="col">Material</th>
-                              <th scope="col">Quantity</th>
+                              <th scope="col" style="width:40%">Material</th>
+                              <th scope="col" style="width:30%">Reason</th>
+                              <th scope="col" style="width:10%">Quantity</th>
                             </tr>
                             <tr>
                               {{ form.item1.errors }}
                               <td>{{ form.item1 }}</td>
+                              <td>{{ form.reason1 }}</td>
                               <td>{{ form.item_qty1 }}</td>
                             </tr>
                             <tr>
                                 {{ form.item2.errors }}
                                 <td>{{ form.item2 }}</td>
+                                <td>{{ form.reason2 }}</td>
                                 <td>{{ form.item_qty2 }}</td>
                             </tr>
                             <tr>
                                 {{ form.item3.errors }}
                                 <td>{{ form.item3 }}</td>
+                                <td>{{ form.reason3 }}</td>
                                 <td>{{ form.item_qty3 }}</td>
                             </tr>
                             <tr>
                                 {{ form.item4.errors }}
                                 <td>{{ form.item4 }}</td>
+                                <td>{{ form.reason4 }}</td>
                                 <td>{{ form.item_qty4 }}</td>
                             </tr>
                             <tr>
                                 {{ form.item5.errors }}
                                 <td>{{ form.item5 }}</td>
+                                <td>{{ form.reason5 }}</td>
                                 <td>{{ form.item_qty5 }}</td>
                             </tr>
                             <tr>
                                 {{ form.item6.errors }}
                                 <td>{{ form.item6 }}</td>
+                                <td>{{ form.reason6 }}</td>
                                 <td>{{ form.item_qty6 }}</td>
                             </tr>
                             <tr>
                                 {{ form.item7.errors }}
                                 <td>{{ form.item7 }}</td>
+                                <td>{{ form.reason7 }}</td>
                                 <td>{{ form.item_qty7 }}</td>
                             </tr>
                             <tr>
                                 {{ form.item8.errors }}
                                 <td>{{ form.item8 }}</td>
+                                <td>{{ form.reason8 }}</td>
                                 <td>{{ form.item_qty8 }}</td>
                             </tr>
                           </table> 

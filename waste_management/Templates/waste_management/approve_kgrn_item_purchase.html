@@ -41,7 +41,7 @@
     .item {
     background: white;
     color: black;
-    font-size: 20px;
+    font-size: 16px;
     padding: 20px;
     border: skyblue 1px solid;
     }
@@ -86,6 +86,10 @@
     grid-column: 1 / 5;
     text-align: left;
     }
+    .item:nth-of-type(11) {
+    grid-column: 1 / 5;
+    text-align: left;
+    }
 
 
 
@@ -108,7 +112,7 @@
 </style>
 <div class="container">
     <div class="item"><h2>GOODS RETURNED TO SUPPLIER (ADMIN MISC)</h2></div>
-    <div class="item"><strong>KAPA/PSD/0020</strong></div>
+    <div class="item"><strong>KAPA/PSD/0020 &nbsp; &nbsp; KP-SA-FM-20(0)</strong></div>
     <div class="item"><strong>Department:</strong> {{ object.department }}</div>
     <div class="item"><strong>Serial Number:</strong> {{ object.id }}</div> 
     <div class="item"><strong>Raised on:</strong> {{ object.date_posted|date:"F d, Y"  }}</div> 
@@ -123,6 +127,7 @@
                     <thead>
                     <tr>
                         <th style="text-align: Left">ITEM</th>
+                        <th style="text-align: Left">REASON</th>
                         <th style="text-align: Left">QUANTITY</th>
                         <th style="text-align: Left; color: red;">RESOLUTION</th>
                     </tr>    
@@ -130,6 +135,7 @@
                     {% if object.item1 != null %}
                     <tr>
                         <td>{{ object.item1 }}</td>
+                        <td>{{ object.reason1 }}</td>
                         <td>{{ object.item_qty1 }}</td>
                         <td>{{ form.resolution1|as_crispy_field }}</td>            
                     </tr>
@@ -137,6 +143,7 @@
                     {% if object.item2 != null %}
                     <tr>
                         <td>{{ object.item2 }}</td>
+                        <td>{{ object.reason2 }}</td>
                         <td>{{ object.item_qty2 }}</td>
                         <td>{{ form.resolution2|as_crispy_field }}</td>             
                     </tr>
@@ -144,6 +151,7 @@
                     {% if object.item3 != null %}
                     <tr>
                         <td>{{ object.item3 }}</td>
+                        <td>{{ object.reason3 }}</td>
                         <td>{{ object.item_qty3 }}</td>
                         <td>{{ form.resolution3|as_crispy_field }}</td>             
                     </tr>
@@ -151,6 +159,7 @@
                     {% if object.item4 != null %}
                     <tr>
                         <td>{{ object.item4 }}</td>
+                        <td>{{ object.reason4 }}</td>
                         <td>{{ object.item_qty4 }}</td>
                         <td>{{ form.resolution4|as_crispy_field }}</td>             
                     </tr>
@@ -158,6 +167,7 @@
                     {% if object.item5 != null %}
                     <tr>
                         <td>{{ object.item5 }}</td>
+                        <td>{{ object.reason5 }}</td>
                         <td>{{ object.item_qty5 }}</td>
                         <td>{{ form.resolution5|as_crispy_field }}</td>             
                     </tr>
@@ -165,6 +175,7 @@
                     {% if object.item6 != null %}
                     <tr>
                         <td>{{ object.item6 }}</td>
+                        <td>{{ object.reason6 }}</td>
                         <td>{{ object.item_qty6 }}</td>
                         <td>{{ form.resolution6|as_crispy_field }}</td>             
                     </tr>
@@ -172,6 +183,7 @@
                     {% if object.item7 != null %}
                     <tr>
                         <td>{{ object.item7 }}</td>
+                        <td>{{ object.reason7 }}</td>
                         <td>{{ object.item_qty7 }}</td>
                         <td>{{ form.resolution7|as_crispy_field }}</td>             
                     </tr>
@@ -179,6 +191,7 @@
                     {% if object.item8 != null %}
                     <tr>
                         <td>{{ object.item8 }}</td>
+                        <td>{{ object.reason8 }}</td>
                         <td>{{ object.item_qty8 }}</td>
                         <td>{{ form.resolution8|as_crispy_field }}</td>             
                     </tr>
@@ -186,7 +199,8 @@
                 </table>
             </fieldset>
     </div>
-    <div class="item"><strong>Approved by:</strong>{{ object.hod }}</div>   
+    <div class="item"><strong>H.O.D / Representative:</strong> {{ object.hod }}</div>
+    <div class="item"><strong>H.O.D Comment:</strong> {{ object.hod_comment }}</div>   
     <div class="item">
                     <fieldset class="form-group">
 

@@ -28,7 +28,7 @@
         }
         body {
             font-weight: 200;
-            font-size: 14px;
+            font-size: 10px;
         }
         .container {
             position: relative;
@@ -36,7 +36,7 @@
             /* padding-top: 50px; */
             /* padding-right: 30px; */
             /* padding-bottom: 50px; */
-            padding-left: 40px;
+            padding-left: 10px;
         }
         th {
             text-align: left;
@@ -174,32 +174,32 @@
                         </tbody>
                     </table>
                 <fieldset  class="bottom_row">
-                    <table>
+                    <table style="text-align: Left">
                         <tr>
-                            <th style="text-align: Left">KAPA</th>
-                            <th style="text-align: Left">COLLECTED BY:</th>
+                            <th colspan ="2" style="text-align: Left">KAPA</th>
+                            <th colspan ="2" style="text-align: Left">COLLECTED BY:</th>
                         </tr>
                         <tr>
-                            <td><strong>Prepared by:</strong>
+                            <td colspan ="2"><strong>Prepared by:</strong>
                                 {{ bkgrn.author }}
                             </td>
-                            <td><strong>Name:</strong>
+                            <td colspan ="2"><strong>Name:</strong>
                                 {{ bkgrn.hod }}
                             </td>
                         </tr>
                         <tr>
-                            <td><strong>H.O.D / Representative:</strong>
+                            <td colspan ="2"><strong>H.O.D / Representative:</strong>
                                 {{ bkgrn.hod }}
                             </td>
-                            <td ><strong>ID Number:</strong>
+                            <td colspan ="2"><strong>ID Number:</strong>
                                 {{ bkgrn.id_number }}
                             </td>
                         </tr>
                         <tr>
-                            <td><strong>Purchasing Rep.:</strong>
+                            <td colspan ="2"><strong>Purchasing Rep.:</strong>
                                 {{ bkgrn.purchase_rep }}
                             </td>
-                            <td ><strong>Vehicle number:</strong>
+                            <td colspan ="2"><strong>Vehicle number:</strong>
                                 {{ bkgrn.vehicle_no }}
                             </td>
                         </tr>
