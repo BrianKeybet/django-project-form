@@ -431,7 +431,12 @@ def create_kgrn(request):
     if request.method == 'POST':
         check = request.POST.getlist('checks[]')
         print(f'Initial list {check} type {type(check)}')
-        kgrn_instance = kgrn.objects.create(form_serials = check, date_posted = datetime.now(), author = request.user, department = request.user.profile.department)
+
+        kgrn_sum = kgrn_item.objects.count()
+        kgrn_sum1 = kgrn.objects.count()
+        serial_num = kgrn_sum + kgrn_sum1 + 1 #Get next serial number to display in email
+
+        kgrn_instance = kgrn.objects.create(serial_num = serial_num, form_serials = check, date_posted = datetime.now(), author = request.user, department = request.user.profile.department)
         kgrn_instance.save()
 
         dept = request.user.profile.department
@@ -663,7 +668,9 @@ class BlankKGRN_CreateView(LoginRequiredMixin, SuccessMessageMixin, generic.Crea
 
         kgrn_sum = kgrn_item.objects.count()
         kgrn_sum1 = kgrn.objects.count()
-        serial_num = kgrn_sum + kgrn_sum1 #Get next serial number to display in email
+        serial_num = kgrn_sum + kgrn_sum1 + 1 #Get next serial number to display in email
+
+        form.instance.serial_num = serial_num
 
         dept = self.request.user.profile.department
         profs = Profile.objects.filter(department=f'{dept}',level='2')
