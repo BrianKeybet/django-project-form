@@ -491,7 +491,7 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[config('BRIAN_EMAIL')],
             cc=[config('BRIAN_EMAIL')],
@@ -506,7 +506,7 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
             form.instance.kgrn_status += 1
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[config('BRIAN_EMAIL')],
             cc=[config('BRIAN_EMAIL')],
@@ -522,7 +522,7 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[config('BRIAN_EMAIL')],
             cc=[config('BRIAN_EMAIL')],
@@ -538,7 +538,7 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[config('BRIAN_EMAIL')],
             cc=[config('BRIAN_EMAIL')],
@@ -593,7 +593,7 @@ class KGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[config('BRIAN_EMAIL')],
             cc=[config('BRIAN_EMAIL')],
@@ -608,7 +608,7 @@ class KGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
             form.instance.kgrn_status += 1
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[config('BRIAN_EMAIL')],
             cc=[config('BRIAN_EMAIL')],
@@ -624,7 +624,7 @@ class KGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[config('BRIAN_EMAIL')],
             cc=[config('BRIAN_EMAIL')],
@@ -640,7 +640,80 @@ class KGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            from_email=config('EMAIL_HOST_USER'),
+            to=[config('BRIAN_EMAIL')],
+            cc=[config('BRIAN_EMAIL')],
+            reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            )
+            # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
+            email.send()
+            messages.success(self.request,'Form submitted and mail sent!')
+            return super().form_valid(form)
+
+        else:
+            return HttpResponse('Error')
+
+class CloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'waste_management/approve_kgrn_close.html'
+    model = kgrn
+    fields = ['accounts_comment']
+
+    def form_valid(self, form):
+        form.instance.closed_by = self.request.user
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 4): #If the button to elevate the form to the next level has been clicked
+            form.instance.form_status += 2 #Increases the form status by 2
+
+            email = EmailMessage(
+            subject=f'{form.instance.department} department KGRN',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been closed by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            from_email=config('EMAIL_HOST_USER'),
+            to=[config('BRIAN_EMAIL')],
+            cc=[config('BRIAN_EMAIL')],
+            reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            )
+            # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
+            email.send()
+            messages.success(self.request,'Form submitted and mail sent!')
+            return super().form_valid(form)
+            
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 5):
+            form.instance.form_status += 1
+            email = EmailMessage(
+            subject=f'{form.instance.department} department KGRN',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been closed by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            from_email=config('EMAIL_HOST_USER'),
+            to=[config('BRIAN_EMAIL')],
+            cc=[config('BRIAN_EMAIL')],
+            reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            )
+            # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
+            email.send()
+            messages.success(self.request,'Form submitted and mail sent!')
+            return super().form_valid(form)
+
+        if ('demote' in self.request.POST) and (form.instance.form_status == 4):
+            form.instance.form_status -= 1
+
+            email = EmailMessage(
+            subject=f'{form.instance.department} department KGRN',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            from_email=config('EMAIL_HOST_USER'),
+            to=[config('BRIAN_EMAIL')],
+            cc=[config('BRIAN_EMAIL')],
+            reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            )
+            # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
+            email.send()
+            messages.success(self.request,'Form submitted and mail sent!')
+            return super().form_valid(form)
+            
+        if ('demote' in self.request.POST) and (form.instance.form_status == 5):
+            form.instance.form_status -= 2
+
+            email = EmailMessage(
+            subject=f'{form.instance.department} department KGRN',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[config('BRIAN_EMAIL')],
             cc=[config('BRIAN_EMAIL')],
@@ -703,7 +776,7 @@ class BlankKGRNHODUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[config('BRIAN_EMAIL')],
             cc=[config('BRIAN_EMAIL')],
@@ -718,7 +791,7 @@ class BlankKGRNHODUpdateView(LoginRequiredMixin, UpdateView):
             form.instance.form_status += 1
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[config('BRIAN_EMAIL')],
             cc=[config('BRIAN_EMAIL')],
@@ -734,7 +807,7 @@ class BlankKGRNHODUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[config('BRIAN_EMAIL')],
             cc=[config('BRIAN_EMAIL')],
@@ -750,7 +823,7 @@ class BlankKGRNHODUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[config('BRIAN_EMAIL')],
             cc=[config('BRIAN_EMAIL')],
@@ -776,7 +849,7 @@ class BlankKGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[config('BRIAN_EMAIL')],
             cc=[config('BRIAN_EMAIL')],
@@ -792,7 +865,7 @@ class BlankKGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[config('BRIAN_EMAIL')],
             cc=[config('BRIAN_EMAIL')],
@@ -805,6 +878,80 @@ class BlankKGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
             
         else:
             return HttpResponse('Error')
+
+class BlankCloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'waste_management/approve_kgrn_item_close.html'
+    model = kgrn_item
+    fields = ['accounts_comment']
+
+    def form_valid(self, form):
+        form.instance.closed_by = self.request.user
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 6): #If the button to elevate the form to the next level has been clicked
+            form.instance.form_status += 2 #Increases the form status by 2
+
+            email = EmailMessage(
+            subject=f'{form.instance.department} department KGRN',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been closed by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            from_email=config('EMAIL_HOST_USER'),
+            to=[config('BRIAN_EMAIL')],
+            cc=[config('BRIAN_EMAIL')],
+            reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            )
+            # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
+            email.send()
+            messages.success(self.request,'Form submitted and mail sent!')
+            return super().form_valid(form)
+            
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 5):
+            form.instance.form_status += 3
+            email = EmailMessage(
+            subject=f'{form.instance.department} department KGRN',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been closed by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            from_email=config('EMAIL_HOST_USER'),
+            to=[config('BRIAN_EMAIL')],
+            cc=[config('BRIAN_EMAIL')],
+            reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            )
+            # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
+            email.send()
+            messages.success(self.request,'Form submitted and mail sent!')
+            return super().form_valid(form)
+
+        if ('demote' in self.request.POST) and (form.instance.form_status == 6):
+            form.instance.form_status -= 1
+
+            email = EmailMessage(
+            subject=f'{form.instance.department} department KGRN',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            from_email=config('EMAIL_HOST_USER'),
+            to=[config('BRIAN_EMAIL')],
+            cc=[config('BRIAN_EMAIL')],
+            reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            )
+            # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
+            email.send()
+            messages.success(self.request,'Form submitted and mail sent!')
+            return super().form_valid(form)
+            
+        if ('demote' in self.request.POST) and (form.instance.form_status == 7):
+            form.instance.form_status -= 2
+
+            email = EmailMessage(
+            subject=f'{form.instance.department} department KGRN',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            from_email=config('EMAIL_HOST_USER'),
+            to=[config('BRIAN_EMAIL')],
+            cc=[config('BRIAN_EMAIL')],
+            reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            )
+            # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
+            email.send()
+            messages.success(self.request,'Form submitted and mail sent!')
+            return super().form_valid(form)
+
+        else:
+            return HttpResponse('Error')
+
         
 
 class goods_issue_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):

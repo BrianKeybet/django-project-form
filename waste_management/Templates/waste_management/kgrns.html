@@ -91,7 +91,9 @@
                 {% elif kgrn.kgrn_status == 3 %}
                     <td>Rejected by Purchasing</td>
                 {% elif kgrn.kgrn_status == 4 %}
-                    <td>Approved by Purchasing</td>
+                    <td><a href="{% url 'kgrn-update2' kgrn.id %}">Submitted to Supplier</a></td>
+                {% elif kgrn.kgrn_status == 6 %}
+                    <td><a href="{% url 'kgrn-update2' kgrn.id %}">Closed</a></td>
                 {% endif %}
 
                 {% if kgrn.kgrn_status == 0 %}

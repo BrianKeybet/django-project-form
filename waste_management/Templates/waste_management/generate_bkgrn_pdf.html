@@ -93,6 +93,17 @@
                         <strong>Department:</strong>
                         {{ bkgrn.department }} 
                     </p>
+                    {% if bkgrn.form_status == 8 %}
+                        <p>
+                            <strong>Status:</strong>
+                            Closed 
+                        </p>
+                    {% else %}
+                        <p>
+                            <strong>Status:</strong>
+                            Open 
+                        </p>
+                    {% endif %}
                 </fieldset>
                     <table class="my_table">
                         <thead>
@@ -203,6 +214,13 @@
                                 {{ bkgrn.vehicle_no }}
                             </td>
                         </tr>
+                        {% if bkgrn.form_status == 8 %}
+                            <tr>
+                                <td colspan ="2"><strong>Closed by:</strong>
+                                    {{ bkgrn.closed_by }}
+                                </td>
+                            </tr>
+                        {% endif %}
                     </table>
                 </fieldset> 
  

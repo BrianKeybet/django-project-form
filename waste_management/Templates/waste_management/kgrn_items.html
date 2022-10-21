@@ -117,7 +117,9 @@
                 {% elif kgrn_item.form_status == 3 %}
                 <td>Rejected by Purchasing</td>
                 {% elif kgrn_item.form_status == 6 %}
-                <td>Approved by Purchasing</td>
+                <td><a href="{% url 'bkgrn-update2' kgrn_item.id%}">Submitted to Supplier</a></td>
+                {% elif kgrn_item.form_status == 8 %}
+                <td>Closed</td>
                 {% else %}
                 <td>Error</td>
                 {% endif %}
@@ -132,7 +134,7 @@
                 <td><a href="{% url 'bkgrn-update1' kgrn_item.id%}">Update</a></td>
                 {% elif kgrn_item.form_status == 3 %}
                 <td><a href="{% url 'bkgrn-update' kgrn_item.id%}">Rejected</a></td>
-                {% elif kgrn_item.form_status == 6 %}
+                {% elif kgrn_item.form_status == 6 or kgrn_item.form_status == 8 %}
                 <td><a href="{% url 'bkgrn_pdf_view' kgrn_item.id%}">Get PDF</a></td>
                 {% else %}
                 <td><a href="#">Awaiting Approval ...</a></td>

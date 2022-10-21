@@ -91,8 +91,10 @@ class kgrn(models.Model):
     department = models.CharField(max_length = 20, blank = True)
     hod = models.ForeignKey(User, null = True, on_delete = models.PROTECT, related_name = 'H_O_D', blank= True)
     purchase_rep = models.ForeignKey(User, null = True, on_delete = models.PROTECT, related_name = 'Purchasing_Rep', blank= True)
+    closed_by = models.ForeignKey(User, null = True, on_delete = models.PROTECT, related_name = 'Accounts_Rep', blank= True)
     hod_comment = models.CharField(max_length=100, null=True, blank=True,verbose_name="Head Of Dept comment")
     purchase_comment = models.CharField(max_length=100, null=True, blank=True,verbose_name="Purchase comment")
+    accounts_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="Accounts comments")
     resolution = models.ForeignKey(Resolve, on_delete=models.PROTECT, null=True, blank = True, related_name = 'resolution', verbose_name = "Resolution")
     kgrn_status = models.IntegerField(null=True, default='0')
 
@@ -110,6 +112,7 @@ class kgrn_item(models.Model):
     author = models.ForeignKey(User, null = True, on_delete = models.PROTECT)
     hod = models.ForeignKey(User, null = True, on_delete = models.PROTECT, related_name = 'Head_of_Dept', blank= True)
     purchase_rep = models.ForeignKey(User, null = True, on_delete = models.PROTECT, related_name = 'Purchasing_Representative', blank= True)
+    closed_by = models.ForeignKey(User, null = True, on_delete = models.PROTECT, related_name = 'Accounts_Representative', blank= True)
     supplier = models.ForeignKey(Supplier, on_delete=models.PROTECT, null = True, blank = True)
     waste_loader = models.CharField(max_length=20, null = True, blank = True, verbose_name = "Loaded By")
     collected_by = models.CharField(max_length=20, null = True, blank = True, verbose_name = "Collected By")
@@ -149,6 +152,7 @@ class kgrn_item(models.Model):
     resolution8 = models.ForeignKey(Resolve, on_delete=models.PROTECT, null=True, blank = True, related_name = 'resolution8', verbose_name = "")
     hod_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="HOD comment")
     purchase_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="Purchasing comment")
+    accounts_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="Accounts comment")
     
 
     class Meta:
