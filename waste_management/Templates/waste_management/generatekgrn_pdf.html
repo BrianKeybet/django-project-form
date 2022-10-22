@@ -71,7 +71,7 @@
                 <fieldset>
                     <p class="top_row">
                         <strong>KGRN No.:</strong>
-                        {{ checks.id }}
+                        {{ checks.serial_num }}
                     </p>
                     <p>
                         <strong>D/Notes Serials:</strong>
@@ -163,6 +163,11 @@
                         <strong>Loaded by:</strong>
                         {{ dnote.waste_loader }} 
                     </p>
+                    {% if checks.kgrn_status == 6 %}
+                    <p><strong>Closed by:</strong>
+                            {{ checks.closed_by }}
+                    </p>
+                    {% endif %}
                     <p >
                         <strong>Received by: </strong>
                         Name____________________Signature_______________Date_____________

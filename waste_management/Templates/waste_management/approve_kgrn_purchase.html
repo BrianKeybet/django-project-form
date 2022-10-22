@@ -82,6 +82,10 @@
     grid-column: 1 / 5;
     text-align: center;
     }
+    .item:nth-of-type(10) {
+    grid-column: 1 / 5;
+    text-align: center;
+    }
 
 
 
@@ -104,9 +108,9 @@
 </style>
 <div class="container">
     <div class="item"><h2>GOODS RETURN NOTE (KGRN)</h2></div>
-    <div class="item" style="text-align: Left"><strong>KAPA/PSD/0020</strong></div>
+    <div class="item" style="text-align: Left"><strong>KAPA/PSD/0020  &nbsp; &nbsp; KP-SA-FM-20(0)</strong></div>
     <div class="item" style="text-align: Left"><strong>Department:</strong>  {{ dnote.department }}</div>
-    <div class="item" style="text-align: Left"><strong>Serial Number:</strong> {{ checks.id }}</div> 
+    <div class="item" style="text-align: Left"><strong>Serial Number:</strong> {{ checks.serial_num }}</div> 
     <div class="item" style="text-align: Left"><strong>Raised on:</strong> {{ checks.date_posted|date:"F d, Y"  }}</div> 
     <div class="item" style="text-align: Left"><strong>D/Notes Serials:</strong> {{ checks.form_serials }}</div>
     <div class="item" style="text-align: Left"><strong>Raised by:</strong> {{ checks.author }}</div>
@@ -180,7 +184,8 @@
             {% endfor %}
             </table>
         </fieldset>
-    </div>    
+    </div>
+    <div class="item" style="text-align: Left"><strong>{{ checks.hod }} (H.O.D) comments:</strong> {{ checks.hod_comment }}</div>    
     <div class="item">
         <form method="POST" action="" {% if form.is_multipart %} enctype="multipart/form-data" {% endif %}>
                 {% csrf_token %}

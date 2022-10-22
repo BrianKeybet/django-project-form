@@ -102,7 +102,7 @@
                     <td><a href="{% url 'kgrn-update' kgrn.id %}">Update</a></td>                    
                 {% elif kgrn.kgrn_status == 2 %}
                     <td><a href="{% url 'kgrn-update1' kgrn.id %}">Update</a></td>
-                {% elif kgrn.kgrn_status == 4 %}
+                {% elif kgrn.kgrn_status == 4 or kgrn.kgrn_status == 6 %}
                     <td><a href="{% url 'kgrn_pdf_view' kgrn.id %}">Get PDF</a></td>
                 {% endif %}
                 </tr>
