@@ -94,6 +94,14 @@
     grid-column: 1 / 5;
     text-align: left;
     }
+    .item:nth-of-type(10) {
+    grid-column: 1 / 5;
+    text-align: left;
+    }
+    .item:nth-of-type(11) {
+    grid-column: 1 / 5;
+    text-align: left;
+    }
 
 
 
@@ -260,7 +268,8 @@
                 </tfoot>
             </table>
         </fieldset>
-    </div>    
+    </div>
+    <div class="item"><strong>H.O.D / Representative:</strong> {{ object.hod }} <strong>Comment:</strong> {{ object.hod_comment }}</div> 
     <div class="item">
         <form method="POST" action="" {% if form.is_multipart %} enctype="multipart/form-data" {% endif %}>
                 {% csrf_token %}

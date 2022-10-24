@@ -209,7 +209,7 @@ class goods_issue_note(models.Model):
     hod = models.ForeignKey(User, null = True, on_delete = models.PROTECT,  related_name = 'HOD', blank= True)
     hod_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="HOD comment")
     approved_by = models.ForeignKey(User, null = True, on_delete = models.PROTECT,  related_name = 'Approver', blank= True)
-    fm_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="FM comment")
+    fm_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="Comment")
     dept_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="Dept comment")
     my_total = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, verbose_name="Total")
     gross_total = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, verbose_name="Gross Total")

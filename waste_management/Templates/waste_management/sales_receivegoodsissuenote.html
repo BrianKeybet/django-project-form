@@ -292,7 +292,7 @@
                         </tr>
                         <tr>
                             <td style="width:50% ; text-align: right;"><strong>TOTAL WEIGHBRIDGE WEIGHT:</strong></td>
-                            <td style="width:25%"><strong>{{ form.total_weight_wb|as_crispy_field }}</strong></td>
+                            <td style="width:25%"><strong> {{ form.total_weight_wb|as_crispy_field }}</strong></td>
                             <td style="width:25%" ><strong>VAT (16%):</strong></td>
                             <td  style="width:25% ; text-align: right;"><strong>{{ 0.16 | mul:object.my_total |floatformat:2 |intcomma}}</strong></td>
                         </tr>
@@ -339,7 +339,7 @@
                             <!-- <div>{{ form|crispy }}</div> -->
 
                             <div class="row justify-content-center mt-5">
-                                <button name="elevate" value="Submit" type="submit" class="btn btn-outline-success active btn-sm">Receive</button>
+                                <button name="elevate" value="Submit" type="submit" class="btn btn-outline-success active btn-sm">Complete</button>
                                 <button name="demote" value="Submit" type="submit" class="btn btn-outline-danger active btn-sm">Reject</button>
                             </div>
                         </fieldset>
