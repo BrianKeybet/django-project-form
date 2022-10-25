@@ -83,6 +83,8 @@
                     <td>{{ kgrn.author }}</td>
 
                 {% if kgrn.kgrn_status == 0 %}
+                    <td>Add Driver Details</td>
+                {% elif kgrn.kgrn_status == 15 %}
                     <td>Submitted to HOD</td>
                 {% elif kgrn.kgrn_status == 1 %}
                     <td>Rejected by HOD</td>
@@ -91,12 +93,14 @@
                 {% elif kgrn.kgrn_status == 3 %}
                     <td>Rejected by Purchasing</td>
                 {% elif kgrn.kgrn_status == 4 %}
-                    <td><a href="{% url 'kgrn-update2' kgrn.id %}">Submitted to Supplier</a></td>
+                    <td><a href="{% url 'kgrn-update2' kgrn.id %}">Awaiting Supplier's Action</a></td>
                 {% elif kgrn.kgrn_status == 6 %}
                     <td><a href="{% url 'kgrn-update2' kgrn.id %}">Closed</a></td>
                 {% endif %}
 
                 {% if kgrn.kgrn_status == 0 %}
+                    <td><a href="{% url 'kgrn-update0' kgrn.id %}">Update</a></td>
+                {% elif kgrn.kgrn_status == 15 %}
                     <td><a href="{% url 'kgrn-update' kgrn.id %}">Update</a></td>
                 {% elif kgrn.kgrn_status == 3 %}
                     <td><a href="{% url 'kgrn-update' kgrn.id %}">Update</a></td>                    

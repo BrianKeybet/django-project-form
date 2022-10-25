@@ -36,7 +36,7 @@
             /* padding-top: 50px; */
             /* padding-right: 30px; */
             /* padding-bottom: 50px; */
-            padding-left: 10px;
+            padding-left: 0px;
         }
         th {
             text-align: left;
@@ -75,13 +75,13 @@
 
 <body>
   <div class="container">
-                <fieldset style="padding-left: 10px;">
+                <fieldset>
                     <p class="top_row">
-                        <strong>Serial Number:</strong>
+                        <strong>KGRN no.:</strong>
                         {{ bkgrn.serial_num }}
                     </p>
                     <p>
-                        <strong>Date Posted:</strong>
+                        <strong>Date:</strong>
                         {{ bkgrn.date_posted|date:"F d, Y" }}
                         
                     </p>
@@ -93,7 +93,7 @@
                         <strong>Department:</strong>
                         {{ bkgrn.department }} 
                     </p>
-                    {% if bkgrn.form_status == 8 %}
+                    <!-- {% if bkgrn.form_status == 8 %}
                         <p>
                             <strong>Status:</strong>
                             Closed 
@@ -103,7 +103,7 @@
                             <strong>Status:</strong>
                             Open 
                         </p>
-                    {% endif %}
+                    {% endif %} -->
                 </fieldset>
                     <table class="my_table">
                         <thead>
@@ -111,7 +111,7 @@
                                 <th scope="col" style="width:50%">Material</th>
                                 <th scope="col" style="width:10%">Quantity</th>
                                 <th scope="col" style="width:10%">UOM</th>
-                                <th scope="col" style="width:30%">Resolution</th>
+                                <th scope="col" style="width:20%">Resolution</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -187,15 +187,15 @@
                 <fieldset  class="bottom_row">
                     <table style="text-align: Left">
                         <tr>
-                            <th colspan ="2" style="text-align: Left">KAPA</th>
-                            <th colspan ="2" style="text-align: Left">COLLECTED BY:</th>
+                            <th colspan ="2" style="text-align: Left"><U>KAPA DETAILS:</U></th>
+                            <th colspan ="2" style="text-align: Left"><U>COLLECTED BY (SUPPLIER):</U></th>
                         </tr>
                         <tr>
                             <td colspan ="2"><strong>Prepared by:</strong>
                                 {{ bkgrn.author }}
                             </td>
                             <td colspan ="2"><strong>Name:</strong>
-                                {{ bkgrn.hod }}
+                                {{ bkgrn.collected_by }}
                             </td>
                         </tr>
                         <tr>

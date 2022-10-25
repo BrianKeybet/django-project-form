@@ -52,47 +52,35 @@
     }
     .item:nth-of-type(2) {
     grid-column: 1 / 3;
-    text-align: center;
+    text-align: left;
     }
     .item:nth-of-type(3) {
     grid-column: 3 / 5;
-    text-align: center;
+    text-align: left;
     }
     .item:nth-of-type(4) {
     grid-column: 1 / 3;
-    text-align: center;
+    text-align: left;
     }
     .item:nth-of-type(5) {
     grid-column: 3 / 5;
-    text-align: center;
+    text-align: left;
     }
     .item:nth-of-type(6) {
     grid-column: 1 / 3;
-    text-align: center;
+    text-align: left;
     }
     .item:nth-of-type(7) {
     grid-column: 3 / 5;
-    text-align: center;
+    text-align: left;
     }
     .item:nth-of-type(8) {
     grid-column: 1 / 5;
-    text-align: center;
+    text-align: left;
     }
     .item:nth-of-type(9) {
     grid-column: 1 / 5;
-    text-align: center;
-    }
-    .item:nth-of-type(10) {
-    grid-column: 1 / 5;
-    text-align: center;
-    }
-    .item:nth-of-type(11) {
-    grid-column: 1 / 5;
-    text-align: center;
-    }
-    .item:nth-of-type(12) {
-    grid-column: 1 / 5;
-    text-align: center;
+    text-align: left;
     }
 
 
@@ -116,20 +104,20 @@
 </style>
 <div class="container">
     <div class="item"><h2>GOODS RETURN NOTE (KGRN)</h2></div>
-    <div class="item" style="text-align: Left"><strong>KAPA/PSD/0020  &nbsp; &nbsp; KP-SA-FM-20(0)</strong></div>
-    <div class="item" style="text-align: Left"><strong>Department:</strong>  {{ dnote.department }}</div>
-    <div class="item" style="text-align: Left"><strong>Serial Number:</strong> {{ checks.serial_num }}</div> 
-    <div class="item" style="text-align: Left"><strong>Raised on:</strong> {{ checks.date_posted|date:"F d, Y"  }}</div> 
-    <div class="item" style="text-align: Left"><strong>D/Notes Serials:</strong> {{ checks.form_serials }}</div>
-    <div class="item" style="text-align: Left"><strong>Raised by:</strong> {{ checks.author }}</div>
+    <div class="item"><strong>KAPA/PSD/0020  &nbsp; &nbsp; KP-SA-FM-20(0)</strong></div>
+    <div class="item"><strong>Department:</strong> {{ dnote.department }}</div>
+    <div class="item"><strong>Serial Number:</strong> {{ checks.serial_num }}</div> 
+    <div class="item"><strong>Raised on:</strong> {{ checks.date_posted|date:"F d, Y"  }}</div> 
+    <div class="item"><strong>D/Notes Serials:</strong> {{ checks.form_serials }}</div>
+    <div class="item"><strong>Raised by:</strong> {{ checks.author }}</div>
     <div class="item"> 
         <fieldset class="form-group">
-            <table class='table' style="text-align: Left">
+            <table class='table'>
                 <thead>
                 <tr>
-                    <th>SUPPLIER</th>
-                    <th>ITEM</th>
-                    <th style="text-align: center">QUANTITY</th>
+                    <th style="text-align: Left">SUPPLIER</th>
+                    <th style="text-align: Left">ITEM</th>
+                    <th style="text-align: Left">QUANTITY</th>
                 </tr>    
                 </thead>
             {% for dnote in dnotes_list %}
@@ -137,76 +125,71 @@
                 <tr>
                     <td>{{ dnote.supplier }}</td>
                     <td>{{ dnote.item1 }}</td>
-                    <td style="text-align: center">{{ dnote.item_qty1 }}</td>            
+                    <td>{{ dnote.item_qty1 }}</td>            
                 </tr>
                 {% endif %}
                 {% if dnote.item2 != null %}
                 <tr>
                     <td>{{ dnote.supplier }}</td>
                     <td>{{ dnote.item2 }}</td>
-                    <td style="text-align: center">{{ dnote.item_qty2 }}</td>            
+                    <td>{{ dnote.item_qty2 }}</td>            
                 </tr>
                 {% endif %}
                 {% if dnote.item3 != null %}
                 <tr>
                     <td>{{ dnote.supplier }}</td>
                     <td>{{ dnote.item3 }}</td>
-                    <td style="text-align: center">{{ dnote.item_qty3 }}</td>            
+                    <td>{{ dnote.item_qty3 }}</td>            
                 </tr>
                 {% endif %}
                 {% if dnote.item4 != null %}
                 <tr>
                     <td>{{ dnote.supplier }}</td>
                     <td>{{ dnote.item4 }}</td>
-                    <td style="text-align: center">{{ dnote.item_qty4 }}</td>            
+                    <td>{{ dnote.item_qty4 }}</td>            
                 </tr>
                 {% endif %}
                 {% if dnote.item5 != null %}
                 <tr>
                     <td>{{ dnote.supplier }}</td>
                     <td>{{ dnote.item5 }}</td>
-                    <td style="text-align: center">{{ dnote.item_qty5 }}</td>            
+                    <td>{{ dnote.item_qty5 }}</td>            
                 </tr>
                 {% endif %}
                 {% if dnote.item6 != null %}
                 <tr>
                     <td>{{ dnote.supplier }}</td>
                     <td>{{ dnote.item6 }}</td>
-                    <td style="text-align: center">{{ dnote.item_qty6 }}</td>            
+                    <td>{{ dnote.item_qty6 }}</td>            
                 </tr>
                 {% endif %}
                 {% if dnote.item7 != null %}
                 <tr>
                     <td>{{ dnote.supplier }}</td>
                     <td>{{ dnote.item7 }}</td>
-                    <td style="text-align: center">{{ dnote.item_qty7 }}</td>            
+                    <td>{{ dnote.item_qty7 }}</td>            
                 </tr>
                 {% endif %}
                 {% if dnote.item8 != null %}
                 <tr>
                     <td>{{ dnote.supplier }}</td>
                     <td>{{ dnote.item8 }}</td>
-                    <td style="text-align: center">{{ dnote.item_qty8 }}</td>            
+                    <td>{{ dnote.item_qty8 }}</td>            
                 </tr>
                 {% endif %}
             {% endfor %}
             </table>
         </fieldset>
-    </div>
-    <div class="item" style="text-align: Left"><strong>{{ checks.hod }} (H.O.D) comments:</strong> {{ checks.hod_comment }}</div>
-    <div class="item" style="text-align: Left"><strong>{{ checks.purchase_rep}} (Procurement) comments:</strong> {{ checks.purchase_comment }}</div> 
-    <div class="item" style="text-align: Left"><strong>Resolution:</strong> {{ checks.resolution }}</div>     
+    </div>    
     <div class="item">
         <form method="POST" action="" {% if form.is_multipart %} enctype="multipart/form-data" {% endif %}>
                 {% csrf_token %}
                     <fieldset class="form-group">
 
                         <div>{{ form|crispy }}</div>
-                        <!-- <div>{{ form.purchase_comment}}</div> -->
 
                         <div class="row justify-content-center mt-5">
-                            <button name="elevate" value="Submit" type="submit" class="btn btn-outline-success active btn-sm">Close</button>
-                            <button name="demote" value="Submit" type="submit" class="btn btn-outline-danger active btn-sm">Reject</button>
+                            <button name="elevate" value="Submit" type="submit" class="btn btn-outline-success active btn-sm">Submit</button>
                         </div>
                     </fieldset>
         </form>

@@ -24,11 +24,11 @@
             size: A4 portrait;
             margin-left: 1.5cm;
             margin-right: 0.8cm;
-            margin-top: 2cm;
+            margin-top: 2.9cm;
         }
         body {
             font-weight: 200;
-            font-size: 14px;
+            font-size: 10px;
         }
         .container {
             position: relative;
@@ -36,8 +36,8 @@
             /* padding-top: 50px; */
             /* padding-right: 30px; */
             /* padding-bottom: 50px; */
-            padding-left: 40px;
-            padding-bottom: 1px;
+            padding-left: 0px;
+            /* padding-bottom: 1px; */
         }
         .my_table {
             border: 1px solid rgba(207, 204, 204, 0.014);
@@ -50,7 +50,7 @@
             background-color: #808080;
         }
          .top_row {
-            padding-top: 170px;
+            padding-top: 100px;
         }
         .top_row_field {
             padding-top: 20px;
@@ -60,6 +60,12 @@
         }
         .top_row_resolution {
             padding-top: 80px;
+        }
+        .bottom_row {
+            padding-top: 5px;
+            position:absolute;
+            bottom: 0px;
+            padding-bottom: 0px;
         }
 
     </style>
@@ -86,94 +92,121 @@
                         <strong>Department:</strong>
                         {{ checks.department }} 
                     </p>
+                    <p >
+                        <strong>Supplier:</strong>
+                        {{ dnote.supplier}} 
+                    </p>
+                    <p >
+                        <strong>Resolution:</strong>
+                        {{ checks.resolution }} 
+                    </p>
                 </fieldset>
-                <fieldset>
-                    <table class='table my_table'>
+                    <table class='my_table'>
                         <thead>
                         <tr>
-                            <th style="text-align: Left">SUPPLIER</th>
-                            <th style="text-align: Left">ITEM</th>
-                            <th style="text-align: Left">QUANTITY</th>
+                            <th style="text-align: Left ; width: 50%">MATERIAL</th>
+                            <th style="text-align: Left ; width: 15%">UOM</th>
+                            <th style="text-align: Left ; width: 15%">QUANTITY</th>
                         </tr>    
                         </thead>
                     {% for dnote in dnotes_list %}
                         {% if dnote.item1 != null %}
                         <tr>
-                            <td>{{ dnote.supplier }}</td>
                             <td>{{ dnote.item1 }}</td>
+                            <td>{{ dnote.item1.uom }}</td>
                             <td>{{ dnote.item_qty1 }}</td>            
                         </tr>
                         {% endif %}
                         {% if dnote.item2 != null %}
                         <tr>
-                            <td>{{ dnote.supplier }}</td>
                             <td>{{ dnote.item2 }}</td>
+                            <td>{{ dnote.item1.uom }}</td>
                             <td>{{ dnote.item_qty2 }}</td>            
                         </tr>
                         {% endif %}
                         {% if dnote.item3 != null %}
                         <tr>
-                            <td>{{ dnote.supplier }}</td>
                             <td>{{ dnote.item3 }}</td>
+                            <td>{{ dnote.item1.uom }}</td>
                             <td>{{ dnote.item_qty3 }}</td>            
                         </tr>
                         {% endif %}
                         {% if dnote.item4 != null %}
                         <tr>
-                            <td>{{ dnote.supplier }}</td>
                             <td>{{ dnote.item4 }}</td>
+                            <td>{{ dnote.item1.uom }}</td>
                             <td>{{ dnote.item_qty4 }}</td>            
                         </tr>
                         {% endif %}
                         {% if dnote.item5 != null %}
                         <tr>
-                            <td>{{ dnote.supplier }}</td>
                             <td>{{ dnote.item5 }}</td>
+                            <td>{{ dnote.item1.uom }}</td>
                             <td>{{ dnote.item_qty5 }}</td>            
                         </tr>
                         {% endif %}
                         {% if dnote.item6 != null %}
                         <tr>
-                            <td>{{ dnote.supplier }}</td>
                             <td>{{ dnote.item6 }}</td>
+                            <td>{{ dnote.item1.uom }}</td>
                             <td>{{ dnote.item_qty6 }}</td>            
                         </tr>
                         {% endif %}
                         {% if dnote.item7 != null %}
                         <tr>
-                            <td>{{ dnote.supplier }}</td>
                             <td>{{ dnote.item7 }}</td>
+                            <td>{{ dnote.item1.uom }}</td>
                             <td>{{ dnote.item_qty7 }}</td>            
                         </tr>
                         {% endif %}
                         {% if dnote.item8 != null %}
                         <tr>
-                            <td>{{ dnote.supplier }}</td>
                             <td>{{ dnote.item8 }}</td>
+                            <td>{{ dnote.item1.uom }}</td>
                             <td>{{ dnote.item_qty8 }}</td>            
                         </tr>
                         {% endif %}
                     {% endfor %}
                     </table>
-                    <p >
-                        <strong>Created by:</strong>
-                        {{ checks.author }} 
-                    </p>
-                    <p >
-                        <strong>Loaded by:</strong>
-                        {{ dnote.waste_loader }} 
-                    </p>
-                    {% if checks.kgrn_status == 6 %}
-                    <p><strong>Closed by:</strong>
-                            {{ checks.closed_by }}
-                    </p>
-                    {% endif %}
-                    <p >
-                        <strong>Received by: </strong>
-                        Name____________________Signature_______________Date_____________
-                        <!-- <strong>Received by (Name & Signature) :____________________</strong> -->
-                    </p>
-                </fieldset>
+                <fieldset  class="bottom_row">
+                    <table style="text-align: Left">
+                        <tr>
+                            <th colspan ="2" style="text-align: Left"><U>KAPA DETAILS:</U></th>
+                            <th colspan ="2" style="text-align: Left"><U>COLLECTED BY (SUPPLIER):</U></th>
+                        </tr>
+                        <tr>
+                            <td colspan ="2"><strong>Prepared by:</strong>
+                                {{ checks.author }}
+                            </td>
+                            <td colspan ="2"><strong>Name:</strong>
+                                {{ checks.collected_by }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan ="2"><strong>H.O.D / Representative::</strong>
+                                {{ checks.hod  }}
+                            </td>
+                            <td colspan ="2"><strong>ID Number:</strong>
+                                {{ checks.id_number }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan ="2"><strong>Purchasing Rep.:</strong>
+                                {{ checks.purchase_rep }}
+                            </td>
+                            <td colspan ="2"><strong>Vehicle number:</strong>
+                                {{ checks.vehicle_no }}
+                            </td>
+                        </tr>
+                        {% if checks.kgrn_status == 8 %}
+                            <tr>
+                                <td colspan ="2"><strong>Closed by:</strong>
+                                    {{ checks.closed_by }}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </table>
+                </fieldset> 
 
 </div>
 
