@@ -82,6 +82,10 @@
     grid-column: 1 / 5;
     text-align: left;
     }
+    .item:nth-of-type(10) {
+    grid-column: 1 / 5;
+    text-align: left;
+    }
 
 
 
@@ -110,6 +114,16 @@
     <div class="item"><strong>Raised on:</strong> {{ checks.date_posted|date:"F d, Y"  }}</div> 
     <div class="item"><strong>D/Notes Serials:</strong> {{ checks.form_serials }}</div>
     <div class="item"><strong>Raised by:</strong> {{ checks.author }}</div>
+    <div class="item">
+        <fieldset>
+            <legend class="center border-bottom mb-4" style="text-align: center">Driver Details</legend>
+            <div>
+                <div style="display:inline-block ; padding-left: 5px;"><strong>Name:</strong>{{ object.collected_by }}</div>
+                <div style="display:inline-block ; padding-left: 5px;"><strong>ID No.:</strong>{{ object.id_number }}</div>
+                <div style="display:inline-block ; padding-left: 5px;"><strong>Vehicle No.:</strong>{{ object.vehicle_no }}</div>
+            </div>
+        </fieldset>
+    </div>
     <div class="item"> 
         <fieldset class="form-group">
             <table class='table'>
