@@ -92,20 +92,36 @@
                     <td>Submitted to Purchasing</td>
                 {% elif kgrn.kgrn_status == 3 %}
                     <td>Rejected by Purchasing</td>
-                {% elif kgrn.kgrn_status == 4 and request.user.profile.level == 5 or request.user.profile.level == 8 %}
-                    <td><a href="{% url 'kgrn-update2' kgrn.id %}">Awaiting Supplier's Action</a></td>
+                {% elif kgrn.kgrn_status == 4 %} 
+                    {% if request.user.profile.level == 5 or request.user.profile.level == 8 %}
+                        <td><a href="{% url 'kgrn-update2' kgrn.id %}">Close KGRN?</a></td>
+                    {% else %}
+                        <td style="color:blue;">Awaiting Supplier's Action...</td>
+                    {% endif %}
                 {% elif kgrn.kgrn_status == 6 %}
-                    <td><a href="{% url 'kgrn-update2' kgrn.id %}">Closed</a></td>
+                    <td>Closed</td>
                 {% endif %}
 
                 {% if kgrn.kgrn_status == 0 %}
                     <td><a href="{% url 'kgrn-update0' kgrn.id %}">Update</a></td>
-                {% elif kgrn.kgrn_status == 15 and request.user.profile.level == 2 or request.user.profile.level == 8 %}
+                {% elif kgrn.kgrn_status == 15 %}
+                    {% if request.user.profile.level == 2 or request.user.profile.level == 8%}
                     <td><a href="{% url 'kgrn-update' kgrn.id %}">Update</a></td>
-                {% elif kgrn.kgrn_status == 3 and request.user.profile.level == 2 or request.user.profile.level == 8 %}
-                    <td><a href="{% url 'kgrn-update' kgrn.id %}">Update</a></td>                    
-                {% elif kgrn.kgrn_status == 2 and request.user.profile.level == 4 or request.user.profile.level == 8 %}
+                    {% else %}
+                    <td style="color:blue;">Awaiting Approval...</td>
+                    {% endif %}
+                {% elif kgrn.kgrn_status == 3 %} 
+                    {% if request.user.profile.level == 2 or request.user.profile.level == 8 %}
+                    <td><a href="{% url 'kgrn-update' kgrn.id %}">Update</a></td>
+                    {% else %}
+                    <td style="color:blue;">Awaiting Approval...</td>
+                    {% endif %}                        
+                {% elif kgrn.kgrn_status == 2 %}
+                    {% if request.user.profile.level == 4 or request.user.profile.level == 8 %} 
                     <td><a href="{% url 'kgrn-update1' kgrn.id %}">Update</a></td>
+                    {% else %}
+                    <td style="color:blue;">Awaiting Approval...</td>
+                    {% endif %}
                 {% elif kgrn.kgrn_status == 4 or kgrn.kgrn_status == 6 %}
                     <td><a href="{% url 'kgrn_pdf_view' kgrn.id %}">Get PDF</a></td>
                 {% else %}

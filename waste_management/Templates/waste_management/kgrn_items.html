@@ -104,36 +104,52 @@
             <tr>
                 <td>{{ kgrn_item.serial_num }}</td>
                 <td>{{ kgrn_item.department }}</td>
-                <td>{{ kgrn_item.supplier }}</td>
+                <td>{{ kgrn_item.supplier|title }}</td>
                 <td>{{ kgrn_item.date_posted }}</td>
                 <td>{{ kgrn_item.author }}</td>
 
                 {% if kgrn_item.form_status == 2 %}
-                <td>Submitted to HOD</td>
+                    <td>Submitted to HOD</td>
                 {% elif kgrn_item.form_status == 1 %}
-                <td>Rejected by HOD</td>
+                    <td>Rejected by HOD</td>
                 {% elif kgrn_item.form_status == 4 %}
-                <td>Submitted to Purchasing</td>
+                    <td>Submitted to Purchasing</td>
                 {% elif kgrn_item.form_status == 3 %}
-                <td>Rejected by Purchasing</td>
-                {% elif kgrn_item.form_status == 6 and request.user.profile.level == 5 or request.user.profile.level == 8 %}
-                <td><a href="{% url 'bkgrn-update2' kgrn_item.id%}">Awaiting Supplier's Action</a></td>
+                    <td>Rejected by Purchasing</td>
+                {% elif kgrn_item.form_status == 6 %} 
+                    {% if request.user.profile.level == 5 or request.user.profile.level == 8 %}
+                        <td><a href="{% url 'bkgrn-update2' kgrn_item.id%}">Close KGRN?</a></td>
+                    {% else %}
+                        <td style="color:blue;">Awaiting Supplier's Action...</td>
+                    {% endif %}
                 {% elif kgrn_item.form_status == 8 %}
-                <td>Closed</td>
+                    <td>Closed</td>
                 {% else %}
-                <td>Error</td>
+                    <td>Error</td>
                 {% endif %}
 
                 {% if kgrn_item.form_status == 0 %}
                 <td><a href="{% url 'kgrn_item-create' %}">Update</a></td>
                 {% elif kgrn_item.form_status == 1 %}
                 <td><a href="#" style="color: red">Invalid Form</a></td>
-                {% elif kgrn_item.form_status == 2 and request.user.profile.level == 2 or request.user.profile.level == 8 %}
-                <td><a href="{% url 'bkgrn-update' kgrn_item.id%}">Update</a></td>
-                {% elif kgrn_item.form_status == 4 and request.user.profile.level == 4 or request.user.profile.level == 8 %}
-                <td><a href="{% url 'bkgrn-update1' kgrn_item.id%}">Update</a></td>
-                {% elif kgrn_item.form_status == 3 and request.user.profile.level == 2 or request.user.profile.level == 8 %}
-                <td><a href="{% url 'bkgrn-update' kgrn_item.id%}">Rejected</a></td>
+                {% elif kgrn_item.form_status == 2 %}
+                    {% if request.user.profile.level == 2 or request.user.profile.level == 8 %}
+                        <td><a href="{% url 'bkgrn-update' kgrn_item.id%}">Update</a></td>
+                    {% else %}
+                        <td style="color:blue;">Awaiting Approval...</td>
+                    {% endif %}
+                {% elif kgrn_item.form_status == 4 %}
+                    {% if request.user.profile.level == 4 or request.user.profile.level == 8 %}
+                        <td><a href="{% url 'bkgrn-update1' kgrn_item.id%}">Update</a></td>
+                    {% else %}
+                        <td style="color:blue;">Awaiting Approval...</td>
+                    {% endif %}
+                {% elif kgrn_item.form_status == 3 %}
+                    {% if request.user.profile.level == 2 or request.user.profile.level == 8 %}
+                        <td><a href="{% url 'bkgrn-update' kgrn_item.id%}">Rejected</a></td>
+                    {% else %}
+                        <td style="color:blue;">Awaiting Approval...</td>
+                    {% endif %}
                 {% elif kgrn_item.form_status == 6 or kgrn_item.form_status == 8 %}
                 <td><a href="{% url 'bkgrn_pdf_view' kgrn_item.id%}">Get PDF</a></td>
                 {% else %}
