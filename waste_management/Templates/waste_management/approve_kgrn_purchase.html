@@ -2,6 +2,10 @@
 
 {% load crispy_forms_tags %}
 
+{% load mathfilters %}
+
+{% load humanize %}
+
 {% block content %}
 <style>
     * {
@@ -129,56 +133,56 @@
                 <tr>
                     <td>{{ dnote.supplier }}</td>
                     <td>{{ dnote.item1 }}</td>
-                    <td style="text-align: center">{{ dnote.item_qty1 }}</td>            
+                    <td style="text-align: center">{{ dnote.item_qty1|intcomma }}</td>            
                 </tr>
                 {% endif %}
                 {% if dnote.item2 != null %}
                 <tr>
                     <td>{{ dnote.supplier }}</td>
                     <td>{{ dnote.item2 }}</td>
-                    <td style="text-align: center">{{ dnote.item_qty2 }}</td>            
+                    <td style="text-align: center">{{ dnote.item_qty2|intcomma }}</td>            
                 </tr>
                 {% endif %}
                 {% if dnote.item3 != null %}
                 <tr>
                     <td>{{ dnote.supplier }}</td>
                     <td>{{ dnote.item3 }}</td>
-                    <td style="text-align: center">{{ dnote.item_qty3 }}</td>            
+                    <td style="text-align: center">{{ dnote.item_qty3|intcomma }}</td>            
                 </tr>
                 {% endif %}
                 {% if dnote.item4 != null %}
                 <tr>
                     <td>{{ dnote.supplier }}</td>
                     <td>{{ dnote.item4 }}</td>
-                    <td style="text-align: center">{{ dnote.item_qty4 }}</td>            
+                    <td style="text-align: center">{{ dnote.item_qty4|intcomma }}</td>            
                 </tr>
                 {% endif %}
                 {% if dnote.item5 != null %}
                 <tr>
                     <td>{{ dnote.supplier }}</td>
                     <td>{{ dnote.item5 }}</td>
-                    <td style="text-align: center">{{ dnote.item_qty5 }}</td>            
+                    <td style="text-align: center">{{ dnote.item_qty5|intcomma }}</td>            
                 </tr>
                 {% endif %}
                 {% if dnote.item6 != null %}
                 <tr>
                     <td>{{ dnote.supplier }}</td>
                     <td>{{ dnote.item6 }}</td>
-                    <td style="text-align: center">{{ dnote.item_qty6 }}</td>            
+                    <td style="text-align: center">{{ dnote.item_qty6|intcomma }}</td>            
                 </tr>
                 {% endif %}
                 {% if dnote.item7 != null %}
                 <tr>
                     <td>{{ dnote.supplier }}</td>
                     <td>{{ dnote.item7 }}</td>
-                    <td style="text-align: center">{{ dnote.item_qty7 }}</td>            
+                    <td style="text-align: center">{{ dnote.item_qty7|intcomma }}</td>            
                 </tr>
                 {% endif %}
                 {% if dnote.item8 != null %}
                 <tr>
                     <td>{{ dnote.supplier }}</td>
                     <td>{{ dnote.item8 }}</td>
-                    <td style="text-align: center">{{ dnote.item_qty8 }}</td>            
+                    <td style="text-align: center">{{ dnote.item_qty8|intcomma }}</td>            
                 </tr>
                 {% endif %}
             {% endfor %}

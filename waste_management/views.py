@@ -416,13 +416,18 @@ def accept_checklist(request):
 class CheckListView(LoginRequiredMixin, generic.ListView):
     context_object_name = 'checklists'
     template_name = 'waste_management/checklists.html'
+    paginate_by: int = 10
 
     def get_queryset(self):
         return models.checklist.objects.all()  
 
 class Dnotes_KGRN_ListView(LoginRequiredMixin, generic.ListView):
+
     context_object_name = 'waste_delivery_notes'
     template_name = 'waste_management/raise_kgrn.html'
+
+    #paginate_by: int = 10
+
 
     def get_queryset(self):
         return models.waste_delivery_note.objects.all() 
@@ -499,10 +504,10 @@ class KGRNStocksUpdateView(LoginRequiredMixin, UpdateView):
 
             for prof in profs:
                 subject = 'KGRN (D/Notes)'
-                message = f'Hello {prof.user.first_name}, a new D/Notes based KGRN has been submitted for your approval.\nPlease login to the system on http://10.10.1.71:8000/waste/kgrns/ to view the form.\nThe serial number is {form.instance.serial_num}.'
+                html_message = f'Hello {prof.user.first_name}, a new D/Notes based KGRN has been submitted for your approval.\nPlease login to the system on http://10.10.1.71:8000/waste/kgrns/ to view the form.\nThe serial number is {form.instance.serial_num}.'
                 email_from = settings.EMAIL_HOST_USER
                 recipient_list = [prof.user.email, config('ADMIN_EMAIL'), config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
-                send_mail(subject, message, email_from, recipient_list, fail_silently=False)
+                send_mail(subject, html_message, email_from, recipient_list, fail_silently=False)
 
             messages.success(self.request,'Form submitted and mail sent!')
             return super().form_valid(form)
@@ -752,7 +757,7 @@ class CloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
             subject=f'{form.instance.department} department KGRN',
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been closed by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
-            to=[config('BRIAN_EMAIL')],
+            to=[form.instance.hod.profile.email, form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
             reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
@@ -767,7 +772,7 @@ class CloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
             subject=f'{form.instance.department} department KGRN',
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been closed by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
-            to=[config('BRIAN_EMAIL')],
+            to=[form.instance.hod.profile.email, form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
@@ -783,7 +788,7 @@ class CloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
             subject=f'{form.instance.department} department KGRN',
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
-            to=[config('BRIAN_EMAIL')],
+            to=[form.instance.hod.profile.email, form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
@@ -799,7 +804,7 @@ class CloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
             subject=f'{form.instance.department} department KGRN',
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
-            to=[config('BRIAN_EMAIL')],
+            to=[form.instance.hod.profile.email, form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
@@ -984,7 +989,7 @@ class BlankCloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
             subject=f'{form.instance.department} department KGRN',
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been closed by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
-            to=[form.instance.hod.profile.email],
+            to=[form.instance.hod.profile.email, form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
@@ -999,7 +1004,7 @@ class BlankCloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
             subject=f'{form.instance.department} department KGRN',
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been closed by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
-            to=[form.instance.hod.profile.email],
+            to=[form.instance.hod.profile.email, form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
@@ -1015,7 +1020,7 @@ class BlankCloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
             subject=f'{form.instance.department} department KGRN',
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
-            to=[form.instance.hod.profile.email],
+            to=[form.instance.hod.profile.email, form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
@@ -1031,7 +1036,7 @@ class BlankCloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
             subject=f'{form.instance.department} department KGRN',
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
-            to=[form.instance.hod.profile.email],
+            to=[form.instance.hod.profile.email, form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
@@ -1204,7 +1209,7 @@ class HOD_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
             for prof in profs:
                 subject = 'Goods Issue Note'
-                message = f'Hello {prof.user.first_name},\nA Goods Issue Note has been submitted by {form.instance.hod} for your approval. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. \n  The serial number is {form.instance.id}. \nIssued To: {form.instance.department_to}. \n Issued By: {form.instance.department_from}. \n Net Value: {form.instance.my_total}'
+                message = f'Hello {prof.user.first_name},\nA Goods Issue Note number {form.instance.id} has been submitted by {form.instance.hod} for your approval. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. \n Issued To: {form.instance.department_to}. \n Issued By: {form.instance.department_from}. \n Net Value: {form.instance.my_total}'
                 email_from = settings.EMAIL_HOST_USER
                 recipient_list = [prof.user.email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)

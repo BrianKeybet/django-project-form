@@ -121,16 +121,36 @@
                     <td>Complete</td>
                 {% endif %}
 
-                {% if goods_issue_note.form_status == 1 and request.user.profile.level > 1 %}
-                    <td><a href="{% url 'goods_issue_note-hodupdate' goods_issue_note.id %}">Update</a></td>
-                {% elif goods_issue_note.form_status == 2 and request.user.profile.level > 1 %}
-                    <td><a href="{% url 'goods_issue_note-hodupdate1' goods_issue_note.id %}">Update</a></td>
-                {% elif goods_issue_note.form_status == 3 and request.user.profile.level > 3 %}
-                    <td><a href="{% url 'goods_issue_note-update' goods_issue_note.id %}">Update</a></td>
-                {% elif goods_issue_note.form_status == 4 and request.user.profile.department == goods_issue_note.department_internal %}
-                    <td><a href="{% url 'goods_issue_note-update1' goods_issue_note.id %}">Update</a></td>
-                {% elif goods_issue_note.form_status == 5 and request.user.profile.level > 3 %}
-                    <td><a href="{% url 'goods_issue_note-update2' goods_issue_note.id%}">Update</a></td>
+                {% if goods_issue_note.form_status == 1 %} 
+                    {% if request.user.profile.level == 2 or request.user.profile.level == 8 %}
+                        <td><a href="{% url 'goods_issue_note-hodupdate' goods_issue_note.id %}">Update</a></td>
+                    {% else %}
+                        <td style="color:blue;">Awaiting Approval...</td>
+                    {% endif %}
+                {% elif goods_issue_note.form_status == 2 %} 
+                    {% if request.user.profile.level == 2 or request.user.profile.level == 8%}
+                        <td><a href="{% url 'goods_issue_note-hodupdate1' goods_issue_note.id %}">Update</a></td>
+                    {% else %}
+                        <td style="color:blue;">Awaiting Approval...</td>
+                    {% endif %}
+                {% elif goods_issue_note.form_status == 3 %} 
+                    {% if request.user.profile.level == 7 or request.user.profile.level == 8%}
+                        <td><a href="{% url 'goods_issue_note-update' goods_issue_note.id %}">Update</a></td>
+                    {% else %}
+                        <td style="color:blue;">Awaiting Approval...</td>
+                    {% endif %}
+                {% elif goods_issue_note.form_status == 4 %} 
+                    {% if request.user.profile.department == goods_issue_note.department_internal and request.user.profile.level == 2  or request.user.profile.level == 8 %}
+                        <td><a href="{% url 'goods_issue_note-update1' goods_issue_note.id %}">Update</a></td>
+                    {% else %}
+                        <td style="color:blue;">Awaiting Approval...</td>
+                    {% endif %}
+                {% elif goods_issue_note.form_status == 5 %} 
+                    {% if request.user.profile.level == 5 or request.user.profile.level == 8 %}
+                        <td><a href="{% url 'goods_issue_note-update2' goods_issue_note.id%}">Update</a></td>
+                    {% else %}
+                        <td style="color:blue;">Awaiting Approval...</td>
+                    {% endif %}
                 {% elif goods_issue_note.form_status == 7 %}
                     <td><a href="{% url 'goods_issue_note_pdf_view1' goods_issue_note.id%}">Get PDF</a></td>
                 {% elif goods_issue_note.form_status == 8 %}

@@ -2,6 +2,10 @@
 
 {% load crispy_forms_tags %}
 
+{% load mathfilters %}
+
+{% load humanize %}
+
 {% block content %}
 <style>
     * {
@@ -136,7 +140,7 @@
                     <tr>
                         <td>{{ object.item1 }}</td>
                         <td>{{ object.reason1 }}</td>
-                        <td>{{ object.item_qty1 }}</td>
+                        <td>{{ object.item_qty1|intcomma }}</td>
                         <td>{{ form.resolution1|as_crispy_field }}</td>            
                     </tr>
                     {% endif %}
@@ -144,7 +148,7 @@
                     <tr>
                         <td>{{ object.item2 }}</td>
                         <td>{{ object.reason2 }}</td>
-                        <td>{{ object.item_qty2 }}</td>
+                        <td>{{ object.item_qty2|intcomma }}</td>
                         <td>{{ form.resolution2|as_crispy_field }}</td>             
                     </tr>
                     {% endif %}
@@ -152,7 +156,7 @@
                     <tr>
                         <td>{{ object.item3 }}</td>
                         <td>{{ object.reason3 }}</td>
-                        <td>{{ object.item_qty3 }}</td>
+                        <td>{{ object.item_qty3|intcomma }}</td>
                         <td>{{ form.resolution3|as_crispy_field }}</td>             
                     </tr>
                     {% endif %}
@@ -160,7 +164,7 @@
                     <tr>
                         <td>{{ object.item4 }}</td>
                         <td>{{ object.reason4 }}</td>
-                        <td>{{ object.item_qty4 }}</td>
+                        <td>{{ object.item_qty4|intcomma }}</td>
                         <td>{{ form.resolution4|as_crispy_field }}</td>             
                     </tr>
                     {% endif %}
@@ -168,7 +172,7 @@
                     <tr>
                         <td>{{ object.item5 }}</td>
                         <td>{{ object.reason5 }}</td>
-                        <td>{{ object.item_qty5 }}</td>
+                        <td>{{ object.item_qty5|intcomma }}</td>
                         <td>{{ form.resolution5|as_crispy_field }}</td>             
                     </tr>
                     {% endif %}
@@ -176,7 +180,7 @@
                     <tr>
                         <td>{{ object.item6 }}</td>
                         <td>{{ object.reason6 }}</td>
-                        <td>{{ object.item_qty6 }}</td>
+                        <td>{{ object.item_qty6|intcomma }}</td>
                         <td>{{ form.resolution6|as_crispy_field }}</td>             
                     </tr>
                     {% endif %}
@@ -184,7 +188,7 @@
                     <tr>
                         <td>{{ object.item7 }}</td>
                         <td>{{ object.reason7 }}</td>
-                        <td>{{ object.item_qty7 }}</td>
+                        <td>{{ object.item_qty7|intcomma }}</td>
                         <td>{{ form.resolution7|as_crispy_field }}</td>             
                     </tr>
                     {% endif %}
@@ -192,7 +196,7 @@
                     <tr>
                         <td>{{ object.item8 }}</td>
                         <td>{{ object.reason8 }}</td>
-                        <td>{{ object.item_qty8 }}</td>
+                        <td>{{ object.item_qty8|intcomma }}</td>
                         <td>{{ form.resolution8|as_crispy_field }}</td>             
                     </tr>
                     {% endif %}
