@@ -247,6 +247,7 @@ class waste_delivery_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, gen
 class DnotesListView(LoginRequiredMixin, generic.ListView):
     context_object_name = 'waste_delivery_notes'
     template_name = 'waste_management/waste_dnotes_list.html'
+    paginate_by: int = 10
 
     def get_queryset(self):
         return models.waste_delivery_note.objects.all()           
@@ -416,7 +417,7 @@ def accept_checklist(request):
 class CheckListView(LoginRequiredMixin, generic.ListView):
     context_object_name = 'checklists'
     template_name = 'waste_management/checklists.html'
-    paginate_by: int = 10
+    paginate_by: int = 15
 
     def get_queryset(self):
         return models.checklist.objects.all()  
@@ -424,9 +425,10 @@ class CheckListView(LoginRequiredMixin, generic.ListView):
 class Dnotes_KGRN_ListView(LoginRequiredMixin, generic.ListView):
 
     context_object_name = 'waste_delivery_notes'
+    #context_object_name = 'raise_kgrns'
     template_name = 'waste_management/raise_kgrn.html'
 
-    #paginate_by: int = 10
+    #paginate_by = 3
 
 
     def get_queryset(self):
@@ -462,6 +464,7 @@ def create_kgrn(request):
 class KGRNListView(LoginRequiredMixin, generic.ListView):
     context_object_name = 'kgrns'
     template_name = 'waste_management/kgrns.html'
+    paginate_by: int = 10
 
     def get_queryset(self):
         return models.kgrn.objects.all()
@@ -849,6 +852,7 @@ class BlankKGRN_CreateView(LoginRequiredMixin, SuccessMessageMixin, generic.Crea
 class KGRN_ItemsListView(LoginRequiredMixin, generic.ListView):
     context_object_name = 'kgrn_items'
     template_name = 'waste_management/kgrn_items.html'
+    paginate_by: int = 12
 
     def get_queryset(self):
         return models.kgrn_item.objects.all()
@@ -1209,7 +1213,7 @@ class HOD_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
             for prof in profs:
                 subject = 'Goods Issue Note'
-                message = f'Hello {prof.user.first_name},\nA Goods Issue Note number {form.instance.id} has been submitted by {form.instance.hod} for your approval. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. \n Issued To: {form.instance.department_to}. \n Issued By: {form.instance.department_from}. \n Net Value: {form.instance.my_total}'
+                message = f'Hello {prof.user.first_name},\nA Goods Issue Note number {form.instance.id} has been submitted by {form.instance.hod} for your approval. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. \n Issued To: {form.instance.department_to}. \n Issued By: {form.instance.department_from}. \n Delivered by: {form.instance.delivered_by}. \n Net Value: {form.instance.my_total}'
                 email_from = settings.EMAIL_HOST_USER
                 recipient_list = [prof.user.email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
@@ -1219,8 +1223,8 @@ class HOD_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
         if ('demote' in self.request.POST) and (form.instance.form_status == 2): #For internal forms, if the form is rejected by the HOD, the form status is decreased by 2
             form.instance.form_status -= 2
-            author_name = form.instance.author.profile.first_name
-            author_email = form.instance.author.profile.email
+            author_name = form.instance.author.first_name
+            author_email = form.instance.author.email
 
             subject = 'Goods Issue Note'
             message = f'Hello {author_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
@@ -1233,8 +1237,8 @@ class HOD_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
         if ('demote' in self.request.POST) and (form.instance.form_status == 1): #For external forms, if the form is rejected by the HOD, the form status is decreased by 1
             form.instance.form_status -= 1 
 
-            author_name = form.instance.author.profile.first_name
-            author_email = form.instance.author.profile.email
+            author_name = form.instance.author.first_name
+            author_email = form.instance.author.email
 
             subject = 'Goods Issue Note'
             message = f'Hello {author_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
@@ -1286,8 +1290,8 @@ class HOD_internal_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
         if ('demote' in self.request.POST) and (form.instance.form_status == 2): #For internal forms, if the form is rejected by the HOD, the form status is decreased by 2
             form.instance.form_status -= 2
-            author_name = form.instance.author.profile.first_name
-            author_email = form.instance.author.profile.email
+            author_name = form.instance.author.first_name
+            author_email = form.instance.author.email
 
             subject = 'Goods Issue Note'
             message = f'Hello {author_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
@@ -1300,8 +1304,8 @@ class HOD_internal_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
         if ('demote' in self.request.POST) and (form.instance.form_status == 1): #For external forms, if the form is rejected by the HOD, the form status is decreased by 1
             form.instance.form_status -= 1 
 
-            author_name = form.instance.author.profile.first_name
-            author_email = form.instance.author.profile.email
+            author_name = form.instance.author.first_name
+            author_email = form.instance.author.email
 
             subject = 'Goods Issue Note'
             message = f'Hello {author_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
@@ -1358,10 +1362,10 @@ class FM_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
         if ('demote' in self.request.POST) and (form.instance.form_status == 1): #For external forms, if the form is rejected by the FM, the form status is decreased by 1
             form.instance.form_status -= 1 
 
-            author_name = form.instance.author.profile.first_name
-            author_email = form.instance.author.profile.email
+            author_name = form.instance.author.first_name
+            author_email = form.instance.author.email
 
-            dept = form.instance.author.profile.department
+            dept = form.instance.author.department
             profs = Profile.objects.filter(department=f'{dept}',level='2')
 
             for prof in profs:
@@ -1388,9 +1392,9 @@ class Dept_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
         if ('elevate' in self.request.POST) and (form.instance.form_status == 4):
             form.instance.form_status += 4
 
-            author_email = form.instance.author.profile.email
+            author_email = form.instance.author.email
 
-            dept = form.instance.author.profile.department
+            dept = form.instance.author.department
             profs = Profile.objects.filter(department=f'{dept}',level='2')
 
             for prof in profs:
@@ -1405,9 +1409,9 @@ class Dept_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
         if ('demote' in self.request.POST) and (form.instance.form_status == 4):
             form.instance.form_status -= 4 
 
-            author_email = form.instance.author.profile.email
+            author_email = form.instance.author.email
 
-            dept = form.instance.author.profile.department
+            dept = form.instance.author.department
             profs = Profile.objects.filter(department=f'{dept}',level='2')
 
             for prof in profs:
@@ -1498,9 +1502,9 @@ class Sales_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
         if ('elevate' in self.request.POST) and (form.instance.form_status == 5):
             form.instance.form_status += 2
             
-            author_email = form.instance.author.profile.email
+            author_email = form.instance.author.email
 
-            dept = form.instance.author.profile.department
+            dept = form.instance.author.department
             profs = Profile.objects.filter(department=f'{dept}',level='2')
 
             for prof in profs:
@@ -1515,9 +1519,9 @@ class Sales_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
         if ('demote' in self.request.POST) and (form.instance.form_status == 5):
             form.instance.form_status -= 5 
 
-            author_email = form.instance.author.profile.email
+            author_email = form.instance.author.email
 
-            dept = form.instance.author.profile.department
+            dept = form.instance.author.department
             profs = Profile.objects.filter(department=f'{dept}',level='2')
 
             for prof in profs:
@@ -1534,6 +1538,7 @@ class Sales_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 class Goods_issue_note_ListView(LoginRequiredMixin, generic.ListView):
     context_object_name = 'goods_issue_notes'
     template_name = 'waste_management/gins.html'
+    paginate_by: int = 15
 
     def get_queryset(self):
         return models.goods_issue_note.objects.all() 

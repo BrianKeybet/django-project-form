@@ -84,6 +84,7 @@ class RTSForm(LoginRequiredMixin, SuccessMessageMixin,  generic.CreateView):
 class FormsView(generic.ListView):
     context_object_name = 'rtsforms'
     template_name = 'forms/rtsforms.html'
+    paginate_by: int = 2
 
     def get_queryset(self):
         return models.RTSform.objects.all()  
