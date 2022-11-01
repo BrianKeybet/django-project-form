@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from rts_forms.models import Supplier
 from django.urls import reverse
+from simple_history.models import HistoricalRecords
 
 import computed_property
 
@@ -18,6 +19,7 @@ class Material(models.Model):
     material_code = models.CharField(max_length=12, blank=False)
     uom = models.CharField(max_length=20, null=True, blank=True, default='PC', verbose_name="UOM")
     price = models.DecimalField(max_digits=6, decimal_places=2, default = 0.00 , verbose_name="Net Price")
+    history = HistoricalRecords()
 
     class Meta:
         ordering = ['name']
@@ -97,6 +99,7 @@ class kgrn(models.Model):
     closed_by = models.ForeignKey(User, null = True, on_delete = models.PROTECT, related_name = 'Accounts_Rep', blank= True)
     hod_comment = models.CharField(max_length=100, null=True, blank=True,verbose_name="Head Of Dept comment")
     purchase_comment = models.CharField(max_length=100, null=True, blank=True,verbose_name="Purchase comment")
+    pur_close_comment = models.CharField(max_length=100, null=True, blank=True,verbose_name="Purchase closing comment")
     accounts_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="Accounts comments")
     resolution = models.ForeignKey(Resolve, on_delete=models.PROTECT, null=True, blank = True, related_name = 'resolution', verbose_name = "Resolution")
     kgrn_status = models.IntegerField(null=True, default='0')
@@ -115,6 +118,7 @@ class kgrn_item(models.Model):
     author = models.ForeignKey(User, null = True, on_delete = models.PROTECT)
     hod = models.ForeignKey(User, null = True, on_delete = models.PROTECT, related_name = 'Head_of_Dept', blank= True)
     purchase_rep = models.ForeignKey(User, null = True, on_delete = models.PROTECT, related_name = 'Purchasing_Representative', blank= True)
+    pur_close_comment = models.CharField(max_length=100, null=True, blank=True,verbose_name="Procurement closing comment")
     closed_by = models.ForeignKey(User, null = True, on_delete = models.PROTECT, related_name = 'Accounts_Representative', blank= True)
     supplier = models.ForeignKey(Supplier, on_delete=models.PROTECT, null = True, blank = True)
     waste_loader = models.CharField(max_length=20, null = True, blank = True, verbose_name = "Loaded By")

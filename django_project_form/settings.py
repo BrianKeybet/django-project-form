@@ -30,6 +30,36 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool)
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} : {asctime} : {message} : {name}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} : {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
+
 ALLOWED_HOSTS = ['10.10.1.71','127.0.0.1']
 
 
@@ -50,6 +80,7 @@ INSTALLED_APPS = [
     'mathfilters',
     'computed_property',
     'django.contrib.humanize',
+    'simple_history',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -62,6 +93,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'django_project_form.urls'

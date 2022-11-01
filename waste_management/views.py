@@ -654,54 +654,23 @@ class KGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.purchase_rep = self.request.user #Inserts the author into the new post
-        profs = Profile.objects.filter(level='6')
 
         if ('elevate' in self.request.POST) and (form.instance.kgrn_status == 2): #If the HOD has clicked the button to elevate the form to the next level
             form.instance.kgrn_status += 2 #Increases the form status by 2
-            for prof in profs:
-                email = EmailMessage(
-                subject=f'{form.instance.department} department KGRN',
-                body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
-                from_email=config('EMAIL_HOST_USER'),
-                to=[prof.user.email],
-                cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
-                reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
-                )
-                # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
-                email.send()
-            messages.success(self.request,'Form submitted and mail sent!')
+
+            messages.success(self.request,'Form submitted')
             return super().form_valid(form)
             
         if ('elevate' in self.request.POST) and (form.instance.kgrn_status == 3):
             form.instance.kgrn_status += 1
-            for prof in profs:
-                email = EmailMessage(
-                subject=f'{form.instance.department} department KGRN',
-                body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
-                from_email=config('EMAIL_HOST_USER'),
-                to=[prof.user.email],
-                cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
-                reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
-                )
-                # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
-                email.send()
-            messages.success(self.request,'Form submitted and mail sent!')
+
+            messages.success(self.request,'Form submitted!')
             return super().form_valid(form)
 
         if ('demote' in self.request.POST) and (form.instance.kgrn_status == 2):
             form.instance.kgrn_status -= 1
 
-            email = EmailMessage(
-            subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
-            from_email=config('EMAIL_HOST_USER'),
-            to=[form.instance.hod.profile.email],
-            cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
-            reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
-            )
-            # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
-            email.send()
-            messages.success(self.request,'Form submitted and mail sent!')
+            messages.success(self.request,'Form submitted!')
             return super().form_valid(form)
             
         if ('demote' in self.request.POST) and (form.instance.kgrn_status == 3):
@@ -720,6 +689,73 @@ class KGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
             messages.success(self.request,'Form submitted and mail sent!')
             return super().form_valid(form)
 
+        else:
+            return HttpResponse('Error')
+
+class KGRNPurchase2UpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'waste_management/approve_kgrn_purchase2.html'
+    model = kgrn
+    fields = ['pur_close_comment']
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = self.kwargs.get('pk')
+        checks = get_object_or_404(kgrn, pk=pk)
+        my_stringlist = checks.form_serials #Pick list of serial numbers from the checklist as a string
+        print(f'Initial list {my_stringlist} type {type(my_stringlist)}')
+        #my_list = my_stringlist.strip('][').split(',') #Split the string into list of individual items but each item as a string
+        my_list = [nums_from_string.get_nums(my_stringlist)] #Split the string into list of individual items as integers
+        print(f'Second list {my_list} type {type(my_list)}')
+        my_list = [x for xs in my_list for x in xs] #Flatten the list of lists into a single list
+        print(f'Third list {my_list} type {type(my_list)}')
+
+        dnotes_list = []
+        for num in my_list: #For each item in the new list
+            dnote = get_object_or_404(waste_delivery_note, pk=num) #Find the corresponding delivery note
+            print(f'{num} {dnote}')
+            dnotes_list.append(dnote) #Add the delivery note to the list
+            print(f'{dnotes_list}')
+
+        context.update({'dnotes_list': dnotes_list, 'checks': checks, 'dnote': dnote})
+
+        return context
+
+    def form_valid(self, form):
+        profs = Profile.objects.filter(level='6')
+
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 4):
+            form.instance.form_status += 2 #Increases the form status by 2
+            for prof in profs:
+                email = EmailMessage(
+                subject=f'{form.instance.department} department KGRN',
+                body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+                from_email=config('EMAIL_HOST_USER'),
+                to=[prof.user.email],
+                cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
+                reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+                )
+                # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
+                email.send()
+            messages.success(self.request,'Form submitted and mail sent!')
+            return super().form_valid(form)
+
+        if ('demote' in self.request.POST) and (form.instance.form_status == 4):
+            form.instance.form_status -= 2
+
+            email = EmailMessage(
+            subject=f'{form.instance.department} department KGRN',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            from_email=config('EMAIL_HOST_USER'),
+            to=[form.instance.hod.profile.email],
+            cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
+            reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
+            )
+            # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
+            email.send()
+
+            messages.success(self.request,'Form submitted')
+            return super().form_valid(form)
+            
         else:
             return HttpResponse('Error')
 
@@ -753,7 +789,7 @@ class CloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.closed_by = self.request.user
-        if ('elevate' in self.request.POST) and (form.instance.kgrn_status == 4): #If the button to elevate the form to the next level has been clicked
+        if ('elevate' in self.request.POST) and (form.instance.kgrn_status == 6): #If the button to elevate the form to the next level has been clicked
             form.instance.kgrn_status += 2 #Increases the form status by 2
 
             email = EmailMessage(
@@ -784,7 +820,7 @@ class CloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
             messages.success(self.request,'Form submitted and mail sent!')
             return super().form_valid(form)
 
-        if ('demote' in self.request.POST) and (form.instance.kgrn_status == 4):
+        if ('demote' in self.request.POST) and (form.instance.kgrn_status == 6):
             form.instance.kgrn_status -= 1
 
             email = EmailMessage(
@@ -942,9 +978,31 @@ class BlankKGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.purchase_rep = self.request.user #Inserts the author into the new post
-        profs = Profile.objects.filter(level='6')
 
         if ('elevate' in self.request.POST) and (form.instance.form_status == 4): #If the HOD has clicked the button to elevate the form to the next level
+            form.instance.form_status += 2 #Increases the form status by 2
+
+            messages.success(self.request,'Form submitted!')
+            return super().form_valid(form)
+
+        if ('demote' in self.request.POST) and (form.instance.form_status == 4):
+            form.instance.form_status -= 3
+
+            messages.success(self.request,'Form submitted!')
+            return super().form_valid(form)
+            
+        else:
+            return HttpResponse('Error')
+
+class BlankKGRNPurchase2UpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'waste_management/approve_kgrn_item_purchase2.html'
+    model = kgrn_item
+    fields = ['pur_close_comment']
+
+    def form_valid(self, form):
+        profs = Profile.objects.filter(level='6')
+
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 6): #If the HOD has clicked the button to elevate the form to the next level
             form.instance.form_status += 2 #Increases the form status by 2
             for prof in profs:
                 email = EmailMessage(
@@ -960,9 +1018,8 @@ class BlankKGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
             messages.success(self.request,'Form submitted and mail sent!')
             return super().form_valid(form)
 
-        if ('demote' in self.request.POST) and (form.instance.form_status == 4):
+        if ('demote' in self.request.POST) and (form.instance.form_status == 6):
             form.instance.form_status -= 3
-
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
@@ -973,6 +1030,7 @@ class BlankKGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
             email.send()
+
             messages.success(self.request,'Form submitted and mail sent!')
             return super().form_valid(form)
             
@@ -986,7 +1044,7 @@ class BlankCloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.closed_by = self.request.user
-        if ('elevate' in self.request.POST) and (form.instance.form_status == 6): #If the button to elevate the form to the next level has been clicked
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 8): #If the button to elevate the form to the next level has been clicked
             form.instance.form_status += 2 #Increases the form status by 2
 
             email = EmailMessage(
@@ -1017,7 +1075,7 @@ class BlankCloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
             messages.success(self.request,'Form submitted and mail sent!')
             return super().form_valid(form)
 
-        if ('demote' in self.request.POST) and (form.instance.form_status == 6):
+        if ('demote' in self.request.POST) and (form.instance.form_status == 8):
             form.instance.form_status -= 1
 
             email = EmailMessage(
