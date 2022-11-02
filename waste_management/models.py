@@ -14,6 +14,7 @@ class Department(models.Model):
     def __str__(self):
         return self.name 
 
+
 class Material(models.Model):
     name = models.CharField(max_length=80, blank=False)
     material_code = models.CharField(max_length=12, blank=False)
@@ -25,7 +26,24 @@ class Material(models.Model):
         ordering = ['name']
 
     def __str__(self):
-        return self.name 
+        return self.name
+
+class Customer(models.Model):
+    name = models.CharField(max_length=40, blank=False)
+    customer_code = models.CharField(max_length = 40, blank = False, null = True)
+    mobile_number1 = models.IntegerField(null=True, default='0')
+    mobile_number2 = models.IntegerField(null=True, default='0')
+    refered_by = models.CharField(max_length=40, blank=True, null=True)
+    approved_by = models.CharField(max_length=40, blank=True, null=True)
+    material1 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'item1', verbose_name = "Material Description")
+    material2 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'item2', verbose_name = "Material Description")
+    material3 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'item3', verbose_name = "Material Description")
+    material4 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'item4', verbose_name = "Material Description")
+
+    class Meta:
+        ordering = ['name']
+    def __str__(self):
+        return self.name
 
 class waste_delivery_note(models.Model):
     date_posted = models.DateTimeField(default = timezone.now, verbose_name= "Date")
@@ -172,7 +190,8 @@ class goods_issue_note(models.Model):
     #id = models.AutoField(primary_key=True)
     date_posted = models.DateTimeField(default = timezone.now, verbose_name= "Date")
     department_from = models.CharField(max_length = 20, blank = True)
-    department_to = models.CharField(max_length = 30, blank = True)
+    #department_to = models.CharField(max_length = 30, blank = True)
+    department_to = models.ForeignKey(Customer, null = True, blank = True, related_name = "Department_to", on_delete = models.PROTECT)
     department_internal = models.ForeignKey(Department, on_delete = models.PROTECT, null = True, blank = True, related_name = 'Department_Internal')
     time_in = models.TimeField(auto_now=False, auto_now_add=False, blank = True, null = True)
     time_out = models.TimeField(auto_now=False, auto_now_add=False, blank = True, null = True)

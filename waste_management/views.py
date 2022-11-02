@@ -979,7 +979,7 @@ class BlankKGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         form.instance.purchase_rep = self.request.user #Inserts the author into the new post
 
-        if ('elevate' in self.request.POST) and (form.instance.form_status == 4): #If the HOD has clicked the button to elevate the form to the next level
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 4): 
             form.instance.form_status += 2 #Increases the form status by 2
 
             messages.success(self.request,'Form submitted!')
@@ -1002,7 +1002,7 @@ class BlankKGRNPurchase2UpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         profs = Profile.objects.filter(level='6')
 
-        if ('elevate' in self.request.POST) and (form.instance.form_status == 6): #If the HOD has clicked the button to elevate the form to the next level
+        if ('elevate' in self.request.POST) and (form.instance.form_status == 6): 
             form.instance.form_status += 2 #Increases the form status by 2
             for prof in profs:
                 email = EmailMessage(
