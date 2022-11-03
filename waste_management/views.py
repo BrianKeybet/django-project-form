@@ -239,7 +239,7 @@ class waste_delivery_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, gen
             subject = 'Waste Delivery Note'
             message = f'Hello {prof.user.first_name}, a new Waste Delivery Note has been submitted for your approval. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. The serial number is {serial_num}.'
             email_from = settings.EMAIL_HOST_USER
-            recipient_list = [prof.user.email, config('ADMIN_EMAIL'), config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+            recipient_list = [prof.user.email, config('ADMIN_EMAIL'), config('BRIAN_EMAIL')]
             send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
         return super().form_valid(form)
@@ -267,7 +267,7 @@ class DnoteHODUpdateView(LoginRequiredMixin, UpdateView):
             body=f'Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to create checklist http://10.10.1.71:8000/waste/dnotes/ .\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.author.profile.email],
-            cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
+            cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -282,7 +282,7 @@ class DnoteHODUpdateView(LoginRequiredMixin, UpdateView):
             body=f'Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.author.profile.email],
-            cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
+            cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -298,7 +298,7 @@ class DnoteHODUpdateView(LoginRequiredMixin, UpdateView):
             body=f'Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.author.profile.email],
-            cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
+            cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -314,7 +314,7 @@ class DnoteHODUpdateView(LoginRequiredMixin, UpdateView):
             body=f'Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.author.profile.email],
-            cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
+            cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -343,7 +343,7 @@ class DnoteWHUpdateView(LoginRequiredMixin, UpdateView):
                 subject = 'Waste Delivery Note'
                 message = f'Hello {prof.user.first_name}, Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.'
                 email_from = settings.EMAIL_HOST_USER
-                recipient_list = [prof.user.email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                recipient_list = [prof.user.email, config('BRIAN_EMAIL')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
            
             messages.success(self.request,'Form submitted and mail sent!')
@@ -356,7 +356,7 @@ class DnoteWHUpdateView(LoginRequiredMixin, UpdateView):
                 subject = 'Waste Delivery Note'
                 message = f'Hello {prof.user.first_name}, Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.'
                 email_from = settings.EMAIL_HOST_USER
-                recipient_list = [prof.user.email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                recipient_list = [prof.user.email, config('BRIAN_EMAIL')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             messages.success(self.request,'Form submitted and mail sent!')
@@ -409,7 +409,7 @@ def accept_checklist(request):
             subject = 'Waste Delivery Note'
             message = f'Hello {prof.user.first_name}, Waste delivery note number {my_list_string} has been accepted by {request.user}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.'
             email_from = settings.EMAIL_HOST_USER
-            recipient_list = [prof.user.email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+            recipient_list = [prof.user.email, config('BRIAN_EMAIL')]
             send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
     return redirect('checklists')
@@ -456,7 +456,7 @@ def create_kgrn(request):
         #     subject = 'KGRN (D/Notes)'
         #     message = f'Hello {prof.user.first_name}, a new D/Notes based KGRN has been submitted for your approval.\nPlease login to the system on http://10.10.1.71:8000/waste/kgrns/ to view the form.\nThe serial number is {serial_num}.'
         #     email_from = settings.EMAIL_HOST_USER
-        #     recipient_list = [prof.user.email, config('ADMIN_EMAIL'), config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+        #     recipient_list = [prof.user.email, config('ADMIN_EMAIL'), config('BRIAN_EMAIL')]
         #     send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
     return redirect('kgrns')
@@ -509,7 +509,7 @@ class KGRNStocksUpdateView(LoginRequiredMixin, UpdateView):
                 subject = 'KGRN (D/Notes)'
                 html_message = f'Hello {prof.user.first_name}, a new D/Notes based KGRN has been submitted for your approval.\nPlease login to the system on http://10.10.1.71:8000/waste/kgrns/ to view the form.\nThe serial number is {form.instance.serial_num}.'
                 email_from = settings.EMAIL_HOST_USER
-                recipient_list = [prof.user.email, config('ADMIN_EMAIL'), config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                recipient_list = [prof.user.email, config('ADMIN_EMAIL'), config('BRIAN_EMAIL')]
                 send_mail(subject, html_message, email_from, recipient_list, fail_silently=False)
 
             messages.success(self.request,'Form submitted and mail sent!')
@@ -558,7 +558,7 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
                 body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
                 from_email=config('EMAIL_HOST_USER'),
                 to=[prof.user.email],
-                cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
+                cc=[config('BRIAN_EMAIL')],
                 reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
                 )
                 # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -575,7 +575,7 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
                 body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
                 from_email=config('EMAIL_HOST_USER'),
                 to=[prof.user.email],
-                cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
+                cc=[config('BRIAN_EMAIL')],
                 reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
                 )
                 # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -591,7 +591,7 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.author.profile.email],
-            cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
+            cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -607,7 +607,7 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.author.profile.email],
-            cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
+            cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -681,7 +681,7 @@ class KGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.hod.profile.email],
-            cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
+            cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -731,7 +731,7 @@ class KGRNPurchase2UpdateView(LoginRequiredMixin, UpdateView):
                 body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
                 from_email=config('EMAIL_HOST_USER'),
                 to=[prof.user.email],
-                cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
+                cc=[config('BRIAN_EMAIL')],
                 reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
                 )
                 # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -747,7 +747,7 @@ class KGRNPurchase2UpdateView(LoginRequiredMixin, UpdateView):
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.hod.profile.email],
-            cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
+            cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -797,7 +797,7 @@ class CloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been closed by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.hod.profile.email, form.instance.author.profile.email],
-            cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
+            cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -812,7 +812,7 @@ class CloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been closed by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.hod.profile.email, form.instance.author.profile.email],
-            cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
+            cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -828,7 +828,7 @@ class CloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.hod.profile.email, form.instance.author.profile.email],
-            cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
+            cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -844,7 +844,7 @@ class CloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.hod.profile.email, form.instance.author.profile.email],
-            cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
+            cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -880,7 +880,7 @@ class BlankKGRN_CreateView(LoginRequiredMixin, SuccessMessageMixin, generic.Crea
             subject = 'KGRN'
             message = f'Hello {prof.user.first_name}, a new KGRN has been submitted for your approval. Please login to the system on http://10.10.1.71:8000/waste/kgrns/items/ to view the form. The serial number is {serial_num}.'
             email_from = settings.EMAIL_HOST_USER
-            recipient_list = [prof.user.email, config('ADMIN_EMAIL'), config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+            recipient_list = [prof.user.email, config('ADMIN_EMAIL'), config('BRIAN_EMAIL')]
             send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
         return super().form_valid(form)
@@ -928,7 +928,7 @@ class BlankKGRNHODUpdateView(LoginRequiredMixin, UpdateView):
                 body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
                 from_email=config('EMAIL_HOST_USER'),
                 to=[prof.user.email],
-                cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
+                cc=[config('BRIAN_EMAIL')],
                 reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
                 )
                 # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -944,7 +944,7 @@ class BlankKGRNHODUpdateView(LoginRequiredMixin, UpdateView):
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.author.profile.email],
-            cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
+            cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -960,7 +960,7 @@ class BlankKGRNHODUpdateView(LoginRequiredMixin, UpdateView):
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.author.profile.email],
-            cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
+            cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -1010,7 +1010,7 @@ class BlankKGRNPurchase2UpdateView(LoginRequiredMixin, UpdateView):
                 body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
                 from_email=config('EMAIL_HOST_USER'),
                 to=[prof.user.email],
-                cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
+                cc=[config('BRIAN_EMAIL')],
                 reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
                 )
                 # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -1025,7 +1025,7 @@ class BlankKGRNPurchase2UpdateView(LoginRequiredMixin, UpdateView):
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.hod.profile.email],
-            cc=[config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')],
+            cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
             # email.content_subtype = 'html' # if the email body contains html tags, set this. Otherwise, omit it
@@ -1237,7 +1237,7 @@ class goods_issue_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, generi
             subject = 'Goods Issue Note'
             message = f'Hello {prof.user.first_name}, a new Goods Issue Note has been submitted by {form.instance.author} for your approval. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. \n  The serial number is {serial_num}. \n To: {form.instance.department_to}'
             email_from = settings.EMAIL_HOST_USER
-            recipient_list = [prof.user.email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+            recipient_list = [prof.user.email, config('BRIAN_EMAIL')]
             send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
         return super().form_valid(form)
@@ -1259,7 +1259,7 @@ class HOD_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
                 subject = 'Goods Issue Note'
                 message = f'Hello {prof.user.first_name}, a Goods Issue Note has been submitted by {form.instance.hod} for your approval. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. \n  The serial number is {form.instance.id}. \n To: {form.instance.department_to}'
                 email_from = settings.EMAIL_HOST_USER
-                recipient_list = [prof.user.email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                recipient_list = [prof.user.email, config('BRIAN_EMAIL')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)
@@ -1273,7 +1273,7 @@ class HOD_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
                 subject = 'Goods Issue Note'
                 message = f'Hello {prof.user.first_name},\nA Goods Issue Note number {form.instance.id} has been submitted by {form.instance.hod} for your approval. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. \n Issued To: {form.instance.department_to}. \n Issued By: {form.instance.department_from}. \n Delivered by: {form.instance.delivered_by}. \n Net Value: {form.instance.my_total}'
                 email_from = settings.EMAIL_HOST_USER
-                recipient_list = [prof.user.email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                recipient_list = [prof.user.email, config('BRIAN_EMAIL')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)    
@@ -1287,7 +1287,7 @@ class HOD_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
             subject = 'Goods Issue Note'
             message = f'Hello {author_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
             email_from = settings.EMAIL_HOST_USER
-            recipient_list = [author_email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+            recipient_list = [author_email, config('BRIAN_EMAIL')]
             send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)
@@ -1301,7 +1301,7 @@ class HOD_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
             subject = 'Goods Issue Note'
             message = f'Hello {author_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
             email_from = settings.EMAIL_HOST_USER
-            recipient_list = [author_email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+            recipient_list = [author_email, config('BRIAN_EMAIL')]
             send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)  
@@ -1326,7 +1326,7 @@ class HOD_internal_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
                 subject = 'Goods Issue Note'
                 message = f'Hello {prof.user.first_name}, a Goods Issue Note has been submitted by {form.instance.hod} for your approval. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. \n  The serial number is {form.instance.id}. \n To: {form.instance.department_to}'
                 email_from = settings.EMAIL_HOST_USER
-                recipient_list = [prof.user.email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                recipient_list = [prof.user.email, config('BRIAN_EMAIL')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)
@@ -1340,7 +1340,7 @@ class HOD_internal_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
                 subject = 'Goods Issue Note'
                 message = f'Hello {prof.user.first_name},\nA Goods Issue Note has been submitted by {form.instance.hod} for your approval. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. \n  The serial number is {form.instance.id}. \nIssued To: {form.instance.department_to}. \n Issued By: {form.instance.department_from}. \n Net Value: {form.instance.my_total}'
                 email_from = settings.EMAIL_HOST_USER
-                recipient_list = [prof.user.email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                recipient_list = [prof.user.email, config('BRIAN_EMAIL')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)    
@@ -1354,7 +1354,7 @@ class HOD_internal_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
             subject = 'Goods Issue Note'
             message = f'Hello {author_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
             email_from = settings.EMAIL_HOST_USER
-            recipient_list = [author_email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+            recipient_list = [author_email, config('BRIAN_EMAIL')]
             send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)
@@ -1368,7 +1368,7 @@ class HOD_internal_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
             subject = 'Goods Issue Note'
             message = f'Hello {author_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
             email_from = settings.EMAIL_HOST_USER
-            recipient_list = [author_email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+            recipient_list = [author_email, config('BRIAN_EMAIL')]
             send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)  
@@ -1399,13 +1399,16 @@ class FM_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
         if ('elevate' in self.request.POST) and (form.instance.form_status == 3): #For external forms, if the form is approved by the FM, the form status is increased by 2
             form.instance.form_status += 2 
 
-            profs = Profile.objects.filter(level='5')
+            profs = Profile.objects.filter(level='13')
+            profs2 = Profile.objects.filter(level='14')
+            profs = profs | profs2
+            print(profs)
 
             for prof in profs:
                 subject = 'Goods Issue Note'
-                message = f'Hello {prof.user.first_name},\nA Goods Issue Note has been submitted by {form.instance.department_from}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n The serial number is {form.instance.id}. \n Issued To: {form.instance.department_to}. \n Issued By: {form.instance.department_from}. \n Net Value: {form.instance.my_total}'
+                message = f'Hello {prof.user.first_name},\nA Goods Issue Note submitted by {form.instance.department_from} has been approved by {form.instance.approved_by}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n The serial number is {form.instance.id}. \n Issued To: {form.instance.department_to}. \n Issued By: {form.instance.department_from}. \n Net Value: {form.instance.my_total}'
                 email_from = settings.EMAIL_HOST_USER
-                recipient_list = [prof.user.email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD'), config('WB_HOD'), config('WB_STAFF')]
+                recipient_list = [prof.user.email, config('BRIAN_EMAIL')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
 
@@ -1430,7 +1433,7 @@ class FM_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
                 subject = 'Goods Issue Note'
                 message = f'Hello {prof.user.first_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.approved_by}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
                 email_from = settings.EMAIL_HOST_USER
-                recipient_list = [prof.user.email, author_email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                recipient_list = [prof.user.email, author_email, config('BRIAN_EMAIL')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)  
@@ -1459,7 +1462,7 @@ class Dept_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
                 subject = 'Goods Issue Note'
                 message = f'Hello {prof.user.first_name}, Goods Issue Note number {form.instance.id} has been accepted by {form.instance.approved_by}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
                 email_from = settings.EMAIL_HOST_USER
-                recipient_list = [prof.user.email, author_email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                recipient_list = [prof.user.email, author_email, config('BRIAN_EMAIL')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)
@@ -1476,7 +1479,7 @@ class Dept_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
                 subject = 'Goods Issue Note'
                 message = f'Hello {prof.user.first_name}, Goods Issue Note number {form.instance.id} has been rejected by {form.instance.approved_by}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
                 email_from = settings.EMAIL_HOST_USER
-                recipient_list = [prof.user.email, author_email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                recipient_list = [prof.user.email, author_email, config('BRIAN_EMAIL')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)
@@ -1569,7 +1572,7 @@ class Sales_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
                 subject = 'Goods Issue Note'
                 message = f'Hello {prof.user.first_name}, Goods Issue Note number {form.instance.id} has been accepted by {form.instance.received_by}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
                 email_from = settings.EMAIL_HOST_USER
-                recipient_list = [prof.user.email, author_email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                recipient_list = [prof.user.email, author_email, config('BRIAN_EMAIL')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)
@@ -1586,7 +1589,7 @@ class Sales_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
                 subject = 'Goods Issue Note'
                 message = f'Hello {prof.user.first_name}, Goods Issue Note number {form.instance.id} has been rejected by {form.instance.received_by}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
                 email_from = settings.EMAIL_HOST_USER
-                recipient_list = [prof.user.email, author_email, config('BRIAN_EMAIL'), config('WAREHOUSE_HOD')]
+                recipient_list = [prof.user.email, author_email, config('BRIAN_EMAIL')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)
