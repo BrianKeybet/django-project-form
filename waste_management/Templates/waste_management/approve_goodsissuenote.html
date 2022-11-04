@@ -269,7 +269,8 @@
             </table>
         </fieldset>
     </div>
-    <div class="item"><strong>H.O.D / Representative:</strong> {{ object.hod }} <strong>Comment:</strong> {{ object.hod_comment }}</div> 
+    <div class="item"><strong>H.O.D / Representative:</strong> {{ object.hod }} <strong>Comment:</strong> {{ object.hod_comment }}</div>
+    {% if request.user.profile.level == 7 %} 
     <div class="item">
         <form method="POST" action="" {% if form.is_multipart %} enctype="multipart/form-data" {% endif %}>
                 {% csrf_token %}
@@ -284,6 +285,12 @@
                     </fieldset>
         </form>
     </div>
+    % else %}
+    <div class="item">
+        <fieldset class="form-group" disabled>
+            <div>{{ form|crispy }}</div>
+        </fieldset></div>
+    {% endif %}
   </div>
 
 {% endblock content %}

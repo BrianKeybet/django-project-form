@@ -1324,7 +1324,7 @@ class HOD_internal_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
             for prof in profs:
                 subject = 'Goods Issue Note'
-                message = f'Hello {prof.user.first_name}, a Goods Issue Note has been submitted by {form.instance.hod} for your approval. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. \n  The serial number is {form.instance.id}. \n To: {form.instance.department_to}'
+                message = f'Hello {prof.user.first_name}, a Goods Issue Note has been submitted by {form.instance.hod} for your approval.\nPlease login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. \n The serial number is {form.instance.id}. \n To: {form.instance.department_to}'
                 email_from = settings.EMAIL_HOST_USER
                 recipient_list = [prof.user.email, config('BRIAN_EMAIL')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
@@ -1338,7 +1338,7 @@ class HOD_internal_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
             for prof in profs:
                 subject = 'Goods Issue Note'
-                message = f'Hello {prof.user.first_name},\nA Goods Issue Note has been submitted by {form.instance.hod} for your approval. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. \n  The serial number is {form.instance.id}. \nIssued To: {form.instance.department_to}. \n Issued By: {form.instance.department_from}. \n Net Value: {form.instance.my_total}'
+                message = f'Hello {prof.user.first_name},\nA Goods Issue Note has been submitted by {form.instance.hod} for your approval. \nPlease login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. \n The serial number is {form.instance.id}. \n Issued To: {form.instance.department_to}. \n Issued By: {form.instance.department_from}. \n Net Value: {form.instance.my_total}'
                 email_from = settings.EMAIL_HOST_USER
                 recipient_list = [prof.user.email, config('BRIAN_EMAIL')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
@@ -1352,7 +1352,7 @@ class HOD_internal_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
             author_email = form.instance.author.email
 
             subject = 'Goods Issue Note'
-            message = f'Hello {author_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
+            message = f'Hello {author_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. \nPlease login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
             email_from = settings.EMAIL_HOST_USER
             recipient_list = [author_email, config('BRIAN_EMAIL')]
             send_mail(subject, message, email_from, recipient_list, fail_silently=False)
@@ -1366,7 +1366,7 @@ class HOD_internal_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
             author_email = form.instance.author.email
 
             subject = 'Goods Issue Note'
-            message = f'Hello {author_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
+            message = f'Hello {author_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. \nPlease login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
             email_from = settings.EMAIL_HOST_USER
             recipient_list = [author_email, config('BRIAN_EMAIL')]
             send_mail(subject, message, email_from, recipient_list, fail_silently=False)
@@ -1406,7 +1406,7 @@ class FM_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
             for prof in profs:
                 subject = 'Goods Issue Note'
-                message = f'Hello {prof.user.first_name},\nA Goods Issue Note submitted by {form.instance.department_from} has been approved by {form.instance.approved_by}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n The serial number is {form.instance.id}. \n Issued To: {form.instance.department_to}. \n Issued By: {form.instance.department_from}. \n Net Value: {form.instance.my_total}'
+                message = f'Hello {prof.user.first_name},\nA Goods Issue Note submitted by {form.instance.department_from} has been approved by {form.instance.approved_by}. \nPlease login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n The serial number is {form.instance.id}. \n Issued To: {form.instance.department_to}. \n Issued By: {form.instance.department_from}. \n Net Value: {form.instance.my_total}'
                 email_from = settings.EMAIL_HOST_USER
                 recipient_list = [prof.user.email, config('BRIAN_EMAIL')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
@@ -1431,7 +1431,7 @@ class FM_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
             for prof in profs:
                 subject = 'Goods Issue Note'
-                message = f'Hello {prof.user.first_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.approved_by}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
+                message = f'Hello {prof.user.first_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.approved_by}. \nPlease login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
                 email_from = settings.EMAIL_HOST_USER
                 recipient_list = [prof.user.email, author_email, config('BRIAN_EMAIL')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
