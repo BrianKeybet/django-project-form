@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from rts_forms.models import Department
+from waste_management.models import Department
 from PIL import Image
 
 class Profile(models.Model):
@@ -8,9 +8,12 @@ class Profile(models.Model):
     authentication = models.CharField(max_length=7, null=True, default='0')
     level = models.IntegerField(null=True, default='1')
     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
-    department = models.CharField(max_length=20, blank=False, default='Warehouse')
-    # department = models.ForeignKey(Department, on_delete=models.PROTECT)
+    #department = models.CharField(max_length=20, blank=False, default='Warehouse')
+    department = models.ForeignKey(Department, on_delete = models.PROTECT, null = True, blank = True)
     email = models.EmailField(max_length=254, blank=False, default='support.user2@kapa-oil.local')
+
+    # class Meta:
+    #     ordering = ['user']
 
     def __str__(self):
         return f'{self.user.username} Profile'

@@ -228,7 +228,7 @@ class waste_delivery_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, gen
         prev_serial_num = waste_delivery_note.objects.count()
         serial_num = prev_serial_num + 15 #Get next serial number to display in email
 
-        dept = self.request.user.profile.department
+        dept = self.request.user.profile.department_id
         profs = Profile.objects.filter(department=f'{dept}',level='2')
 
         print(f'Profiles {profs}')
@@ -502,7 +502,7 @@ class KGRNStocksUpdateView(LoginRequiredMixin, UpdateView):
         if ('elevate' in self.request.POST) and (form.instance.kgrn_status == 0): #If the HOD has clicked the button to elevate the form to the next level
             form.instance.kgrn_status += 15 #Increases the form status by 0.5
 
-            dept = self.request.user.profile.department
+            dept = self.request.user.profile.department_id
             profs = Profile.objects.filter(department=f'{dept}',level='2')
 
             for prof in profs:
@@ -873,7 +873,8 @@ class BlankKGRN_CreateView(LoginRequiredMixin, SuccessMessageMixin, generic.Crea
 
         form.instance.serial_num = serial_num
 
-        dept = self.request.user.profile.department
+        dept = self.request.user.profile.department_id
+        print(dept)
         profs = Profile.objects.filter(department=f'{dept}',level='2')
 
         for prof in profs:
@@ -1230,7 +1231,7 @@ class goods_issue_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, generi
         prev_serial_num = goods_issue_note.objects.count()
         serial_num = prev_serial_num + 1 #Get next serial number to display in email
 
-        dept = self.request.user.profile.department
+        dept = self.request.user.profile.department_id
         profs = Profile.objects.filter(department=f'{dept}',level='2')
 
         for prof in profs:
@@ -1602,4 +1603,5 @@ class Goods_issue_note_ListView(LoginRequiredMixin, generic.ListView):
     paginate_by: int = 15
 
     def get_queryset(self):
-        return models.goods_issue_note.objects.all() 
+        return models.goods_issue_note.objects.all()
+

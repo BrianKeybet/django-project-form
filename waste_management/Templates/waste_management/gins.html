@@ -112,7 +112,7 @@
                 {% elif goods_issue_note.form_status == 3 %}
                     <td>Submitted to FM/Directors</td>
                 {% elif goods_issue_note.form_status == 4 %}
-                    <td>Submitted to {{ goods_issue_note.department_to }}</td>
+                    <td>Submitted to {{ goods_issue_note.department_internal }}</td>
                 {% elif goods_issue_note.form_status == 5 %}
                     <td>Submitted to sales</td>
                 {% elif goods_issue_note.form_status == 7 %}
@@ -145,7 +145,7 @@
                     {% if request.user.profile.department == goods_issue_note.department_internal and request.user.profile.level == 2  or request.user.profile.level == 8%}
                         <td><a href="{% url 'goods_issue_note-update1' goods_issue_note.id %}">Update</a></td>
                     {% else %}
-                        <td><a href="{% url 'goods_issue_note-update' goods_issue_note.id %}">Awaiting Approval...</a></td>
+                        <td><a href="{% url 'goods_issue_note-update' goods_issue_note.id %}">Awaiting Approval4...</a></td>
                     {% endif %}
                 {% elif goods_issue_note.form_status == 5 %} 
                     {% if request.user.profile.level == 5 or request.user.profile.level == 8 %}
