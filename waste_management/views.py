@@ -528,10 +528,7 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
         pk = self.kwargs.get('pk')
         checks = get_object_or_404(kgrn, pk=pk)
         my_stringlist = checks.form_serials #Pick list of serial numbers from the checklist as a string
-        print(f'Initial list {my_stringlist} type {type(my_stringlist)}')
-        #my_list = my_stringlist.strip('][').split(',') #Split the string into list of individual items but each item as a string
         my_list = [nums_from_string.get_nums(my_stringlist)] #Split the string into list of individual items as integers
-        print(f'Second list {my_list} type {type(my_list)}')
         my_list = [x for xs in my_list for x in xs] #Flatten the list of lists into a single list
         print(f'Third list {my_list} type {type(my_list)}')
 
@@ -545,9 +542,13 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
         context.update({'dnotes_list': dnotes_list, 'checks': checks, 'dnote': dnote})
         return context
 
-    def form_valid(self, form):
+    def form_valid(self, form, **kwargs):
         form.instance.hod = self.request.user #Inserts the author into the new post
         profs = Profile.objects.filter(level='4')
+
+        context = super().get_context_data(**kwargs)
+        print(context)
+        #dnote = context['dnote']
 
         if ('elevate' in self.request.POST) and (form.instance.kgrn_status == 15): #If the HOD has clicked the button to elevate the form to the next level
             form.instance.kgrn_status -= 13 #Reduce the form status by 13
@@ -557,7 +558,7 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
                 subject=f'{form.instance.department} department KGRN(D/Notes)',
                 body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
                 from_email=config('EMAIL_HOST_USER'),
-                to=[prof.user.email],
+                to=[config('BRIAN_EMAIL')],
                 cc=[config('BRIAN_EMAIL')],
                 reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
                 )
@@ -1320,14 +1321,14 @@ class HOD_internal_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
         if ('elevate' in self.request.POST) and (form.instance.form_status == 2): #For internal forms, if the form is approved by the HOD, the form status is increased by 2
             form.instance.form_status += 2
-            dept = form.instance.department_internal
+            dept = form.instance.department_internal_id
             profs = Profile.objects.filter(department=f'{dept}',level='2')
 
             for prof in profs:
                 subject = 'Goods Issue Note'
                 message = f'Hello {prof.user.first_name}, a Goods Issue Note has been submitted by {form.instance.hod} for your approval.\nPlease login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. \n The serial number is {form.instance.id}. \n To: {form.instance.department_to}'
                 email_from = settings.EMAIL_HOST_USER
-                recipient_list = [prof.user.email, config('BRIAN_EMAIL')]
+                recipient_list = [config('BRIAN_EMAIL')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)
@@ -1427,7 +1428,7 @@ class FM_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
             author_name = form.instance.author.first_name
             author_email = form.instance.author.email
 
-            dept = form.instance.author.department
+            dept = form.instance.author.profile.department_id
             profs = Profile.objects.filter(department=f'{dept}',level='2')
 
             for prof in profs:
@@ -1473,7 +1474,7 @@ class Dept_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
             author_email = form.instance.author.email
 
-            dept = form.instance.author.department
+            dept = form.instance.author.profile.department_id
             profs = Profile.objects.filter(department=f'{dept}',level='2')
 
             for prof in profs:
@@ -1559,21 +1560,22 @@ class Sales_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
         form.instance.total_cost = result * int(1.16)
 
-        form.instance.received_by = self.request.user
+        form.instance.received_by = str(self.request.user)
 
         if ('elevate' in self.request.POST) and (form.instance.form_status == 5):
             form.instance.form_status += 2
             
             author_email = form.instance.author.email
 
-            dept = form.instance.author.department
+            dept = form.instance.author.profile.department_id
+            print(dept)
             profs = Profile.objects.filter(department=f'{dept}',level='2')
 
             for prof in profs:
                 subject = 'Goods Issue Note'
                 message = f'Hello {prof.user.first_name}, Goods Issue Note number {form.instance.id} has been accepted by {form.instance.received_by}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
                 email_from = settings.EMAIL_HOST_USER
-                recipient_list = [prof.user.email, author_email, config('BRIAN_EMAIL')]
+                recipient_list = [config('BRIAN_EMAIL')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)
@@ -1583,14 +1585,14 @@ class Sales_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
             author_email = form.instance.author.email
 
-            dept = form.instance.author.department
+            dept = form.instance.author.profile.department_id
             profs = Profile.objects.filter(department=f'{dept}',level='2')
 
             for prof in profs:
                 subject = 'Goods Issue Note'
                 message = f'Hello {prof.user.first_name}, Goods Issue Note number {form.instance.id} has been rejected by {form.instance.received_by}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
                 email_from = settings.EMAIL_HOST_USER
-                recipient_list = [prof.user.email, author_email, config('BRIAN_EMAIL')]
+                recipient_list = [config('BRIAN_EMAIL')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)
