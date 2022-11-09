@@ -125,7 +125,7 @@
                                 <td>{{ gin.item1 }}</td>
                                 <td style="text-align: center;">{{ gin.item_qty1_sale }}</td>
                                 <td style="text-align: center;">{{ gin.item1.uom }}</td>
-                                <td style="text-align: right;">{{ object.item1.price }}</td>
+                                <td style="text-align: right;">{{ gin.item1.price }}</td>
                                 <td style="text-align: right;">{{ gin.item_qty1_sale | mul:gin.item1.price |floatformat:2 |intcomma}}</td>
                                 {% else %}
                                 <td>{{ gin.item1 }}</td>
