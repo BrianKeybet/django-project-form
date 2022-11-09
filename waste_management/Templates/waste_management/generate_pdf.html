@@ -22,6 +22,7 @@
         @page {
             background-image: url("http://10.10.1.71:8000/media/Waste_Delivery_Note2.png");
             size: A5 landscape;
+            margin-left: 1.5cm;
         }
         body {
             font-weight: 200;
@@ -33,14 +34,21 @@
             /* padding-top: 50px; */
             /* padding-right: 30px; */
             /* padding-bottom: 50px; */
-            padding-left: 40px;
+            padding-left: 0px;
         }
-        /* .legend1 {
-            padding-top: 50px;
-            padding-right: 30px;
-            padding-bottom: 50px;
-            padding-left: 40px;
-        } */
+        th {
+            text-align: left;
+        }
+        .my_table {
+            border: 1px solid rgba(207, 204, 204, 0.014);
+            border-collapse: collapse;
+            padding-top: 5px;
+            padding-right: 5px;
+            padding-left: 5px;
+        }
+        .my_table > thead > tr > th {
+            background-color: #808080;
+        }
          .top_row {
             padding-top: 100px;
         }
@@ -81,13 +89,13 @@
                     </p>
                 </fieldset>
                 <fieldset>
-                    <table>
+                    <table class="table table-striped my_table">
                         <thead>
                         <tr>
                             <th style="text-align: Left; width: 30%;">SUPPLIER</th>
                             <th style="text-align: Left; width: 40%;">ITEM</th>
                             <th style="text-align: Left; width: 10%;">UOM</th>
-                            <th style="text-align: Left; width: 10%;">QUANTITY</th>
+                            <th style="text-align: Left; width: 12%;">QUANTITY</th>
                         </tr>    
                         </thead>
                         {% if dnote.item1 != null %}
