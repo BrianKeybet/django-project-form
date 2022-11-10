@@ -21,6 +21,7 @@ from xhtml2pdf import pisa
 import nums_from_string
 import locale
 locale.setlocale(locale.LC_ALL, '')
+from .filters import goods_issue_noteFilter
 
 def dnotes_render_pdf_view(request, *args, **kwargs):
    pk = kwargs.get('pk')
@@ -334,7 +335,7 @@ class DnoteWHUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         form.instance.warehouse_hod = self.request.user
 
-        dept = form.instance.author.profile.department
+        dept = form.instance.author.profile.department_id
         profs = Profile.objects.filter(department=f'{dept}',level='2')
 
         if ('elevate' in self.request.POST) and (form.instance.form_status == 8): #If the WH HOD has clicked the button to elevate the form to the next level
@@ -445,26 +446,17 @@ def create_kgrn(request):
     if request.method == 'POST':
         check = request.POST.getlist('checks[]')
         print(f'Initial list {check} type {type(check)}')
+        print(f'My_dept{request.user.profile.department} type {type(request.user.profile.department)}')
 
         kgrn_sum = kgrn_item.objects.count()
         kgrn_sum1 = kgrn.objects.count()
         serial_num = kgrn_sum + kgrn_sum1 + 1 #Get next serial number to display in email
 
-        kgrn_instance = kgrn.objects.create(serial_num = serial_num, form_serials = check, date_posted = datetime.now(), author = request.user, department = request.user.profile.department)
+        kgrn_instance = kgrn.objects.create(serial_num = serial_num, form_serials = check, date_posted = datetime.now(), author = request.user, department = str(request.user.profile.department))
         kgrn_instance.save()
 
         for num in check:
             waste_delivery_note.objects.filter(id=num).update(form_status=11) #Removes the form from the list of forms at KGRN create stage
-
-        # dept = request.user.profile.department
-        # profs = Profile.objects.filter(department=f'{dept}',level='2')
-
-        # for prof in profs:
-        #     subject = 'KGRN (D/Notes)'
-        #     message = f'Hello {prof.user.first_name}, a new D/Notes based KGRN has been submitted for your approval.\nPlease login to the system on http://10.10.1.71:8000/waste/kgrns/ to view the form.\nThe serial number is {serial_num}.'
-        #     email_from = settings.EMAIL_HOST_USER
-        #     recipient_list = [prof.user.email, config('ADMIN_EMAIL'), config('BRIAN_EMAIL')]
-        #     send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
     return redirect('kgrns')
 
@@ -1623,6 +1615,11 @@ class Goods_issue_note_ListView(LoginRequiredMixin, generic.ListView):
     context_object_name = 'goods_issue_notes'
     template_name = 'waste_management/gins.html'
     paginate_by: int = 15
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = goods_issue_noteFilter(self.request.GET, queryset=self.get_queryset())
+        return context
 
     def get_queryset(self):
         return models.goods_issue_note.objects.all()

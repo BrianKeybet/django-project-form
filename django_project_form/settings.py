@@ -81,6 +81,8 @@ INSTALLED_APPS = [
     'computed_property',
     'django.contrib.humanize',
     'simple_history',
+    'django_filters',
+    'bootstrapform'
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

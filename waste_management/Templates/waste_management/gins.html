@@ -2,6 +2,8 @@
 
 {% load crispy_forms_tags %}
 
+{% load bootstrap %}
+
 {% block content %}
 <style>
     * {
@@ -83,6 +85,12 @@
 </style>
 <div class="container">
     <div class="item"><h2>Goods Issue Notes Summary</h2></div>
+    <font size="2" color= "black" face="Times New Roman" >
+        <form method="get" class="row">
+            {{ filter.form|crispy }}
+            <input type="submit" value="FILTER" height="8" padding="10px 24px"/>
+        </form>
+    </font>
     <div class="item">
         <font size="3" face="Times New Roman" >
         <table class='table'>
@@ -96,7 +104,7 @@
                 <th>UPDATE/PRINT</th>
             </tr>
             </thead>
-            {% for goods_issue_note in goods_issue_notes %}
+            {% for goods_issue_note in filter.qs %}
                 <tr>
                     <td>{{goods_issue_note.id}}</td>
                     <td>{{ goods_issue_note.date_posted }}</td>
