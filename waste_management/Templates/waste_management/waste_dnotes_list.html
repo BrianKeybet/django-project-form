@@ -2,6 +2,8 @@
 
 {% load crispy_forms_tags %}
 
+{% load bootstrap %}
+
 {% block content %}
 <style>
     * {
@@ -86,6 +88,12 @@
     {% csrf_token %}
     {{form.as_p}}
     <div class="item"><h2>Waste Delivery Notes Summary</h2></div>
+    <font size="2" color= "black" face="Times New Roman" >
+      <form method="get" class="form-inline">
+          {{ filter.form|crispy }}
+          <input type="submit" value="SEARCH" class="btn btn-outline-primary btn-block"/>
+      </form>
+    </font>
     <div class="item">
         <font size="3" face="Times New Roman" >
         <table class='table'>
@@ -100,7 +108,7 @@
                 <th>UPDATE / VIEW</th>
             </tr>
             </thead>
-        {% for waste_delivery_note in waste_delivery_notes %}
+        {% for waste_delivery_note in filter.qs %}
             <tr>
                 <td>{{ waste_delivery_note.id }}</td>
                 <td>{{ waste_delivery_note.department }}</td>
@@ -131,7 +139,7 @@
                 {% if waste_delivery_note.form_status == 0 %}
                 <td><a href="{% url 'waste_delivery_note-create' %}">Update</a></td>
                 {% elif waste_delivery_note.form_status == 1 %}
-                <td><a href="{% url 'dnotes' waste_delivery_note.id%}" style="color: red">Invalid Form</a></td>
+                <td><a href="{% url 'dnotes' %}" style="color: red">Invalid Form</a></td>
                 {% elif waste_delivery_note.form_status == 2 and request.user.profile.level > 1 %}
                 <td><a href="{% url 'dnote-update' waste_delivery_note.id%}">Update</a></td>
                 {% elif waste_delivery_note.form_status == 4 %}

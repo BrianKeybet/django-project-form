@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.conf import settings
 from decouple  import config
-from .models import checklist, waste_delivery_note, kgrn, goods_issue_note, kgrn_item
+from .models import Checklist, waste_delivery_note, kgrn, goods_issue_note, kgrn_item
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
@@ -14,14 +14,14 @@ from django.core.mail import send_mail
 from django.contrib import messages
 from decouple  import config
 from django.urls import reverse, reverse_lazy
-from django.views.generic import DetailView, UpdateView
+from django.views.generic import DetailView, UpdateView, ListView
 from django.shortcuts import get_object_or_404, redirect, HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 import nums_from_string
 import locale
 locale.setlocale(locale.LC_ALL, '')
-from .filters import goods_issue_noteFilter
+from .filters import *
 
 def dnotes_render_pdf_view(request, *args, **kwargs):
    pk = kwargs.get('pk')
@@ -106,7 +106,7 @@ def goods_issue_note_external_render_pdf_view(request, *args, **kwargs):
 
 def checklists_render_pdf_view(request, *args, **kwargs):
    pk = kwargs.get('pk')
-   checks = get_object_or_404(checklist, pk=pk)
+   checks = get_object_or_404(Checklist, pk=pk)
    my_stringlist = checks.form_serials #Pick list of serial numbers from the checklist as a string
    print(f'Initial list {my_stringlist} type {type(my_stringlist)}')
    #my_list = my_stringlist.strip('][').split(',') #Split the string into list of individual items but each item as a string
@@ -251,8 +251,13 @@ class DnotesListView(LoginRequiredMixin, generic.ListView):
     template_name = 'waste_management/waste_dnotes_list.html'
     paginate_by: int = 10
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = waste_delivery_noteFilter(self.request.GET, queryset=self.get_queryset())
+        return context
+
     def get_queryset(self):
-        return models.waste_delivery_note.objects.all()           
+        return waste_delivery_note.objects.all()           
 
 class DnoteHODUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'waste_management/dnote_update.html'
@@ -376,7 +381,7 @@ def create_checklist(request):
         if len(check) == 0:
             return HttpResponse('Error: No items selected')
         else:
-            checklist_instance = checklist.objects.create(form_serials = check, date_posted = datetime.now(), author = request.user)
+            checklist_instance = Checklist.objects.create(form_serials = check, date_posted = datetime.now(), author = request.user)
             checklist_instance.save()
 
         for num in check:
@@ -391,7 +396,7 @@ def accept_checklist(request):
         my_list_string = []
         my_list_int = []
         for num in check: #for each serial number in the list
-            x = get_object_or_404(checklist, pk=num) #get the object for that serial number
+            x = get_object_or_404(Checklist, pk=num) #get the object for that serial number
             my_list_string.append(x.form_serials) #append the serial number to the list
         print(f'Initial list {my_list_string} type {type(my_list_string)}')
 
@@ -403,7 +408,7 @@ def accept_checklist(request):
         print(f'Y list {my_list_flat} type {type(my_list_flat)}')
 
         for num in check: #for each serial number in the list
-            checklist.objects.filter(id=num).update(checklist_status=2) #update the checklist status to 2, meaning accepted, could also be done when extracting form serials from the list
+            Checklist.objects.filter(id=num).update(checklist_status=2) #update the checklist status to 2, meaning accepted, could also be done when extracting form serials from the list
 
 
         for num in my_list_flat: #for each serial number in the list
@@ -428,7 +433,7 @@ class CheckListView(LoginRequiredMixin, generic.ListView):
     paginate_by: int = 15
 
     def get_queryset(self):
-        return models.checklist.objects.all()  
+        return Checklist.objects.all()  
 
 class Dnotes_KGRN_ListView(LoginRequiredMixin, generic.ListView):
 
@@ -460,13 +465,13 @@ def create_kgrn(request):
 
     return redirect('kgrns')
 
-class KGRNListView(LoginRequiredMixin, generic.ListView):
+class KGRNListView(LoginRequiredMixin, ListView):
     context_object_name = 'kgrns'
     template_name = 'waste_management/kgrns.html'
-    paginate_by: int = 10
+    paginate_by: int = 15
 
-    def get_queryset(self):
-        return models.kgrn.objects.all()
+    def get_queryset(self, *args, **kwargs):
+        return kgrn.objects.all()
 
 class KGRNStocksUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'waste_management/update_kgrn_stock.html'
@@ -894,7 +899,7 @@ class KGRN_ItemsListView(LoginRequiredMixin, generic.ListView):
     paginate_by: int = 12
 
     def get_queryset(self):
-        return models.kgrn_item.objects.all()
+        return kgrn_item.objects.all()
 
 class BlankKGRNHODUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'waste_management/approve_kgrn_item_hod.html'
@@ -1622,5 +1627,5 @@ class Goods_issue_note_ListView(LoginRequiredMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        return models.goods_issue_note.objects.all()
+        return goods_issue_note.objects.all()
 

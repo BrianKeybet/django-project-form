@@ -60,7 +60,7 @@ LOGGING = {
     },
 }
 
-ALLOWED_HOSTS = ['10.10.1.71','127.0.0.1']
+ALLOWED_HOSTS = ['10.10.0.173','127.0.0.1']
 
 
 # Application definition

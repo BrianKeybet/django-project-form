@@ -83,7 +83,7 @@ class waste_delivery_note(models.Model):
         return reverse('dnotes')
 
 
-class checklist(models.Model):
+class Checklist(models.Model):
     
     form_serials = models.CharField(max_length = 100, blank = True) 
     date_posted = models.DateTimeField(default = timezone.now, verbose_name= "Date")
