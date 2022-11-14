@@ -432,6 +432,11 @@ class CheckListView(LoginRequiredMixin, generic.ListView):
     template_name = 'waste_management/checklists.html'
     paginate_by: int = 15
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = ChecklistFilter(self.request.GET, queryset=self.get_queryset())
+        return context
+
     def get_queryset(self):
         return Checklist.objects.all()  
 

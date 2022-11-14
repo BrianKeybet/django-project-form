@@ -35,7 +35,7 @@ class waste_delivery_noteFilter(django_filters.FilterSet):
             ('1','Rejected by HOD'),
             ('2','Submitted to HOD'),
             ('3','Rejected by Warehouse'),
-            ('4','Submitted to Department'),
+            ('4','Approved by HOD'),
             ('5','Submitted to sales'),
             ('6','Submitted to Warehouse Clerk'),
             ('8','Submitted to Warehouse HOD'),
@@ -53,6 +53,18 @@ class waste_delivery_noteFilter(django_filters.FilterSet):
                 'department': ['icontains'],
                 'supplier': ['exact'],
                 #'form_status': ['icontains'],
+            }
+    
+        def check_status(self, queryset, name, value):
+            return queryset.filter(form_status__exact=value)
+
+class ChecklistFilter(django_filters.FilterSet):
+    
+        class Meta:
+            model = waste_delivery_note
+            fields = {
+                'id': ['exact'],
+                'author': ['exact'],
             }
     
         def check_status(self, queryset, name, value):

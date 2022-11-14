@@ -2,6 +2,8 @@
 
 {% load crispy_forms_tags %}
 
+{% load bootstrap %}
+
 {% block content %}
 <style>
     * {
@@ -82,10 +84,16 @@
 }
 </style>
 <div class="container">
+    <div class="item"><h2>Checklists Summary</h2></div>
+    <font size="2" color= "black" face="Times New Roman" >
+        <form method="get" class="form-inline">
+            {{ filter.form|crispy }}
+            <input type="submit" name="search" value="SEARCH" class="btn btn-outline-primary btn-block"/>
+        </form>
+    </font>
     <form method="POST" action="{%url 'accept_checklist' %}" {% if form.is_multipart %} enctype="multipart/form-data" {% endif %}>
         {% csrf_token %}
         {{form.as_p}}
-    <div class="item"><h2>Checklists Summary</h2></div>
     <div class="item">
         <font size="3" face="Times New Roman" >
         <table class='table'>
@@ -98,7 +106,7 @@
                 <th>PRINT</th>
             </tr>
             </thead>
-        {% for checklist in checklists %}
+        {% for checklist in filter.qs %}
             <tr>
                 <td>{{checklist.id}}</td>
                 <td>{{ checklist.form_serials }}</td>
