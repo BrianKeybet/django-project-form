@@ -29,7 +29,7 @@
     <nav id = "nav-sidebar" class = "sticky">
       <p  class='text-muted'>
         <ul  class="list-group">
-        <li class="list-group-item list-group-item-light"><a href="http://10.10.1.71:8000/admin/">Admin</a></li>
+        <li class="list-group-item list-group-item-light"><a href="http://10.10.0.173:8000/admin/">Admin</a></li>
         {% if request.user.profile.level > 4 %}
         <li class="list-group-item list-group-item-light"><a href="{% url 'forms-home' %}">Home</a></li>
         {% else %}

@@ -79,14 +79,22 @@
     text-align: center;
     }
     .item:nth-of-type(8) {
-    grid-column: 1 / 5;
+    grid-column: 1 / 3;
     text-align: center;
     }
     .item:nth-of-type(9) {
-    grid-column: 1 / 5;
+    grid-column: 3 / 5;
     text-align: center;
     }
     .item:nth-of-type(10) {
+    grid-column: 1 / 5;
+    text-align: center;
+    }
+    .item:nth-of-type(11) {
+    grid-column: 1 / 5;
+    text-align: center;
+    }
+    .item:nth-of-type(12) {
     grid-column: 1 / 5;
     text-align: center;
     }
@@ -112,8 +120,10 @@
 </style>
 <div class="container">
     <div class="item"><h2>GOODS RETURN NOTE (KGRN)</h2></div>
-    <div class="item" style="text-align: Left"><strong>KAPA/PSD/0020  &nbsp; &nbsp; KP-SA-FM-20(0)</strong></div>
-    <div class="item" style="text-align: Left"><strong>Department:</strong>  {{ dnote.department }}</div>
+    <div class="item" style="text-align: Left"><strong>KAPA/PSD/0020</strong></div>
+    <div class="item" style="text-align: Left"><strong>KP-SA-FM-20(0)</strong></div>
+    <div class="item" style="text-align: Left"><strong>Department:</strong> {{ dnote.department }}</div>
+    <div class="item" style="text-align: Left"><strong>Supplier:</strong> {{ dnote.supplier }}</div>
     <div class="item" style="text-align: Left"><strong>Serial Number:</strong> {{ checks.serial_num }}</div> 
     <div class="item" style="text-align: Left"><strong>Raised on:</strong> {{ checks.date_posted|date:"F d, Y"  }}</div> 
     <div class="item" style="text-align: Left"><strong>D/Notes Serials:</strong> {{ checks.form_serials }}</div>
@@ -123,7 +133,6 @@
             <table class='table' style="text-align: Left">
                 <thead>
                 <tr>
-                    <th>SUPPLIER</th>
                     <th>ITEM</th>
                     <th style="text-align: center">QUANTITY</th>
                 </tr>    
@@ -131,56 +140,48 @@
             {% for dnote in dnotes_list %}
                 {% if dnote.item1 != null %}
                 <tr>
-                    <td>{{ dnote.supplier }}</td>
                     <td>{{ dnote.item1 }}</td>
                     <td style="text-align: center">{{ dnote.item_qty1|intcomma }}</td>            
                 </tr>
                 {% endif %}
                 {% if dnote.item2 != null %}
                 <tr>
-                    <td>{{ dnote.supplier }}</td>
                     <td>{{ dnote.item2 }}</td>
                     <td style="text-align: center">{{ dnote.item_qty2|intcomma }}</td>            
                 </tr>
                 {% endif %}
                 {% if dnote.item3 != null %}
                 <tr>
-                    <td>{{ dnote.supplier }}</td>
                     <td>{{ dnote.item3 }}</td>
                     <td style="text-align: center">{{ dnote.item_qty3|intcomma }}</td>            
                 </tr>
                 {% endif %}
                 {% if dnote.item4 != null %}
                 <tr>
-                    <td>{{ dnote.supplier }}</td>
                     <td>{{ dnote.item4 }}</td>
                     <td style="text-align: center">{{ dnote.item_qty4|intcomma }}</td>            
                 </tr>
                 {% endif %}
                 {% if dnote.item5 != null %}
                 <tr>
-                    <td>{{ dnote.supplier }}</td>
                     <td>{{ dnote.item5 }}</td>
                     <td style="text-align: center">{{ dnote.item_qty5|intcomma }}</td>            
                 </tr>
                 {% endif %}
                 {% if dnote.item6 != null %}
                 <tr>
-                    <td>{{ dnote.supplier }}</td>
                     <td>{{ dnote.item6 }}</td>
                     <td style="text-align: center">{{ dnote.item_qty6|intcomma }}</td>            
                 </tr>
                 {% endif %}
                 {% if dnote.item7 != null %}
                 <tr>
-                    <td>{{ dnote.supplier }}</td>
                     <td>{{ dnote.item7 }}</td>
                     <td style="text-align: center">{{ dnote.item_qty7|intcomma }}</td>            
                 </tr>
                 {% endif %}
                 {% if dnote.item8 != null %}
                 <tr>
-                    <td>{{ dnote.supplier }}</td>
                     <td>{{ dnote.item8 }}</td>
                     <td style="text-align: center">{{ dnote.item_qty8|intcomma }}</td>            
                 </tr>

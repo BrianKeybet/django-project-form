@@ -270,6 +270,9 @@
         </fieldset>
     </div>
     <div class="item"><strong>H.O.D / Representative:</strong> {{ object.hod }} <strong>Comment:</strong> {{ object.hod_comment }}</div>
+    {% if object.approved_by != None %}
+    <div class="item"><strong>Approved By:</strong> {{ object.approved_by }} <strong>Comment:</strong> {{ object.approved_comment }}</div>
+    {% endif %}
     {% if request.user.profile.level == 7 %} 
     <div class="item">
         <form method="POST" action="" {% if form.is_multipart %} enctype="multipart/form-data" {% endif %}>
@@ -285,7 +288,7 @@
                     </fieldset>
         </form>
     </div>
-    % else %}
+    {% else %}
     <div class="item">
         <fieldset class="form-group" disabled>
             <div>{{ form|crispy }}</div>

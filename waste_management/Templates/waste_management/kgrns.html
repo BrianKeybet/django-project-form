@@ -61,6 +61,12 @@
 </style>
 <div class="container">
     <div class="item"><h2>KGRNs From Dnotes Summary</h2></div>
+    <font size="2" color= "black" face="Times New Roman" >
+        <form method="get" class="form-inline">
+            {{ filter.form|crispy }}
+            <input type="submit" name="search" value="SEARCH" class="btn btn-outline-primary btn-block"/>
+        </form>
+    </font>
     <div class="item">
         <font size="3" face="Times New Roman" >
         <table class='table'>
@@ -75,7 +81,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for kgrn in kgrns %}
+            {% for kgrn in filter.qs %}
                 <tr>
                     <td>{{ kgrn.serial_num }}</td>
                     <td>{{ kgrn.form_serials }}</td>

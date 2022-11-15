@@ -2,6 +2,8 @@
 
 {% load crispy_forms_tags %}
 
+{% load bootstrap %}
+
 {% block content %}
 <style>
     * {
@@ -83,6 +85,12 @@
 </style>
 <div class="container">
     <div class="item"><h2>Goods Returned To Supplier Summary</h2></div>
+    <font size="2" color= "black" face="Times New Roman" >
+        <form method="get" class="form-inline">
+            {{ filter.form|crispy }}
+            <input type="submit" name="search" value="SEARCH" class="btn btn-outline-primary btn-block"/>
+        </form>
+    </font>
     <div class="item">
         <font size="3" face="Times New Roman" >
         <table class='table'>
@@ -97,7 +105,7 @@
                 <th>UPDATE / VIEW</th>
             </tr>
             </thead>
-        {% for kgrn_item in kgrn_items %}
+        {% for kgrn_item in filter.qs %}
             <tr>
                 <td>{{ kgrn_item.serial_num }}</td>
                 <td>{{ kgrn_item.department }}</td>

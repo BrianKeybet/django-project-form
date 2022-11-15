@@ -238,7 +238,7 @@ class waste_delivery_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, gen
             print(f'Each name: {prof.user.first_name}')
             print(f'Host email: {settings.EMAIL_HOST_USER}')
             subject = 'Waste Delivery Note'
-            message = f'Hello {prof.user.first_name}, a new Waste Delivery Note number {serial_num} has been submitted for your approval. \nPlease login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.'
+            message = f'Hello {prof.user.first_name}, a new Waste Delivery Note number {serial_num} has been submitted for your approval. \nPlease login to the system on http://10.10.0.173:8000/waste/dnotes/ to view the form.'
             email_from = settings.EMAIL_HOST_USER
             #recipient_list = [prof.user.email, config('ADMIN_EMAIL'), config('BRIAN_EMAIL')]
             recipient_list = [config('BRIAN_EMAIL')]
@@ -271,7 +271,7 @@ class DnoteHODUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department Waste Delivery Note',
-            body=f'Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to create checklist http://10.10.1.71:8000/waste/dnotes/ .\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on to create checklist http://10.10.0.173:8000/waste/dnotes/ .\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
@@ -330,7 +330,7 @@ class DnoteHODUpdateView(LoginRequiredMixin, UpdateView):
             return super().form_valid(form)
 
         else:
-            return HttpResponse('Error')
+            return HttpResponse('Error : Form has already been approved or rejected')
 
 class DnoteWHUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'waste_management/dnote_update1.html'
@@ -348,7 +348,7 @@ class DnoteWHUpdateView(LoginRequiredMixin, UpdateView):
 
             for prof in profs:
                 subject = 'Waste Delivery Note'
-                message = f'Hello {prof.user.first_name}, Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.'
+                message = f'Hello {prof.user.first_name}, Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been approved by {self.request.user}. Please login to the system on http://10.10.0.173:8000/waste/dnotes/ to view the form.'
                 email_from = settings.EMAIL_HOST_USER
                 #recipient_list = [prof.user.email, config('BRIAN_EMAIL')]
                 recipient_list = [config('BRIAN_EMAIL')]
@@ -362,7 +362,7 @@ class DnoteWHUpdateView(LoginRequiredMixin, UpdateView):
 
             for prof in profs:
                 subject = 'Waste Delivery Note'
-                message = f'Hello {prof.user.first_name}, Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.'
+                message = f'Hello {prof.user.first_name}, Waste delivery note number {form.instance.id} submitted by {form.instance.author} has been rejected by {self.request.user}. Please login to the system on http://10.10.0.173:8000/waste/dnotes/ to view the form.'
                 email_from = settings.EMAIL_HOST_USER
                 #recipient_list = [prof.user.email, config('BRIAN_EMAIL')]
                 recipient_list = [config('BRIAN_EMAIL')]
@@ -372,7 +372,7 @@ class DnoteWHUpdateView(LoginRequiredMixin, UpdateView):
             return super().form_valid(form)
 
         else:
-            return HttpResponse('Error')
+            return HttpResponse('Error : Form has already been approved or rejected')
 
 def create_checklist(request):
     if request.method == 'POST':
@@ -419,7 +419,7 @@ def accept_checklist(request):
 
         for prof in profs:
             subject = 'Waste Delivery Note'
-            message = f'Hello {prof.user.first_name}, Waste delivery note number {my_list_string} has been accepted by {request.user}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.'
+            message = f'Hello {prof.user.first_name}, Waste delivery note number {my_list_string} has been accepted by {request.user}. Please login to the system on http://10.10.0.173:8000/waste/dnotes/ to view the form.'
             email_from = settings.EMAIL_HOST_USER
             #recipient_list = [prof.user.email, config('BRIAN_EMAIL')]
             recipient_list = [config('BRIAN_EMAIL')]
@@ -475,6 +475,11 @@ class KGRNListView(LoginRequiredMixin, ListView):
     template_name = 'waste_management/kgrns.html'
     paginate_by: int = 15
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = kgrnFilter(self.request.GET, queryset=self.get_queryset())
+        return context
+
     def get_queryset(self, *args, **kwargs):
         return kgrn.objects.all()
 
@@ -516,7 +521,7 @@ class KGRNStocksUpdateView(LoginRequiredMixin, UpdateView):
 
             for prof in profs:
                 subject = 'KGRN (D/Notes)'
-                html_message = f'Hello {prof.user.first_name}, a new D/Notes based KGRN has been submitted for your approval.\nPlease login to the system on http://10.10.1.71:8000/waste/kgrns/ to view the form.\nThe serial number is {form.instance.serial_num}.'
+                html_message = f'Hello {prof.user.first_name}, a new D/Notes based KGRN has been submitted for your approval.\nPlease login to the system on http://10.10.0.173:8000/waste/kgrns/ to view the form.\nThe serial number is {form.instance.serial_num}.'
                 email_from = settings.EMAIL_HOST_USER
                 #recipient_list = [prof.user.email, config('ADMIN_EMAIL'), config('BRIAN_EMAIL')]
                 recipient_list = [config('BRIAN_EMAIL')]
@@ -526,7 +531,7 @@ class KGRNStocksUpdateView(LoginRequiredMixin, UpdateView):
             return super().form_valid(form)
 
         else:
-            return HttpResponse('Error')
+            return HttpResponse('Error : Form has already been approved or rejected')
 
 class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'waste_management/approve_kgrn_hod.html'
@@ -566,7 +571,7 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
             for prof in profs:
                 email = EmailMessage(
                 subject=f'{form.instance.department} department KGRN(D/Notes)',
-                body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+                body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
                 from_email=config('EMAIL_HOST_USER'),
                 to=[config('BRIAN_EMAIL')],
                 cc=[config('BRIAN_EMAIL')],
@@ -583,7 +588,7 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
             for prof in profs:
                 email = EmailMessage(
                 subject=f'{form.instance.department} department KGRN',
-                body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+                body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
                 from_email=config('EMAIL_HOST_USER'),
                 to=[prof.user.email],
                 cc=[config('BRIAN_EMAIL')],
@@ -599,7 +604,7 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
@@ -615,7 +620,7 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
@@ -627,7 +632,7 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
             return super().form_valid(form)
 
         else:
-            return HttpResponse('Error')
+            return HttpResponse('Error : Form has already been approved or rejected')
 
 class KGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'waste_management/approve_kgrn_purchase.html'
@@ -689,7 +694,7 @@ class KGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.hod.profile.email],
             cc=[config('BRIAN_EMAIL')],
@@ -701,7 +706,7 @@ class KGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
             return super().form_valid(form)
 
         else:
-            return HttpResponse('Error')
+            return HttpResponse('Error : Form has already been approved or rejected')
 
 class KGRNPurchase2UpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'waste_management/approve_kgrn_purchase2.html'
@@ -739,7 +744,7 @@ class KGRNPurchase2UpdateView(LoginRequiredMixin, UpdateView):
             for prof in profs:
                 email = EmailMessage(
                 subject=f'{form.instance.department} department KGRN',
-                body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+                body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
                 from_email=config('EMAIL_HOST_USER'),
                 to=[prof.user.email],
                 cc=[config('BRIAN_EMAIL')],
@@ -755,7 +760,7 @@ class KGRNPurchase2UpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.hod.profile.email],
             cc=[config('BRIAN_EMAIL')],
@@ -768,7 +773,7 @@ class KGRNPurchase2UpdateView(LoginRequiredMixin, UpdateView):
             return super().form_valid(form)
             
         else:
-            return HttpResponse('Error')
+            return HttpResponse('Error : Form has already been approved or rejected')
 
 class CloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'waste_management/approve_kgrn_close.html'
@@ -805,7 +810,7 @@ class CloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been closed by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been closed by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.hod.profile.email, form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
@@ -820,7 +825,7 @@ class CloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
             form.instance.kgrn_status += 1
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been closed by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been closed by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.hod.profile.email, form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
@@ -836,7 +841,7 @@ class CloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.hod.profile.email, form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
@@ -852,7 +857,7 @@ class CloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.hod.profile.email, form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
@@ -864,7 +869,7 @@ class CloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
             return super().form_valid(form)
 
         else:
-            return HttpResponse('Error')
+            return HttpResponse('Error : Form has already been approved or rejected')
 
 class BlankKGRN_CreateView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
     template_name = 'waste_management/raise_blankkgrn.html'
@@ -890,7 +895,7 @@ class BlankKGRN_CreateView(LoginRequiredMixin, SuccessMessageMixin, generic.Crea
 
         for prof in profs:
             subject = 'KGRN'
-            message = f'Hello {prof.user.first_name}, a new KGRN number {serial_num} has been submitted for your approval. Please login to the system on http://10.10.1.71:8000/waste/kgrns/items/ to view the form.'
+            message = f'Hello {prof.user.first_name}, a new KGRN number {serial_num} has been submitted for your approval. Please login to the system on http://10.10.0.173:8000/waste/kgrns/items/ to view the form.'
             email_from = settings.EMAIL_HOST_USER
             #recipient_list = [prof.user.email, config('ADMIN_EMAIL'), config('BRIAN_EMAIL')]
             recipient_list = [config('BRIAN_EMAIL')]
@@ -902,6 +907,11 @@ class KGRN_ItemsListView(LoginRequiredMixin, generic.ListView):
     context_object_name = 'kgrn_items'
     template_name = 'waste_management/kgrn_items.html'
     paginate_by: int = 12
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = kgrn_itemFilter(self.request.GET, queryset=self.get_queryset())
+        return context
 
     def get_queryset(self):
         return kgrn_item.objects.all()
@@ -921,7 +931,7 @@ class BlankKGRNHODUpdateView(LoginRequiredMixin, UpdateView):
             for prof in profs:    
                 email = EmailMessage(
                 subject=f'{form.instance.department} department KGRN',
-                body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+                body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
                 from_email=config('EMAIL_HOST_USER'),
                 to=[prof.user.email],
                 cc=[config('BRIAN_EMAIL'),config('WAREHOUSE_HOD')],
@@ -938,7 +948,7 @@ class BlankKGRNHODUpdateView(LoginRequiredMixin, UpdateView):
             for prof in profs:
                 email = EmailMessage(
                 subject=f'{form.instance.department} department KGRN',
-                body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+                body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
                 from_email=config('EMAIL_HOST_USER'),
                 to=[prof.user.email],
                 cc=[config('BRIAN_EMAIL')],
@@ -954,7 +964,7 @@ class BlankKGRNHODUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
@@ -970,7 +980,7 @@ class BlankKGRNHODUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
@@ -982,7 +992,7 @@ class BlankKGRNHODUpdateView(LoginRequiredMixin, UpdateView):
             return super().form_valid(form)
 
         else:
-            return HttpResponse('Error')
+            return HttpResponse('Error : Form has already been approved or rejected')
 
 class BlankKGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'waste_management/approve_kgrn_item_purchase.html'
@@ -1020,7 +1030,7 @@ class BlankKGRNPurchase2UpdateView(LoginRequiredMixin, UpdateView):
             for prof in profs:
                 email = EmailMessage(
                 subject=f'{form.instance.department} department KGRN',
-                body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+                body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
                 from_email=config('EMAIL_HOST_USER'),
                 to=[prof.user.email],
                 cc=[config('BRIAN_EMAIL')],
@@ -1035,7 +1045,7 @@ class BlankKGRNPurchase2UpdateView(LoginRequiredMixin, UpdateView):
             form.instance.form_status -= 3
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.hod.profile.email],
             cc=[config('BRIAN_EMAIL')],
@@ -1048,7 +1058,7 @@ class BlankKGRNPurchase2UpdateView(LoginRequiredMixin, UpdateView):
             return super().form_valid(form)
             
         else:
-            return HttpResponse('Error')
+            return HttpResponse('Error : Form has already been approved or rejected')
 
 class BlankCloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'waste_management/approve_kgrn_item_close.html'
@@ -1062,7 +1072,7 @@ class BlankCloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been closed by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been closed by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.hod.profile.email, form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
@@ -1077,7 +1087,7 @@ class BlankCloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
             form.instance.form_status += 3
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been closed by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been closed by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.hod.profile.email, form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
@@ -1093,7 +1103,7 @@ class BlankCloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.hod.profile.email, form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
@@ -1109,7 +1119,7 @@ class BlankCloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.1.71:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.hod.profile.email, form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
@@ -1121,7 +1131,7 @@ class BlankCloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
             return super().form_valid(form)
 
         else:
-            return HttpResponse('Error')
+            return HttpResponse('Error : Form has already been approved or rejected')
 
         
 
@@ -1248,7 +1258,7 @@ class goods_issue_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, generi
 
         for prof in profs:
             subject = 'Goods Issue Note'
-            message = f'Hello {prof.user.first_name}, a new Goods Issue Note has been submitted by {form.instance.author} for your approval. Please login to the system on http://10.10.1.71:8000/waste/gins/ to view the form. \n The serial number is {serial_num}. \n To: {form.instance.department_to}'
+            message = f'Hello {prof.user.first_name}, a new Goods Issue Note has been submitted by {form.instance.author} for your approval. Please login to the system on http://10.10.0.173:8000/waste/gins/ to view the form. \n The serial number is {serial_num}. \n To: {form.instance.department_to}'
             email_from = settings.EMAIL_HOST_USER
             #recipient_list = [prof.user.email, config('BRIAN_EMAIL')]
             recipient_list = [config('BRIAN_EMAIL')]
@@ -1271,7 +1281,7 @@ class HOD_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
             for prof in profs:
                 subject = 'Goods Issue Note'
-                message = f'Hello {prof.user.first_name}, a Goods Issue Note has been submitted by {form.instance.hod} for your approval. Please login to the system on http://10.10.1.71:8000/waste/gins/ to view the form. \n  The serial number is {form.instance.id}. \n To: {form.instance.department_to}'
+                message = f'Hello {prof.user.first_name}, a Goods Issue Note has been submitted by {form.instance.hod} for your approval. Please login to the system on http://10.10.0.173:8000/waste/gins/ to view the form. \n  The serial number is {form.instance.id}. \n To: {form.instance.department_to}'
                 email_from = settings.EMAIL_HOST_USER
                 #recipient_list = [prof.user.email, config('BRIAN_EMAIL')]
                 recipient_list = [config('BRIAN_EMAIL')]
@@ -1286,7 +1296,7 @@ class HOD_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
             for prof in profs:
                 subject = 'Goods Issue Note'
-                message = f'Hello {prof.user.first_name},\nA Goods Issue Note number {form.instance.id} has been submitted by {form.instance.hod} for your approval. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. \n Issued To: {form.instance.department_to}. \n Issued By: {form.instance.department_from}. \n Delivered by: {form.instance.delivered_by}. \n Net Value: {form.instance.my_total}'
+                message = f'Hello {prof.user.first_name},\nA Goods Issue Note number {form.instance.id} has been submitted by {form.instance.hod} for your approval. Please login to the system on http://10.10.0.173:8000/waste/dnotes/ to view the form. \n Issued To: {form.instance.department_to}. \n Issued By: {form.instance.department_from}. \n Delivered by: {form.instance.delivered_by}. \n Net Value: {form.instance.my_total}'
                 email_from = settings.EMAIL_HOST_USER
                 #recipient_list = [prof.user.email, config('BRIAN_EMAIL')]
                 recipient_list = [config('BRIAN_EMAIL')]
@@ -1301,7 +1311,7 @@ class HOD_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
             author_email = form.instance.author.email
 
             subject = 'Goods Issue Note'
-            message = f'Hello {author_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
+            message = f'Hello {author_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. Please login to the system on http://10.10.0.173:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
             email_from = settings.EMAIL_HOST_USER
             #recipient_list = [author_email, config('BRIAN_EMAIL')]
             recipient_list = [config('BRIAN_EMAIL')]
@@ -1316,7 +1326,7 @@ class HOD_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
             author_email = form.instance.author.email
 
             subject = 'Goods Issue Note'
-            message = f'Hello {author_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
+            message = f'Hello {author_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. Please login to the system on http://10.10.0.173:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
             email_from = settings.EMAIL_HOST_USER
             #recipient_list = [author_email, config('BRIAN_EMAIL')]
             recipient_list = [config('BRIAN_EMAIL')]
@@ -1325,7 +1335,7 @@ class HOD_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
             return super().form_valid(form)  
 
         else:
-            return HttpResponse('Error')
+            return HttpResponse('Error : Form has already been approved or rejected')
 
 class HOD_internal_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'waste_management/approve_hod_gin_internal.html'
@@ -1342,7 +1352,7 @@ class HOD_internal_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
             for prof in profs:
                 subject = 'Goods Issue Note'
-                message = f'Hello {prof.user.first_name}, a Goods Issue Note has been submitted by {form.instance.hod} for your approval.\nPlease login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. \n The serial number is {form.instance.id}. \n To: {form.instance.department_to}'
+                message = f'Hello {prof.user.first_name}, a Goods Issue Note has been submitted by {form.instance.hod} for your approval.\nPlease login to the system on http://10.10.0.173:8000/waste/dnotes/ to view the form. \n The serial number is {form.instance.id}. \n To: {form.instance.department_to}'
                 email_from = settings.EMAIL_HOST_USER
                 recipient_list = [config('BRIAN_EMAIL')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
@@ -1356,7 +1366,7 @@ class HOD_internal_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
             for prof in profs:
                 subject = 'Goods Issue Note'
-                message = f'Hello {prof.user.first_name},\nA Goods Issue Note has been submitted by {form.instance.hod} for your approval. \nPlease login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form. \n The serial number is {form.instance.id}. \n Issued To: {form.instance.department_to}. \n Issued By: {form.instance.department_from}. \n Net Value: {form.instance.my_total}'
+                message = f'Hello {prof.user.first_name},\nA Goods Issue Note has been submitted by {form.instance.hod} for your approval. \nPlease login to the system on http://10.10.0.173:8000/waste/dnotes/ to view the form. \n The serial number is {form.instance.id}. \n Issued To: {form.instance.department_to}. \n Issued By: {form.instance.department_from}. \n Net Value: {form.instance.my_total}'
                 email_from = settings.EMAIL_HOST_USER
                 recipient_list = [prof.user.email, config('BRIAN_EMAIL')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
@@ -1370,7 +1380,7 @@ class HOD_internal_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
             author_email = form.instance.author.email
 
             subject = 'Goods Issue Note'
-            message = f'Hello {author_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. \nPlease login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
+            message = f'Hello {author_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. \nPlease login to the system on http://10.10.0.173:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
             email_from = settings.EMAIL_HOST_USER
             #recipient_list = [author_email, config('BRIAN_EMAIL')]
             recipient_list = [config('BRIAN_EMAIL')]
@@ -1385,7 +1395,7 @@ class HOD_internal_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
             author_email = form.instance.author.email
 
             subject = 'Goods Issue Note'
-            message = f'Hello {author_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. \nPlease login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
+            message = f'Hello {author_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.hod}. \nPlease login to the system on http://10.10.0.173:8000/waste/dnotes/ to view the form.\n To: {form.instance.department_to}'
             email_from = settings.EMAIL_HOST_USER
             #recipient_list = [author_email, config('BRIAN_EMAIL')]
             recipient_list = [config('BRIAN_EMAIL')]
@@ -1394,7 +1404,7 @@ class HOD_internal_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
             return super().form_valid(form)  
 
         else:
-            return HttpResponse('Error')
+            return HttpResponse('Error: Form has already been approved or rejected')
 
 class FM_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'waste_management/approve_goodsissuenote.html'
@@ -1426,7 +1436,7 @@ class FM_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
             for prof in profs:
                 subject = 'Goods Issue Note'
-                message = f'Hello {prof.user.first_name},\nA Goods Issue Note submitted by {form.instance.department_from} has been approved by {form.instance.approved_by}. \nPlease login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n The serial number is {form.instance.id}. \n Issued To: {form.instance.department_to}. \n Issued By: {form.instance.department_from}. \n Net Value: {form.instance.my_total}'
+                message = f'Hello {prof.user.first_name},\nA Goods Issue Note submitted by {form.instance.department_from} has been approved by {form.instance.approved_by}. \nPlease login to the system on http://10.10.0.173:8000/waste/dnotes/ to view the form.\n The serial number is {form.instance.id}. \n Issued To: {form.instance.department_to}. \n Issued By: {form.instance.department_from}. \n Net Value: {form.instance.my_total}'
                 email_from = settings.EMAIL_HOST_USER
                 #recipient_list = [prof.user.email, config('BRIAN_EMAIL')]
                 recipient_list = [config('BRIAN_EMAIL')]
@@ -1452,7 +1462,7 @@ class FM_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
             for prof in profs:
                 subject = 'Goods Issue Note'
-                message = f'Hello {prof.user.first_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.approved_by}. \nPlease login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
+                message = f'Hello {prof.user.first_name}, a Goods Issue Note number {form.instance.id} has been rejected by {form.instance.approved_by}. \nPlease login to the system on http://10.10.0.173:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
                 email_from = settings.EMAIL_HOST_USER
                 #recipient_list = [prof.user.email, author_email, config('BRIAN_EMAIL')]
                 recipient_list = [config('BRIAN_EMAIL')]
@@ -1461,7 +1471,7 @@ class FM_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
             return super().form_valid(form)  
 
         else:
-            return HttpResponse('Error')
+            return HttpResponse('Error: Form has already been approved or rejected')
 
 
 class Dept_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
@@ -1482,7 +1492,7 @@ class Dept_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
             for prof in profs:
                 subject = 'Goods Issue Note'
-                message = f'Hello {prof.user.first_name}, Goods Issue Note number {form.instance.id} has been accepted by {form.instance.approved_by}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
+                message = f'Hello {prof.user.first_name}, Goods Issue Note number {form.instance.id} has been accepted by {form.instance.approved_by}. Please login to the system on http://10.10.0.173:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
                 email_from = settings.EMAIL_HOST_USER
                 #recipient_list = [prof.user.email, author_email, config('BRIAN_EMAIL')]
                 recipient_list = [config('BRIAN_EMAIL')]
@@ -1500,7 +1510,7 @@ class Dept_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
             for prof in profs:
                 subject = 'Goods Issue Note'
-                message = f'Hello {prof.user.first_name}, Goods Issue Note number {form.instance.id} has been rejected by {form.instance.approved_by}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
+                message = f'Hello {prof.user.first_name}, Goods Issue Note number {form.instance.id} has been rejected by {form.instance.approved_by}. Please login to the system on http://10.10.0.173:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
                 email_from = settings.EMAIL_HOST_USER
                 #recipient_list = [prof.user.email, author_email, config('BRIAN_EMAIL')]
                 recipient_list = [config('BRIAN_EMAIL')]
@@ -1509,7 +1519,7 @@ class Dept_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
             return super().form_valid(form)
 
         else:
-            return HttpResponse('Error')
+            return HttpResponse('Error : Form has already been approved or rejected')
 
 class Sales_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'waste_management/sales_receivegoodsissuenote.html'
@@ -1595,7 +1605,7 @@ class Sales_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
             for prof in profs:
                 subject = 'Goods Issue Note'
-                message = f'Hello {prof.user.first_name}, Goods Issue Note number {form.instance.id} has been accepted by {form.instance.received_by}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
+                message = f'Hello {prof.user.first_name}, Goods Issue Note number {form.instance.id} has been accepted by {form.instance.received_by}. Please login to the system on http://10.10.0.173:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
                 email_from = settings.EMAIL_HOST_USER
                 recipient_list = [config('BRIAN_EMAIL')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
@@ -1612,14 +1622,14 @@ class Sales_goods_issue_noteUpdateView(LoginRequiredMixin, UpdateView):
 
             for prof in profs:
                 subject = 'Goods Issue Note'
-                message = f'Hello {prof.user.first_name}, Goods Issue Note number {form.instance.id} has been rejected by {form.instance.received_by}. Please login to the system on http://10.10.1.71:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
+                message = f'Hello {prof.user.first_name}, Goods Issue Note number {form.instance.id} has been rejected by {form.instance.received_by}. Please login to the system on http://10.10.0.173:8000/waste/dnotes/ to view the form.\n Issued To: {form.instance.department_to}'
                 email_from = settings.EMAIL_HOST_USER
                 recipient_list = [config('BRIAN_EMAIL')]
                 send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
             return super().form_valid(form)
         else:
-            return HttpResponse('Error')
+            return HttpResponse('Error : Form has already been approved or rejected')
 
 class Goods_issue_note_ListView(LoginRequiredMixin, generic.ListView):
     context_object_name = 'goods_issue_notes'
