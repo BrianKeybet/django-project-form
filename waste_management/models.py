@@ -241,7 +241,7 @@ class goods_issue_note(models.Model):
     my_total = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, verbose_name="Total")
     gross_total = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, verbose_name="Gross Total")
     total_weight_wh = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, verbose_name="Total WH Weight")
-    total_weight_wb = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, verbose_name="")
+    total_weight_wb = models.DecimalField(max_digits=15, decimal_places=2, blank=False, null=True, verbose_name="")
 
     # my_total = computed_property.ComputedFloatField(compute_from='get_cost', null=True, default='0', verbose_name="Total")
 
