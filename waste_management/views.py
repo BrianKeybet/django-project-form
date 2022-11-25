@@ -450,7 +450,7 @@ class Dnotes_KGRN_ListView(LoginRequiredMixin, generic.ListView):
 
 
     def get_queryset(self):
-        return models.waste_delivery_note.objects.all() 
+        return waste_delivery_note.objects.all() 
 
 def create_kgrn(request):
     if request.method == 'POST':
@@ -462,11 +462,14 @@ def create_kgrn(request):
         kgrn_sum1 = kgrn.objects.count()
         serial_num = kgrn_sum + kgrn_sum1 + 1 #Get next serial number to display in email
 
-        kgrn_instance = kgrn.objects.create(serial_num = serial_num, form_serials = check, date_posted = datetime.now(), author = request.user, department = str(request.user.profile.department))
-        kgrn_instance.save()
-
         for num in check:
             waste_delivery_note.objects.filter(id=num).update(form_status=11) #Removes the form from the list of forms at KGRN create stage
+            supplier = str(waste_delivery_note.objects.get(id=num).supplier) #Get the supplier for the form
+            print(f'Supplier {supplier} type {type(supplier)}')
+
+        kgrn_instance = kgrn.objects.create(serial_num = serial_num, form_serials = check, date_posted = datetime.now(), author = request.user, department = str(request.user.profile.department), supplier = supplier)
+        kgrn_instance.save()
+
 
     return redirect('kgrns')
 
