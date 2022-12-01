@@ -455,17 +455,18 @@ class Dnotes_KGRN_ListView(LoginRequiredMixin, generic.ListView):
 def create_kgrn(request):
     if request.method == 'POST':
         check = request.POST.getlist('checks[]')
-        print(f'Initial list {check} type {type(check)}')
-        print(f'My_dept{request.user.profile.department} type {type(request.user.profile.department)}')
+        # print(f'Initial list {check} type {type(check)}')
+        # print(f'My_dept{request.user.profile.department} type {type(request.user.profile.department)}')
 
         kgrn_sum = kgrn_item.objects.count()
         kgrn_sum1 = kgrn.objects.count()
-        serial_num = kgrn_sum + kgrn_sum1 + 1 #Get next serial number to display in email
+        serial_num = kgrn_sum + kgrn_sum1 + 37 #Get next serial number to display in email
 
         for num in check:
             waste_delivery_note.objects.filter(id=num).update(form_status=11) #Removes the form from the list of forms at KGRN create stage
-            supplier = str(waste_delivery_note.objects.get(id=num).supplier) #Get the supplier for the form
-            print(f'Supplier {supplier} type {type(supplier)}')
+            supplier = str(waste_delivery_note.objects.get(id=num).supplier) #Get the supplier for the form and convert to string
+
+            # print(f'Supplier {supplier} type {type(supplier)}')
 
         kgrn_instance = kgrn.objects.create(serial_num = serial_num, form_serials = check, date_posted = datetime.now(), author = request.user, department = str(request.user.profile.department), supplier = supplier)
         kgrn_instance.save()
@@ -742,14 +743,15 @@ class KGRNPurchase2UpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         profs = Profile.objects.filter(level='6')
 
-        if ('elevate' in self.request.POST) and (form.instance.form_status == 4):
-            form.instance.form_status += 2 #Increases the form status by 2
+        if ('elevate' in self.request.POST) and (form.instance.kgrn_status == 4):
+            form.instance.kgrn_status += 2 #Increases the form status by 2
             for prof in profs:
                 email = EmailMessage(
                 subject=f'{form.instance.department} department KGRN',
                 body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
                 from_email=config('EMAIL_HOST_USER'),
-                to=[prof.user.email],
+                #to=[prof.user.email],
+                to=[config('BRIAN_EMAIL')],
                 cc=[config('BRIAN_EMAIL')],
                 reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
                 )
@@ -758,14 +760,15 @@ class KGRNPurchase2UpdateView(LoginRequiredMixin, UpdateView):
             messages.success(self.request,'Form submitted and mail sent!')
             return super().form_valid(form)
 
-        if ('demote' in self.request.POST) and (form.instance.form_status == 4):
-            form.instance.form_status -= 2
+        if ('demote' in self.request.POST) and (form.instance.kgrn_status == 4):
+            form.instance.kgrn_status -= 2
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
-            to=[form.instance.hod.profile.email],
+            #to=[form.instance.hod.profile.email],
+            to=[config('BRIAN_EMAIL')],
             cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
@@ -815,7 +818,8 @@ class CloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
             subject=f'{form.instance.department} department KGRN',
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been closed by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
-            to=[form.instance.hod.profile.email, form.instance.author.profile.email],
+            #to=[form.instance.hod.profile.email, form.instance.author.profile.email],
+            to=[config('BRIAN_EMAIL')],
             cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
@@ -830,7 +834,8 @@ class CloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
             subject=f'{form.instance.department} department KGRN',
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been closed by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
-            to=[form.instance.hod.profile.email, form.instance.author.profile.email],
+            #to=[form.instance.hod.profile.email, form.instance.author.profile.email],
+            to=[config('BRIAN_EMAIL')],
             cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
@@ -846,7 +851,8 @@ class CloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
             subject=f'{form.instance.department} department KGRN',
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
-            to=[form.instance.hod.profile.email, form.instance.author.profile.email],
+            #to=[form.instance.hod.profile.email, form.instance.author.profile.email],
+            to=[config('BRIAN_EMAIL')],
             cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
@@ -862,7 +868,8 @@ class CloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
             subject=f'{form.instance.department} department KGRN',
             body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
-            to=[form.instance.hod.profile.email, form.instance.author.profile.email],
+            #to=[form.instance.hod.profile.email, form.instance.author.profile.email],
+            to=[config('BRIAN_EMAIL')],
             cc=[config('BRIAN_EMAIL')],
             reply_to=[config('BRIAN_EMAIL')],   # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
             )
