@@ -250,10 +250,13 @@ class DnotesListView(LoginRequiredMixin, generic.ListView):
     context_object_name = 'waste_delivery_notes'
     template_name = 'waste_management/waste_dnotes_list.html'
     paginate_by: int = 10
+    
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['filter'] = waste_delivery_noteFilter(self.request.GET, queryset=self.get_queryset())
+        my_department = str(self.request.user.profile.department)
+        context['my_department'] = my_department
         return context
 
     def get_queryset(self):

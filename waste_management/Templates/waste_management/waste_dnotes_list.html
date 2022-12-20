@@ -162,7 +162,8 @@
                 <td><a href="#">Awaiting Approval ...</a></td>
                 {% endif %}
 
-                {% if waste_delivery_note.form_status != 4 %}
+                
+                {% if waste_delivery_note.form_status != 4 or waste_delivery_note.department != my_department %}
                 <td><input type="checkbox" disabled="disabled"></td>
                 {% else %}
                 <td><input type="checkbox" name = "checks[]" value = "{{waste_delivery_note.id}}"></td>
