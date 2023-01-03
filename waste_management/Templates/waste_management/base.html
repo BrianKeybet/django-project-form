@@ -44,11 +44,11 @@
         <li class="list-group-item list-group-item-light"><a href="{% url 'waste_delivery_note-create' %}">New D/Note Form</a></li>
         <li class="list-group-item list-group-item-light"><a href="{% url 'dnotes' %}">D/Notes Summary</a></li>
         <li class="list-group-item list-group-item-light"><a href="{% url 'checklists' %}">D/Notes Checklists</a></li>
-        <li class="list-group-item list-group-item-light"><a href="{% url 'blank_kgrn-create' %}">Raise KGRN</a></li>
-        <li class="list-group-item list-group-item-light"><a href="{% url 'kgrn_items' %}">KGRN Summary</a></li>
+        <li class="list-group-item list-group-item-light"><a href="{% url 'blank_kgrn-create' %}">Raise Admin Misc. KGRN</a></li>
+        <li class="list-group-item list-group-item-light"><a href="{% url 'kgrn_items' %}">Admin Misc. KGRN Summary</a></li>
         {% if request.user.profile.level > 4 or request.user.profile.department_id == 14 or request.user.profile.department_id == 15 %}
-        <li class="list-group-item list-group-item-light"><a href="{% url 'dnotes_kgrn' %}">Raise D/note based KGRN</a></li>
-        <li class="list-group-item list-group-item-light"><a href="{% url 'kgrns' %}">KGRN (D/Notes) Summary</a></li>
+        <li class="list-group-item list-group-item-light"><a href="{% url 'dnotes_kgrn' %}">Raise Waste KGRN</a></li>
+        <li class="list-group-item list-group-item-light"><a href="{% url 'kgrns' %}">Waste KGRN Summary</a></li>
         <li class="list-group-item list-group-item-light"><a href="{% url 'goods_issue_note-create' %}">Raise Goods Issue Note</a></li>
         <li class="list-group-item list-group-item-light"><a href="{% url 'gins' %}">Goods Issue Note Summary</a></li>
         {% else %}

@@ -528,7 +528,7 @@ class KGRNStocksUpdateView(LoginRequiredMixin, UpdateView):
 
             for prof in profs:
                 subject = 'KGRN (D/Notes)'
-                html_message = f'Hello {prof.user.first_name}, a new D/Notes based KGRN has been submitted for your approval.\nPlease login to the system on http://10.10.0.173:8000/waste/kgrns/ to view the form.\nThe serial number is {form.instance.serial_num}.'
+                html_message = f'Hello {prof.user.first_name}, a new D/Notes based KGRN has been submitted for your approval.\nPlease login to the system on http://10.10.0.173:8000/waste/kgrns/ to view the form. \n The serial number is {form.instance.serial_num} \n Issued to: {form.instance.supplier} \n Vehicle number: {form.instance.vehicle_no}.'
                 email_from = settings.EMAIL_HOST_USER
                 #recipient_list = [prof.user.email, config('ADMIN_EMAIL'), config('BRIAN_EMAIL')]
                 recipient_list = [config('BRIAN_EMAIL')]
@@ -578,7 +578,7 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
             for prof in profs:
                 email = EmailMessage(
                 subject=f'{form.instance.department} department KGRN(D/Notes)',
-                body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+                body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it. \n The serial number is {form.instance.serial_num} \n Issued to: {form.instance.supplier} \n Vehicle number: {form.instance.vehicle_no}.\nIn case of any challenges, feel free to contact IT for further assistance.',
                 from_email=config('EMAIL_HOST_USER'),
                 to=[config('BRIAN_EMAIL')],
                 cc=[config('BRIAN_EMAIL')],
@@ -595,9 +595,10 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
             for prof in profs:
                 email = EmailMessage(
                 subject=f'{form.instance.department} department KGRN',
-                body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+                body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it. \n The serial number is {form.instance.serial_num} \n Issued to: {form.instance.supplier} \n Vehicle number: {form.instance.vehicle_no}.\nIn case of any challenges, feel free to contact IT for further assistance.',
                 from_email=config('EMAIL_HOST_USER'),
-                to=[prof.user.email],
+                #to=[prof.user.email],
+                to=[config('BRIAN_EMAIL')],
                 cc=[config('BRIAN_EMAIL')],
                 reply_to=[config('BRIAN_EMAIL')],  # when the reply or reply all button is clicked, this is the reply to address, normally you don't have to set this if you want the receivers to reply to the from_email address
                 )
@@ -611,7 +612,7 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it. \n The serial number is {form.instance.serial_num} \n Issued to: {form.instance.supplier} \n Vehicle number: {form.instance.vehicle_no}.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
@@ -627,7 +628,7 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/ to view it. \n The serial number is {form.instance.serial_num} \n Issued to: {form.instance.supplier} \n Vehicle number: {form.instance.vehicle_no}.\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
@@ -908,7 +909,7 @@ class BlankKGRN_CreateView(LoginRequiredMixin, SuccessMessageMixin, generic.Crea
 
         for prof in profs:
             subject = 'KGRN'
-            message = f'Hello {prof.user.first_name}, a new KGRN number {serial_num} has been submitted for your approval. Please login to the system on http://10.10.0.173:8000/waste/kgrns/items/ to view the form.'
+            message = f'Hello {prof.user.first_name},\nA new KGRN number {serial_num} has been submitted for your approval.\nPlease login to the system on http://10.10.0.173:8000/waste/kgrns/items/ to view the form.\n The serial number is {serial_num}.\n Issued to: {form.instance.supplier}.\n Vehicle number: {form.instance.vehicle_no}'
             email_from = settings.EMAIL_HOST_USER
             #recipient_list = [prof.user.email, config('ADMIN_EMAIL'), config('BRIAN_EMAIL')]
             recipient_list = [config('BRIAN_EMAIL')]
@@ -944,7 +945,7 @@ class BlankKGRNHODUpdateView(LoginRequiredMixin, UpdateView):
             for prof in profs:    
                 email = EmailMessage(
                 subject=f'{form.instance.department} department KGRN',
-                body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+                body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/items/ to view it.\n Issued to: {form.instance.supplier}.\n Vehicle number: {form.instance.vehicle_no}\nIn case of any challenges, feel free to contact IT for further assistance.',
                 from_email=config('EMAIL_HOST_USER'),
                 to=[prof.user.email],
                 cc=[config('BRIAN_EMAIL'),config('WAREHOUSE_HOD')],
@@ -961,7 +962,7 @@ class BlankKGRNHODUpdateView(LoginRequiredMixin, UpdateView):
             for prof in profs:
                 email = EmailMessage(
                 subject=f'{form.instance.department} department KGRN',
-                body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+                body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been approved by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/items/ to view it.\n Issued to: {form.instance.supplier}.\n Vehicle number: {form.instance.vehicle_no}\nIn case of any challenges, feel free to contact IT for further assistance.',
                 from_email=config('EMAIL_HOST_USER'),
                 to=[prof.user.email],
                 cc=[config('BRIAN_EMAIL')],
@@ -977,7 +978,7 @@ class BlankKGRNHODUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/items/ to view it.\n Issued to: {form.instance.supplier}.\n Vehicle number: {form.instance.vehicle_no}\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
@@ -993,7 +994,7 @@ class BlankKGRNHODUpdateView(LoginRequiredMixin, UpdateView):
 
             email = EmailMessage(
             subject=f'{form.instance.department} department KGRN',
-            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/items/ to view it.\nIn case of any challenges, feel free to contact IT for further assistance.',
+            body=f'KGRN number {form.instance.serial_num} submitted by {form.instance.author} has been rejected by {self.request.user}.\nKindly log on http://10.10.0.173:8000/waste/kgrns/items/ to view it.\n Issued to: {form.instance.supplier}.\n Vehicle number: {form.instance.vehicle_no}\nIn case of any challenges, feel free to contact IT for further assistance.',
             from_email=config('EMAIL_HOST_USER'),
             to=[form.instance.author.profile.email],
             cc=[config('BRIAN_EMAIL')],
