@@ -498,10 +498,9 @@ class KGRNStocksUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
         pk = self.kwargs.get('pk')
-        checks = get_object_or_404(kgrn, pk=pk)
+        checks = kgrn.objects.get(pk=pk)
         my_stringlist = checks.form_serials #Pick list of serial numbers from the checklist as a string
         print(f'Initial list {my_stringlist} type {type(my_stringlist)}')
-        #my_list = my_stringlist.strip('][').split(',') #Split the string into list of individual items but each item as a string
         my_list = [nums_from_string.get_nums(my_stringlist)] #Split the string into list of individual items as integers
         print(f'Second list {my_list} type {type(my_list)}')
         my_list = [x for xs in my_list for x in xs] #Flatten the list of lists into a single list
@@ -548,15 +547,15 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
         pk = self.kwargs.get('pk')
-        checks = get_object_or_404(kgrn, pk=pk)
+        checks = kgrn.objects.get(pk=pk)
         my_stringlist = checks.form_serials #Pick list of serial numbers from the checklist as a string
         my_list = [nums_from_string.get_nums(my_stringlist)] #Split the string into list of individual items as integers
         my_list = [x for xs in my_list for x in xs] #Flatten the list of lists into a single list
-        print(f'Third list {my_list} type {type(my_list)}')
 
         dnotes_list = []
         for num in my_list: #For each item in the new list
-            dnote = get_object_or_404(waste_delivery_note, pk=num) #Find the corresponding delivery note
+            # dnote = get_object_or_404(waste_delivery_note, pk=num) #Find the corresponding delivery note
+            dnote = waste_delivery_note(pk=num) #Find the corresponding delivery note
             print(f'{num} {dnote}')
             dnotes_list.append(dnote) #Add the delivery note to the list
             print(f'{dnotes_list}')
@@ -567,10 +566,9 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form, **kwargs):
         form.instance.hod = self.request.user #Inserts the author into the new post
         profs = Profile.objects.filter(level='4')
+        director_profile = Profile.objects.filter(email=config('PUR_DIR_EMAIL'))
+        profs = profs | director_profile #Combine the two querysets
 
-        context = super().get_context_data(**kwargs)
-        print(context)
-        #dnote = context['dnote']
 
         if ('elevate' in self.request.POST) and (form.instance.kgrn_status == 15): #If the HOD has clicked the button to elevate the form to the next level
             form.instance.kgrn_status -= 13 #Reduce the form status by 13
@@ -938,6 +936,8 @@ class BlankKGRNHODUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         form.instance.hod = self.request.user #Inserts the author into the new post
         profs = Profile.objects.filter(level='4')
+        director_profile = Profile.objects.filter(email=config('PUR_DIR_EMAIL'))
+        profs = profs | director_profile #Combine the two querysets
 
         if ('elevate' in self.request.POST) and (form.instance.form_status == 2): #If the HOD has clicked the button to elevate the form to the next level
             form.instance.form_status += 2 #Increases the form status by 2
