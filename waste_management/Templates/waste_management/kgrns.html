@@ -122,24 +122,24 @@
                     {% if request.user.profile.level == 2 or request.user.profile.level == 8%}
                     <td><a href="{% url 'kgrn-update' kgrn.id %}">Update</a></td>
                     {% else %}
-                    <td style="color:blue;">Awaiting Approval...</td>
+                    <td><a href="{% url 'kgrn-update2' kgrn.id%}">Awaiting Approval ...</a></td>
                     {% endif %}
                 {% elif kgrn.kgrn_status == 3 %} 
                     {% if request.user.profile.level == 2 or request.user.profile.level == 8 %}
                     <td><a href="{% url 'kgrn-update' kgrn.id %}">Update</a></td>
                     {% else %}
-                    <td style="color:blue;">Awaiting Approval...</td>
+                    <td><a href="{% url 'kgrn-update2' kgrn.id%}">Awaiting Approval ...</a></td>
                     {% endif %}                        
                 {% elif kgrn.kgrn_status == 2 %}
                     {% if request.user.profile.level == 4 or request.user.profile.level == 8 %} 
                     <td><a href="{% url 'kgrn-update1' kgrn.id %}">Update</a></td>
                     {% else %}
-                    <td style="color:blue;">Awaiting Approval...</td>
+                    <td><a href="{% url 'kgrn-update2' kgrn.id%}">Awaiting Approval ...</a></td>
                     {% endif %}
                 {% elif kgrn.kgrn_status == 4 or kgrn.kgrn_status == 6 or kgrn.kgrn_status == 8 %}
                     <td><a href="{% url 'kgrn_pdf_view' kgrn.id %}">Get PDF</a></td>
                 {% else %}
-                    <td><a href="#">Awaiting Approval ...</a></td>
+                    <td><a href="{% url 'kgrn-update2' kgrn.id%}">Awaiting Approval ...</a></td>
                 {% endif %}
                 </tr>
 
