@@ -208,7 +208,8 @@
                 </tbody>
                 </table>
         </fieldset>
-    </div>    
+    </div>
+    {% if request.user.profile.level == 2 and request.user.profile.department_id == 14 or request.user.profile.level == 8 %}    
     <div class="item">
         <div><strong>Offloaded by:</strong>{{ object.waste_offloader }}</div>
         <form method="POST" action="" {% if form.is_multipart %} enctype="multipart/form-data" {% endif %}>
@@ -224,6 +225,13 @@
                     </fieldset>
         </form>
     </div>
+    {% else %}
+    <div class="item">
+        <fieldset class="form-group" disabled>
+            <div>{{ form|crispy }}</div>
+        </fieldset>
+    </div>
+    {% endif %}
   </div>
 
 {% endblock content %}
