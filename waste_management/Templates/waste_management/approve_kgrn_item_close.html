@@ -205,7 +205,8 @@
                 {% endif %}
             </table>
         </fieldset>
-    </div>    
+    </div>
+    {% if request.user.profile.level == 7 or request.user.profile.level == 8 or request.user.profile.level == 6 %}     
     <div class="item">
         <form method="POST" action="" {% if form.is_multipart %} enctype="multipart/form-data" {% endif %}>
                 {% csrf_token %}
@@ -218,6 +219,13 @@
                     </fieldset>
         </form>
     </div>
+    {% else %}
+    <div class="item">
+        <fieldset class="form-group" disabled>
+            <div>{{ form|crispy }}</div>
+        </fieldset>
+    </div>
+    {% endif %}
   </div>
 
 {% endblock content %}
