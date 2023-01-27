@@ -1256,7 +1256,7 @@ class goods_issue_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, generi
  
         form.instance.total_weight_wh = round(w1 + w2 + w3 + w4 + w5 + w6 + w7 + w8, 2)
 
-        if form.instance.isInternal == False:
+        if form.instance.isinternal == False:
             form.instance.form_status = 2 #Increases the form status by 2
         else:
             form.instance.form_status = 1 #Increases the form status by 1

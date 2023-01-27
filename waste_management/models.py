@@ -233,7 +233,7 @@ class goods_issue_note(models.Model):
     item_qty8 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
     item_qty8_wh =models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Warehouse Weight")
     item_qty8_sale = models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
-    isInternal = models.BooleanField(default=False, verbose_name = "Internal/External")
+    isinternal = models.BooleanField(default=False, verbose_name = "Internal/External")
     hod = models.ForeignKey(User, null = True, on_delete = models.PROTECT,  related_name = 'HOD', blank= True)
     hod_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="HOD comment")
     approved_by = models.ForeignKey(User, null = True, on_delete = models.PROTECT,  related_name = 'Approver', blank= True)
