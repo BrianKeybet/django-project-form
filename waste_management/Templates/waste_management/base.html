@@ -36,7 +36,7 @@
         <li class="list-group-item list-group-item-light"><a href="#">Home</a></li>
         {% endif %}
         <li class="list-group-item list-group-item-light"><a href="{% url 'dnotes' %}">Back</a></li>
-        {% if request.user.profile.level > 4 %}
+        {% if request.user.profile.level > 1 %}
         <li class="list-group-item list-group-item-light"><a href="http://10.0.0.7:3000/question/367" target="_blank">Reports</a></li>
         {% else %}
         <li class="list-group-item list-group-item-light"><a href="#">Reports</a></li>
