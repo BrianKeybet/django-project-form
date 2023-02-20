@@ -129,7 +129,16 @@
                     <th style="text-align: Left">QUANTITY</th>
                 </tr>    
                 </thead>
-            {% for dnote in dnotes_list %}
+                {% for material_name, notes in dnotes_by_material.items %}
+                    <h2>{{ material_name }}</h2>
+                    <ul>
+                        {% for note in notes %}
+                            <li>{{ note }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+
+            <!-- {% for dnote in dnotes_list %}
                 {% if dnote.item1 != null %}
                 <tr>
                     <td>{{ dnote.item1 }}</td>
@@ -178,7 +187,7 @@
                     <td>{{ dnote.item_qty8 }}</td>            
                 </tr>
                 {% endif %}
-            {% endfor %}
+            {% endfor %} -->
             </table>
         </fieldset>
     </div>    

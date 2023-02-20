@@ -22,6 +22,8 @@ import nums_from_string
 import locale
 locale.setlocale(locale.LC_ALL, '')
 from .filters import *
+import itertools
+
 
 def dnotes_render_pdf_view(request, *args, **kwargs):
    pk = kwargs.get('pk')
@@ -500,20 +502,34 @@ class KGRNStocksUpdateView(LoginRequiredMixin, UpdateView):
         pk = self.kwargs.get('pk')
         checks = kgrn.objects.get(pk=pk)
         my_stringlist = checks.form_serials #Pick list of serial numbers from the checklist as a string
-        print(f'Initial list {my_stringlist} type {type(my_stringlist)}')
         my_list = [nums_from_string.get_nums(my_stringlist)] #Split the string into list of individual items as integers
-        print(f'Second list {my_list} type {type(my_list)}')
         my_list = [x for xs in my_list for x in xs] #Flatten the list of lists into a single list
-        print(f'Third list {my_list} type {type(my_list)}')
 
         dnotes_list = []
         for num in my_list: #For each item in the new list
             dnote = get_object_or_404(waste_delivery_note, pk=num) #Find the corresponding delivery note
-            print(f'{num} {dnote}')
             dnotes_list.append(dnote) #Add the delivery note to the list
-            print(f'{dnotes_list}')
 
-        context.update({'dnotes_list': dnotes_list, 'checks': checks, 'dnote': dnote})
+        # Create a list of material names and quantities for each delivery note
+        notes_with_materials = []
+        for dnote in dnotes_list:
+            note_with_material = []
+            for i in range(1, 9):
+                material_name = getattr(dnote, f'item{i}', None)
+                if material_name:
+                    quantity = getattr(dnote, f'item_qty{i}', None)
+                    note_with_material.append((material_name, quantity))
+            notes_with_materials.append((dnote, note_with_material))
+        print(f'materials, quantities{notes_with_materials}')
+
+        # Group the delivery notes by material name
+        dnotes_by_material = {}
+        for material, notes in itertools.groupby(notes_with_materials, key=lambda n: n[1]):
+            note_list = [n[0] for n in notes]
+            dnotes_by_material[material[0]] = note_list
+            print(f'initial aggregation:{dnotes_by_material}')
+
+        context.update({'dnotes_by_material': dnotes_by_material, 'checks': checks, 'dnote': dnote})
         return context
 
     def form_valid(self, form):
