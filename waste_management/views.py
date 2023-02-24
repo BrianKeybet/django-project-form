@@ -505,31 +505,28 @@ class KGRNStocksUpdateView(LoginRequiredMixin, UpdateView):
         my_list = [nums_from_string.get_nums(my_stringlist)] #Split the string into list of individual items as integers
         my_list = [x for xs in my_list for x in xs] #Flatten the list of lists into a single list
 
-        dnotes_list = []
-        for num in my_list: #For each item in the new list
-            dnote = get_object_or_404(waste_delivery_note, pk=num) #Find the corresponding delivery note
-            dnotes_list.append(dnote) #Add the delivery note to the list
+        dnotes_list = waste_delivery_note.objects.filter(pk__in=my_list)
 
         # Create a list of material names and quantities for each delivery note
         notes_with_materials = []
         for dnote in dnotes_list:
-            note_with_material = []
             for i in range(1, 9):
-                material_name = getattr(dnote, f'item{i}', None)
-                if material_name:
-                    quantity = getattr(dnote, f'item_qty{i}', None)
-                    note_with_material.append((material_name, quantity))
-            notes_with_materials.append((dnote, note_with_material))
-        print(f'materials, quantities{notes_with_materials}')
-
+                item_name = getattr(dnote, f"item{i}")
+                if item_name:
+                    item_name_cleaned = item_name.name.replace(" ", "").replace("/", "")
+                    notes_with_materials.append((item_name_cleaned, getattr(dnote, f"item_qty{i}")))
+                else:
+                    break
+        notes_with_materials = sorted(notes_with_materials, key=lambda n: n[0]) #Sort to ensure groupby doesn't skip any materials
         # Group the delivery notes by material name
         dnotes_by_material = {}
-        for material, notes in itertools.groupby(notes_with_materials, key=lambda n: n[1]):
-            note_list = [n[0] for n in notes]
-            dnotes_by_material[material[0]] = note_list
-            print(f'initial aggregation:{dnotes_by_material}')
+        for material, notes in itertools.groupby(notes_with_materials, key=lambda n: n[0]):
+            qty_list = [n[1] for n in notes]
+            total_qty = sum(qty_list)
+            dnotes_by_material[material] = total_qty
+            #print(f'initial aggregation:{dnotes_by_material}')
 
-        context.update({'dnotes_by_material': dnotes_by_material, 'checks': checks, 'dnote': dnote})
+        context.update({'checks': checks, 'dnote': dnote, 'materials': dnotes_by_material})
         return context
 
     def form_valid(self, form):
