@@ -148,45 +148,64 @@ def checklists_render_pdf_view(request, *args, **kwargs):
    return response
 
 def kgrns_render_pdf_view(request, *args, **kwargs):
-   pk = kwargs.get('pk')
-   checks = get_object_or_404(kgrn, pk=pk)
-   my_stringlist = checks.form_serials #Pick list of serial numbers from the checklist as a string
-   print(f'Initial list {my_stringlist} type {type(my_stringlist)}')
-   #my_list = my_stringlist.strip('][').split(',') #Split the string into list of individual items but each item as a string
-   my_list = [nums_from_string.get_nums(my_stringlist)] #Split the string into list of individual items as integers
-   print(f'Second list {my_list} type {type(my_list)}')
-   my_list = [x for xs in my_list for x in xs] #Flatten the list of lists into a single list
-   print(f'Third list {my_list} type {type(my_list)}')
+    pk = kwargs.get('pk')
+    checks = get_object_or_404(kgrn, pk=pk)
+    my_stringlist = checks.form_serials #Pick list of serial numbers from the checklist as a string
+    my_list = [nums_from_string.get_nums(my_stringlist)] #Split the string into list of individual items as integers
+    my_list = [x for xs in my_list for x in xs] #Flatten the list of lists into a single list
 
-   dnotes_list = []
-   for num in my_list: #For each item in the new list
-    dnote = get_object_or_404(waste_delivery_note, pk=num) #Find the corresponding delivery note
-    print(f'{num} {dnote}')
-    dnotes_list.append(dnote) #Add the delivery note to the list
-    print(f'{dnotes_list}')
+    dnotes_list = waste_delivery_note.objects.filter(pk__in=my_list)
 
-   template_path = 'waste_management/generatekgrn_pdf.html'
-   context = {'dnotes_list': dnotes_list, 'checks': checks, 'dnote': dnote}
-   # Create a Django response object, and specify content_type as pdf
-   response = HttpResponse(content_type='application/pdf')
+    # Create a list of material names and quantities for each delivery note
+    notes_with_materials = []
+    for dnote in dnotes_list:
+        for i in range(1, 9):
+            item_name = getattr(dnote, f"item{i}")
+            if item_name:
+                material_obj = Material.objects.get(name=item_name)
+                item_name_cleaned = item_name.name.replace(" ", "").replace("/", "")
+                notes_with_materials.append((item_name_cleaned, getattr(dnote, f"item_qty{i}"), material_obj.uom))
+            else:
+                break
+    notes_with_materials = sorted(notes_with_materials, key=lambda n: n[0]) #Sort to ensure groupby doesn't skip any materials
+    print(f'my_materials{notes_with_materials}')
+    # Group the delivery notes by material name
+    dnotes_by_material = {}
+    for material, notes in itertools.groupby(notes_with_materials, key=lambda n: n[0]):
+        qty_list = []
+        uom = None
+        for note in notes:
+            qty_list.append(note[1])
+            if uom is None:
+                uom = note[2]
+            elif uom != note[2]:
+                raise ValueError("Inconsistent uom values for material")
+        total_qty = sum(qty_list)
+        dnotes_by_material[material] = {'quantity': total_qty, 'uom': uom}
 
-   # to directly download the pdf we need attachment 
-   # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+    template_path = 'waste_management/generatekgrn_pdf.html'
+    # context = {'checks': checks, 'dnote': dnote, 'notes_with_materials': notes_with_materials}
+    context = {'checks': checks, 'dnote': dnote, 'materials': dnotes_by_material}
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
 
-   # to view on browser we can remove attachment 
-   response['Content-Disposition'] = 'filename="report.pdf"'
+    # to directly download the pdf we need attachment 
+    # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
 
-   # find the template and render it.
-   template = get_template(template_path)
-   html = template.render(context)
+    # to view on browser we can remove attachment 
+    response['Content-Disposition'] = 'filename="report.pdf"'
 
-   # create a pdf
-   pisa_status = pisa.CreatePDF(
-      html, dest=response)
-   # if error then show some funy view
-   if pisa_status.err:
-      return HttpResponse('We had some errors ' + html + '')
-   return response
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(
+        html, dest=response)
+    # if error then show some funy view
+    if pisa_status.err:
+        return HttpResponse('We had some errors ' + html + '')
+    return response
 
 def blank_kgrns_render_pdf_view(request, *args, **kwargs):
    pk = kwargs.get('pk')
@@ -565,15 +584,28 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
         my_list = [nums_from_string.get_nums(my_stringlist)] #Split the string into list of individual items as integers
         my_list = [x for xs in my_list for x in xs] #Flatten the list of lists into a single list
 
-        dnotes_list = []
-        for num in my_list: #For each item in the new list
-            # dnote = get_object_or_404(waste_delivery_note, pk=num) #Find the corresponding delivery note
-            dnote = waste_delivery_note(pk=num) #Find the corresponding delivery note
-            print(f'{num} {dnote}')
-            dnotes_list.append(dnote) #Add the delivery note to the list
-            print(f'{dnotes_list}')
+        dnotes_list = waste_delivery_note.objects.filter(pk__in=my_list)
 
-        context.update({'dnotes_list': dnotes_list, 'checks': checks, 'dnote': dnote})
+        # Create a list of material names and quantities for each delivery note
+        notes_with_materials = []
+        for dnote in dnotes_list:
+            for i in range(1, 9):
+                item_name = getattr(dnote, f"item{i}")
+                if item_name:
+                    item_name_cleaned = item_name.name.replace(" ", "").replace("/", "")
+                    notes_with_materials.append((item_name_cleaned, getattr(dnote, f"item_qty{i}")))
+                else:
+                    break
+        notes_with_materials = sorted(notes_with_materials, key=lambda n: n[0]) #Sort to ensure groupby doesn't skip any materials
+        # Group the delivery notes by material name
+        dnotes_by_material = {}
+        for material, notes in itertools.groupby(notes_with_materials, key=lambda n: n[0]):
+            qty_list = [n[1] for n in notes]
+            total_qty = sum(qty_list)
+            dnotes_by_material[material] = total_qty
+            #print(f'initial aggregation:{dnotes_by_material}')
+
+        context.update({'checks': checks, 'dnote': dnote, 'materials': dnotes_by_material})
         return context
 
     def form_valid(self, form, **kwargs):
@@ -658,32 +690,36 @@ class KGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
     model = kgrn
     fields = ['resolution','purchase_comment']
 
-    # def get(self, request, *args, **kwargs):
-    #     ## important ##
-    #     super(KGRNPurchaseUpdateView, self).get(self, request, *args, **kwargs)
-    #     form = self.form_class
-    #     return self.render_to_response(self.get_context_data(form=form))
-
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
         pk = self.kwargs.get('pk')
-        checks = get_object_or_404(kgrn, pk=pk)
+        checks = kgrn.objects.get(pk=pk)
         my_stringlist = checks.form_serials #Pick list of serial numbers from the checklist as a string
-        print(f'Initial list {my_stringlist} type {type(my_stringlist)}')
-        #my_list = my_stringlist.strip('][').split(',') #Split the string into list of individual items but each item as a string
         my_list = [nums_from_string.get_nums(my_stringlist)] #Split the string into list of individual items as integers
-        print(f'Second list {my_list} type {type(my_list)}')
         my_list = [x for xs in my_list for x in xs] #Flatten the list of lists into a single list
-        print(f'Third list {my_list} type {type(my_list)}')
 
-        dnotes_list = []
-        for num in my_list: #For each item in the new list
-            dnote = get_object_or_404(waste_delivery_note, pk=num) #Find the corresponding delivery note
-            print(f'{num} {dnote}')
-            dnotes_list.append(dnote) #Add the delivery note to the list
-            print(f'{dnotes_list}')
+        dnotes_list = waste_delivery_note.objects.filter(pk__in=my_list)
 
-        context.update({'dnotes_list': dnotes_list, 'checks': checks, 'dnote': dnote})
+        # Create a list of material names and quantities for each delivery note
+        notes_with_materials = []
+        for dnote in dnotes_list:
+            for i in range(1, 9):
+                item_name = getattr(dnote, f"item{i}")
+                if item_name:
+                    item_name_cleaned = item_name.name.replace(" ", "").replace("/", "")
+                    notes_with_materials.append((item_name_cleaned, getattr(dnote, f"item_qty{i}")))
+                else:
+                    break
+        notes_with_materials = sorted(notes_with_materials, key=lambda n: n[0]) #Sort to ensure groupby doesn't skip any materials
+        # Group the delivery notes by material name
+        dnotes_by_material = {}
+        for material, notes in itertools.groupby(notes_with_materials, key=lambda n: n[0]):
+            qty_list = [n[1] for n in notes]
+            total_qty = sum(qty_list)
+            dnotes_by_material[material] = total_qty
+            #print(f'initial aggregation:{dnotes_by_material}')
+
+        context.update({'checks': checks, 'dnote': dnote, 'materials': dnotes_by_material})
 
         return context
 
@@ -735,23 +771,33 @@ class KGRNPurchase2UpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
         pk = self.kwargs.get('pk')
-        checks = get_object_or_404(kgrn, pk=pk)
+        checks = kgrn.objects.get(pk=pk)
         my_stringlist = checks.form_serials #Pick list of serial numbers from the checklist as a string
-        print(f'Initial list {my_stringlist} type {type(my_stringlist)}')
-        #my_list = my_stringlist.strip('][').split(',') #Split the string into list of individual items but each item as a string
         my_list = [nums_from_string.get_nums(my_stringlist)] #Split the string into list of individual items as integers
-        print(f'Second list {my_list} type {type(my_list)}')
         my_list = [x for xs in my_list for x in xs] #Flatten the list of lists into a single list
-        print(f'Third list {my_list} type {type(my_list)}')
 
-        dnotes_list = []
-        for num in my_list: #For each item in the new list
-            dnote = get_object_or_404(waste_delivery_note, pk=num) #Find the corresponding delivery note
-            print(f'{num} {dnote}')
-            dnotes_list.append(dnote) #Add the delivery note to the list
-            print(f'{dnotes_list}')
+        dnotes_list = waste_delivery_note.objects.filter(pk__in=my_list)
 
-        context.update({'dnotes_list': dnotes_list, 'checks': checks, 'dnote': dnote})
+        # Create a list of material names and quantities for each delivery note
+        notes_with_materials = []
+        for dnote in dnotes_list:
+            for i in range(1, 9):
+                item_name = getattr(dnote, f"item{i}")
+                if item_name:
+                    item_name_cleaned = item_name.name.replace(" ", "").replace("/", "")
+                    notes_with_materials.append((item_name_cleaned, getattr(dnote, f"item_qty{i}")))
+                else:
+                    break
+        notes_with_materials = sorted(notes_with_materials, key=lambda n: n[0]) #Sort to ensure groupby doesn't skip any materials
+        # Group the delivery notes by material name
+        dnotes_by_material = {}
+        for material, notes in itertools.groupby(notes_with_materials, key=lambda n: n[0]):
+            qty_list = [n[1] for n in notes]
+            total_qty = sum(qty_list)
+            dnotes_by_material[material] = total_qty
+            #print(f'initial aggregation:{dnotes_by_material}')
+
+        context.update({'checks': checks, 'dnote': dnote, 'materials': dnotes_by_material})
 
         return context
 
@@ -804,26 +850,35 @@ class CloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
         pk = self.kwargs.get('pk')
-        checks = get_object_or_404(kgrn, pk=pk)
+        checks = kgrn.objects.get(pk=pk)
         my_stringlist = checks.form_serials #Pick list of serial numbers from the checklist as a string
-        print(f'Initial list {my_stringlist} type {type(my_stringlist)}')
-        #my_list = my_stringlist.strip('][').split(',') #Split the string into list of individual items but each item as a string
         my_list = [nums_from_string.get_nums(my_stringlist)] #Split the string into list of individual items as integers
-        print(f'Second list {my_list} type {type(my_list)}')
         my_list = [x for xs in my_list for x in xs] #Flatten the list of lists into a single list
-        print(f'Third list {my_list} type {type(my_list)}')
 
-        dnotes_list = []
-        for num in my_list: #For each item in the new list
-            dnote = get_object_or_404(waste_delivery_note, pk=num) #Find the corresponding delivery note
-            print(f'{num} {dnote}')
-            dnotes_list.append(dnote) #Add the delivery note to the list
-            print(f'{dnotes_list}')
+        dnotes_list = waste_delivery_note.objects.filter(pk__in=my_list)
 
-        context.update({'dnotes_list': dnotes_list, 'checks': checks, 'dnote': dnote})
+        # Create a list of material names and quantities for each delivery note
+        notes_with_materials = []
+        for dnote in dnotes_list:
+            for i in range(1, 9):
+                item_name = getattr(dnote, f"item{i}")
+                if item_name:
+                    item_name_cleaned = item_name.name.replace(" ", "").replace("/", "")
+                    notes_with_materials.append((item_name_cleaned, getattr(dnote, f"item_qty{i}")))
+                else:
+                    break
+        notes_with_materials = sorted(notes_with_materials, key=lambda n: n[0]) #Sort to ensure groupby doesn't skip any materials
+        # Group the delivery notes by material name
+        dnotes_by_material = {}
+        for material, notes in itertools.groupby(notes_with_materials, key=lambda n: n[0]):
+            qty_list = [n[1] for n in notes]
+            total_qty = sum(qty_list)
+            dnotes_by_material[material] = total_qty
+            #print(f'initial aggregation:{dnotes_by_material}')
+
+        context.update({'checks': checks, 'dnote': dnote, 'materials': dnotes_by_material})
 
         return context
-
     def form_valid(self, form):
         form.instance.closed_by = self.request.user
         if ('elevate' in self.request.POST) and (form.instance.kgrn_status == 6): #If the button to elevate the form to the next level has been clicked

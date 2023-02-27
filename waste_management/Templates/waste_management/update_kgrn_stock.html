@@ -2,6 +2,10 @@
 
 {% load crispy_forms_tags %}
 
+{% load mathfilters %}
+
+{% load humanize %}
+
 {% block content %}
 <style>
     * {
@@ -132,7 +136,7 @@
                 {% for material, quantity in materials.items %}
                 <tr>
                     <td>{{ material }}</td>
-                    <td>{{ quantity }}</td>            
+                    <td>{{ quantity|intcomma }}</td>            
                 </tr>
                 {% endfor %}
             </table>
