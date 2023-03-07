@@ -532,7 +532,8 @@ class KGRNStocksUpdateView(LoginRequiredMixin, UpdateView):
             for i in range(1, 9):
                 item_name = getattr(dnote, f"item{i}")
                 if item_name:
-                    item_name_cleaned = item_name.name.replace(" ", "").replace("/", "")
+                    # item_name_cleaned = item_name.name.replace(" ", "").replace("/", "")
+                    item_name_cleaned = item_name.name.replace("/", "")
                     notes_with_materials.append((item_name_cleaned, getattr(dnote, f"item_qty{i}")))
                 else:
                     break
@@ -592,7 +593,8 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
             for i in range(1, 9):
                 item_name = getattr(dnote, f"item{i}")
                 if item_name:
-                    item_name_cleaned = item_name.name.replace(" ", "").replace("/", "")
+                    # item_name_cleaned = item_name.name.replace(" ", "").replace("/", "")
+                    item_name_cleaned = item_name.name.replace("/", "")
                     notes_with_materials.append((item_name_cleaned, getattr(dnote, f"item_qty{i}")))
                 else:
                     break
@@ -706,7 +708,8 @@ class KGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
             for i in range(1, 9):
                 item_name = getattr(dnote, f"item{i}")
                 if item_name:
-                    item_name_cleaned = item_name.name.replace(" ", "").replace("/", "")
+                    # item_name_cleaned = item_name.name.replace(" ", "").replace("/", "")
+                    item_name_cleaned = item_name.name.replace("/", "")
                     notes_with_materials.append((item_name_cleaned, getattr(dnote, f"item_qty{i}")))
                 else:
                     break
@@ -784,7 +787,8 @@ class KGRNPurchase2UpdateView(LoginRequiredMixin, UpdateView):
             for i in range(1, 9):
                 item_name = getattr(dnote, f"item{i}")
                 if item_name:
-                    item_name_cleaned = item_name.name.replace(" ", "").replace("/", "")
+                    # item_name_cleaned = item_name.name.replace(" ", "").replace("/", "")
+                    item_name_cleaned = item_name.name.replace("/", "")
                     notes_with_materials.append((item_name_cleaned, getattr(dnote, f"item_qty{i}")))
                 else:
                     break
@@ -863,7 +867,8 @@ class CloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
             for i in range(1, 9):
                 item_name = getattr(dnote, f"item{i}")
                 if item_name:
-                    item_name_cleaned = item_name.name.replace(" ", "").replace("/", "")
+                    # item_name_cleaned = item_name.name.replace(" ", "").replace("/", "")
+                    item_name_cleaned = item_name.name.replace("/", "")
                     notes_with_materials.append((item_name_cleaned, getattr(dnote, f"item_qty{i}")))
                 else:
                     break
