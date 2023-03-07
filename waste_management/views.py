@@ -163,7 +163,7 @@ def kgrns_render_pdf_view(request, *args, **kwargs):
             item_name = getattr(dnote, f"item{i}")
             if item_name:
                 material_obj = Material.objects.get(name=item_name)
-                item_name_cleaned = item_name.name.replace(" ", "").replace("/", "")
+                item_name_cleaned = item_name.name.replace("/", "")
                 notes_with_materials.append((item_name_cleaned, getattr(dnote, f"item_qty{i}"), material_obj.uom))
             else:
                 break
@@ -180,7 +180,8 @@ def kgrns_render_pdf_view(request, *args, **kwargs):
                 uom = note[2]
             elif uom != note[2]:
                 raise ValueError("Inconsistent uom values for material")
-        total_qty = sum(qty_list)
+            total_qty = sum(qty_list)
+            total_qty = round(total_qty, 2)
         dnotes_by_material[material] = {'quantity': total_qty, 'uom': uom}
 
     template_path = 'waste_management/generatekgrn_pdf.html'
@@ -543,6 +544,7 @@ class KGRNStocksUpdateView(LoginRequiredMixin, UpdateView):
         for material, notes in itertools.groupby(notes_with_materials, key=lambda n: n[0]):
             qty_list = [n[1] for n in notes]
             total_qty = sum(qty_list)
+            total_qty = round(total_qty, 2)
             dnotes_by_material[material] = total_qty
             #print(f'initial aggregation:{dnotes_by_material}')
 
@@ -604,6 +606,7 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
         for material, notes in itertools.groupby(notes_with_materials, key=lambda n: n[0]):
             qty_list = [n[1] for n in notes]
             total_qty = sum(qty_list)
+            total_qty = round(total_qty, 2)
             dnotes_by_material[material] = total_qty
             #print(f'initial aggregation:{dnotes_by_material}')
 
@@ -719,6 +722,7 @@ class KGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
         for material, notes in itertools.groupby(notes_with_materials, key=lambda n: n[0]):
             qty_list = [n[1] for n in notes]
             total_qty = sum(qty_list)
+            total_qty = round(total_qty, 2)
             dnotes_by_material[material] = total_qty
             #print(f'initial aggregation:{dnotes_by_material}')
 
@@ -798,6 +802,7 @@ class KGRNPurchase2UpdateView(LoginRequiredMixin, UpdateView):
         for material, notes in itertools.groupby(notes_with_materials, key=lambda n: n[0]):
             qty_list = [n[1] for n in notes]
             total_qty = sum(qty_list)
+            total_qty = round(total_qty, 2)
             dnotes_by_material[material] = total_qty
             #print(f'initial aggregation:{dnotes_by_material}')
 
@@ -878,6 +883,7 @@ class CloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
         for material, notes in itertools.groupby(notes_with_materials, key=lambda n: n[0]):
             qty_list = [n[1] for n in notes]
             total_qty = sum(qty_list)
+            total_qty = round(total_qty, 2)
             dnotes_by_material[material] = total_qty
             #print(f'initial aggregation:{dnotes_by_material}')
 
