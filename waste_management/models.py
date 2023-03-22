@@ -11,6 +11,10 @@ import computed_property
 class Department(models.Model):
     name = models.CharField(max_length=40, blank=False)
     department_code = models.CharField(max_length=12, blank=False)
+
+    class Meta:
+        ordering = ['name']
+    
     def __str__(self):
         return self.name 
 
