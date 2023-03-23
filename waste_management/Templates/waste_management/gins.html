@@ -130,7 +130,7 @@
                 {% endif %}
 
                 {% if goods_issue_note.form_status == 0 %}
-                    <td style="color:red;">Invalid form...</td>
+                    <td><a href="{% url 'goods_issue_note-update' goods_issue_note.id %}" style="color:red;">Invalid form...</a></td>
                 {% elif goods_issue_note.form_status == 1 %} 
                     {% if request.user.profile.level == 2 or request.user.profile.level == 8 %}
                         <td><a href="{% url 'goods_issue_note-hodupdate' goods_issue_note.id %}">Update</a></td>

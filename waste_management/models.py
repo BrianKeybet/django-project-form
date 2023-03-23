@@ -108,7 +108,7 @@ class Reason(models.Model):
         return self.name 
 
 class kgrn(models.Model):
-    serial_num = models.IntegerField(null=True, blank = True)
+    serial_num = models.IntegerField(null=True, blank = True, unique=True)
     form_serials = models.CharField(max_length = 100, blank = True) 
     date_posted = models.DateTimeField(default = timezone.now, verbose_name= "Date")
     author = models.ForeignKey(User, null = True, on_delete = models.PROTECT)
@@ -134,7 +134,7 @@ class kgrn(models.Model):
         return reverse('kgrns')
 
 class kgrn_item(models.Model):
-    serial_num = models.IntegerField(null=True, blank = True)
+    serial_num = models.IntegerField(null=True, blank = True, unique=True)
     date_posted = models.DateTimeField(default = timezone.now, verbose_name= "Date")
     department = models.CharField(max_length = 20, blank = True)
     form_status = models.IntegerField(null=True, default='0')

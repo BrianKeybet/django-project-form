@@ -23,6 +23,7 @@ import locale
 locale.setlocale(locale.LC_ALL, '')
 from .filters import *
 import itertools
+from io import BytesIO
 
 
 def dnotes_render_pdf_view(request, *args, **kwargs):
@@ -981,7 +982,6 @@ class BlankKGRN_CreateView(LoginRequiredMixin, SuccessMessageMixin, generic.Crea
         form.instance.serial_num = serial_num
 
         dept = self.request.user.profile.department_id
-        print(dept)
         profs = Profile.objects.filter(department=f'{dept}',level='2')
 
         for prof in profs:
@@ -989,7 +989,7 @@ class BlankKGRN_CreateView(LoginRequiredMixin, SuccessMessageMixin, generic.Crea
             message = f'Hello {prof.user.first_name},\nA new KGRN number {serial_num} has been submitted for your approval.\nPlease login to the system on http://10.10.0.173:8000/waste/kgrns/items/ to view the form.\n The serial number is {serial_num}.\n Issued to: {form.instance.supplier}.\n Vehicle number: {form.instance.vehicle_no}'
             email_from = settings.EMAIL_HOST_USER
             #recipient_list = [prof.user.email, config('ADMIN_EMAIL'), config('BRIAN_EMAIL')]
-            recipient_list = [config('BRIAN_EMAIL')]
+            recipient_list = [config('ICT_GMAIL')]
             send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
         return super().form_valid(form)
