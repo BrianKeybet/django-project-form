@@ -8,11 +8,18 @@ from django.contrib.auth.models import User
 class Department(models.Model):
     name = models.CharField(max_length=40, blank=False)
     def __str__(self):
-        return self.name  
+        return self.name
+
+class EmailAddress(models.Model):
+    email = models.EmailField(max_length=254, blank=False)
+    def __str__(self):
+        return self.email
 
 class Supplier(models.Model):
     name = models.CharField(max_length=40, blank=False)
     supplier_code = models.CharField(max_length = 40, blank = False, null = True)
+    email = models.ManyToManyField(EmailAddress)
+    
     def __str__(self):
         return self.name
 
