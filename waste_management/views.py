@@ -745,7 +745,7 @@ class KGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
 
             # Add PDF as attachment to each email
             subject = f'{form.instance.supplier} KGRN'
-            message = f'Dear Sir/Madam,\n\nPlease find attached, your Goods’ Return Note number {form.instance.serial_num}.\n\nIf you have any concerns, questions and/or clarifications, please contact us.\n\nThank you.'
+            message = f'Dear Sir/Madam,\n\nKindly find attached, your Goods’ Return Note number {form.instance.serial_num}.\n\nPlease contact us using the information provided below if you have any concerns, queries or need clarification.\n\n          Tel: +254 20 6420000\n          Email: purchase@kapa-oil.com\n\nThank you.'
             email = EmailMessage(
                 subject=subject,
                 body=message,
@@ -773,7 +773,7 @@ class KGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
 
             # Add PDF as attachment to each email
             subject = f'{form.instance.supplier} KGRN'
-            message = f'Dear Sir/Madam,\n\nPlease find attached, your Goods’ Return Note number {form.instance.serial_num}.\n\nIf you have any concerns, questions and/or clarifications, please contact us.\n\nThank you.'
+            message = f'Dear Sir/Madam,\n\nKindly find attached, your Goods’ Return Note number {form.instance.serial_num}.\n\nPlease contact us using the information provided below if you have any concerns, queries or need clarification.\n\n          Tel: +254 20 6420000\n          Email: purchase@kapa-oil.com\n\nThank you.'
             email = EmailMessage(
                 subject=subject,
                 body=message,
@@ -1153,7 +1153,7 @@ class BlankKGRNPurchaseUpdateView(LoginRequiredMixin, UpdateView):
 
             # Add PDF as attachment to each email
             subject = f'{form.instance.supplier} KGRN'
-            message = f'Dear Sir/Madam,\n\nPlease find attached, your Goods’ Return Note number {form.instance.serial_num}.\n\nIf you have any concerns, questions and/or clarifications, please contact us.\n\nThank you.'
+            message = f'Dear Sir/Madam,\n\nKindly find attached, your Goods’ Return Note number {form.instance.serial_num}.\n\nPlease contact us using the information provided below if you have any concerns, queries or need clarification.\n\n          Tel: +254 20 6420000\n          Email: purchase@kapa-oil.com\n\nThank you.'
             email = EmailMessage(
                 subject=subject,
                 body=message,
