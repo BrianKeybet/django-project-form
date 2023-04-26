@@ -404,10 +404,12 @@ def create_checklist(request):
     if request.method == 'POST':
         check = request.POST.getlist('checks[]')
         print(f'Initial list {check} type {type(check)}')
+        # Get list of integers and separate them with commas
+        new_check = ','.join((map(str,check)))
         if len(check) == 0:
             return HttpResponse('Error: No items selected')
         else:
-            checklist_instance = Checklist.objects.create(form_serials = check, date_posted = datetime.now(), author = request.user)
+            checklist_instance = Checklist.objects.create(form_serials = new_check, date_posted = datetime.now(), author = request.user)
             checklist_instance.save()
 
         for num in check:
@@ -431,6 +433,8 @@ def accept_checklist(request):
         print(f'Final list {my_list_int} type {type(my_list_int)}')
 
         my_list_flat = [x for xs in my_list_int for x in xs] #Flatten the list of lists into a single list
+        #Convert to comma separated integers
+        my_list_email = ','.join((map(str,my_list_flat)))
         print(f'Y list {my_list_flat} type {type(my_list_flat)}')
 
         for num in check: #for each serial number in the list
@@ -445,7 +449,7 @@ def accept_checklist(request):
 
         for prof in profs:
             subject = 'Waste Delivery Note'
-            message = f'Hello {prof.user.first_name}, Waste delivery note number {my_list_string} has been accepted by {request.user}. Please login to the system on http://10.10.0.173:8000/waste/dnotes/ to view the form.'
+            message = f'Hello {prof.user.first_name}, Waste delivery note number(s) {my_list_email} has been accepted by {request.user}. Please login to the system on http://10.10.0.173:8000/waste/dnotes/ to view the form.'
             email_from = settings.EMAIL_HOST_USER
             #recipient_list = [prof.user.email, config('BRIAN_EMAIL')]
             recipient_list = [config('BRIAN_EMAIL')]
@@ -482,6 +486,9 @@ def create_kgrn(request):
     if request.method == 'POST':
         check = request.POST.getlist('checks[]')
         # print(f'Initial list {check} type {type(check)}')
+        # Get list of integers and separate them with commas
+        new_check = ','.join((map(str,check)))
+        # print(f'Second list {new_check} type {type(check)}')
         # print(f'My_dept{request.user.profile.department} type {type(request.user.profile.department)}')
 
         kgrn_sum = kgrn_item.objects.count()
@@ -494,7 +501,7 @@ def create_kgrn(request):
 
             # print(f'Supplier {supplier} type {type(supplier)}')
 
-        kgrn_instance = kgrn.objects.create(serial_num = serial_num, form_serials = check, date_posted = datetime.now(), author = request.user, department = str(request.user.profile.department), supplier = supplier)
+        kgrn_instance = kgrn.objects.create(serial_num = serial_num, form_serials = new_check, date_posted = datetime.now(), author = request.user, department = str(request.user.profile.department), supplier = supplier)
         kgrn_instance.save()
 
 

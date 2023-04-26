@@ -127,7 +127,7 @@
         </table>
         </font>
     </div>
-    {% if request.user.profile.department_id == 14 %}
+    {% if request.user.profile.department_id == 14 or request.user.profile.level > 4%}
     <div class="row justify-content-center">
         <button name="accept" value="Submit" type="submit" class="btn btn-outline-success active btn-sm">Accept Checklist</button>
     </div>
