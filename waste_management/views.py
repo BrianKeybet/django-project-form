@@ -405,7 +405,7 @@ def create_checklist(request):
         check = request.POST.getlist('checks[]')
         print(f'Initial list {check} type {type(check)}')
         # Get list of integers and separate them with commas
-        new_check = ','.join((map(str,check)))
+        new_check = ', '.join((map(str,check)))
         if len(check) == 0:
             return HttpResponse('Error: No items selected')
         else:
@@ -434,7 +434,7 @@ def accept_checklist(request):
 
         my_list_flat = [x for xs in my_list_int for x in xs] #Flatten the list of lists into a single list
         #Convert to comma separated integers
-        my_list_email = ','.join((map(str,my_list_flat)))
+        my_list_email = ', '.join((map(str,my_list_flat)))
         print(f'Y list {my_list_flat} type {type(my_list_flat)}')
 
         for num in check: #for each serial number in the list
@@ -487,7 +487,7 @@ def create_kgrn(request):
         check = request.POST.getlist('checks[]')
         # print(f'Initial list {check} type {type(check)}')
         # Get list of integers and separate them with commas
-        new_check = ','.join((map(str,check)))
+        new_check = ', '.join((map(str,check)))
         # print(f'Second list {new_check} type {type(check)}')
         # print(f'My_dept{request.user.profile.department} type {type(request.user.profile.department)}')
 
