@@ -1306,132 +1306,187 @@ class BlankCloseKGRNUpdateView(LoginRequiredMixin, UpdateView):
 
         
 
-class goods_issue_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
+# class goods_issue_noteCreateView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
+#     template_name = 'waste_management/raise_goodsissuenote.html'
+#     success_message = 'Form Submitted Successfully!'
+#     model = goods_issue_note
+#     form_class = GoodsIssueNoteForm
+
+#     def form_valid(self,form):
+#         #Calculate total cost
+#         if form.instance.item1 != None:
+#             if form.instance.item_qty1_sale != None:
+#                 i1 = round(form.instance.item_qty1_sale * form.instance.item1.price, 2)
+#             else:
+#                 i1 = round(form.instance.item_qty1 * form.instance.item1.price, 2)
+#         else:
+#             i1 = 0
+#         if form.instance.item2 != None:
+#             if form.instance.item_qty2_sale != None:
+#                 i2 = round(form.instance.item_qty2_sale * form.instance.item2.price, 2)
+#             else:
+#                 i2 = round(form.instance.item_qty2 * form.instance.item2.price, 2)
+#         else:
+#             i2 = 0
+#         if form.instance.item3 != None:
+#             if form.instance.item_qty3_sale != None:
+#                 i3 = round(form.instance.item_qty3_sale * form.instance.item3.price, 2)
+#             else:
+#                 i3 = round(form.instance.item_qty3 * form.instance.item3.price, 2)
+#         else:
+#             i3 = 0
+#         if form.instance.item4 != None:
+#             if form.instance.item_qty4_sale != None:
+#                 i4 = round(form.instance.item_qty4_sale * form.instance.item4.price, 2)
+#             else:
+#                 i4 = round(form.instance.item_qty4 * form.instance.item4.price, 2)
+#         else:   
+#             i4 = 0
+#         if form.instance.item5 != None:
+#             if form.instance.item_qty5_sale != None:
+#                 i5 = round(form.instance.item_qty5_sale * form.instance.item5.price, 2)
+#             else:
+#                 i5 = round(form.instance.item_qty5 * form.instance.item5.price, 2)
+#         else:
+#             i5 = 0
+#         if form.instance.item6 != None:
+#             if form.instance.item_qty6_sale != None:
+#                 i6 = round(form.instance.item_qty6_sale * form.instance.item6.price, 2)
+#             else:
+#                 i6 = round(form.instance.item_qty6 * form.instance.item6.price, 2)
+#         else:
+#             i6 = 0
+#         if form.instance.item7 != None:
+#             if form.instance.item_qty7_sale != None:
+#                 i7 = round(form.instance.item_qty7_sale * form.instance.item7.price, 2)
+#             else:
+#                 i7 = round(form.instance.item_qty7 * form.instance.item7.price, 2)
+#         else:
+#             i7 = 0
+#         if form.instance.item8 != None:
+#             if form.instance.item_qty8_sale != None:
+#                 i8 = round(form.instance.item_qty8_sale * form.instance.item8.price, 2)
+#             else:
+#                 i8 = round(form.instance.item_qty8 * form.instance.item8.price, 2)
+#         else:
+#             i8 = 0
+ 
+#         result = round(i1 + i2 + i3 + i4 + i5 + i6 + i7 + i8, 2)
+
+#         form.instance.gross_total = result * int(1.16)
+
+#         form.instance.my_total = result
+
+#         #Calculate total warehouse weight
+#         if form.instance.item1 != None:
+#             w1 = form.instance.item_qty1_wh
+#         else:
+#             w1 = 0
+#         if form.instance.item2 != None:
+#             w2 = form.instance.item_qty2_wh
+#         else:
+#             w2 = 0
+#         if form.instance.item3 != None:
+#             w3 = form.instance.item_qty3_wh
+#         else:
+#             w3 = 0
+#         if form.instance.item4 != None:
+#             w4 = form.instance.item_qty4_wh
+#         else:
+#             w4 = 0
+#         if form.instance.item5 != None:
+#             w5 = form.instance.item_qty5_wh
+#         else:
+#             w5 = 0
+#         if form.instance.item6 != None:
+#             w6 = form.instance.item_qty6_wh
+#         else:
+#             w6 = 0
+#         if form.instance.item7 != None:
+#             w7 = form.instance.item_qty7_wh
+#         else:
+#             w7 = 0
+#         if form.instance.item8 != None:
+#             w8 = form.instance.item_qty8_wh
+#         else:
+#             w8 = 0
+ 
+#         form.instance.total_weight_wh = round(w1 + w2 + w3 + w4 + w5 + w6 + w7 + w8, 2)
+
+#         if form.instance.isinternal == False:
+#             form.instance.form_status = 2 #Increases the form status by 2
+#         else:
+#             form.instance.form_status = 1 #Increases the form status by 1
+
+#         form.instance.author = self.request.user #Inserts the author into the new post
+#         form.instance.department_from = self.request.user.profile.department
+
+#         prev_serial_num = goods_issue_note.objects.count()
+#         serial_num = prev_serial_num + 1 #Get next serial number to display in email
+
+#         dept = self.request.user.profile.department_id
+#         profs = Profile.objects.filter(department=f'{dept}',level='2')
+
+#         for prof in profs:
+#             subject = 'Goods Issue Note'
+#             message = f'Hello {prof.user.first_name}, a new Goods Issue Note has been submitted by {form.instance.author} for your approval. Please login to the system on http://10.10.0.173:8000/waste/gins/ to view the form. \n The serial number is {serial_num}. \n To: {form.instance.department_to}'
+#             email_from = settings.EMAIL_HOST_USER
+#             #recipient_list = [prof.user.email, config('BRIAN_EMAIL')]
+#             recipient_list = [config('BRIAN_EMAIL')]
+#             send_mail(subject, message, email_from, recipient_list, fail_silently=False)
+
+#         return super().form_valid(form)
+
+class GoodsIssueNoteCreateView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
     template_name = 'waste_management/raise_goodsissuenote.html'
     success_message = 'Form Submitted Successfully!'
     model = goods_issue_note
     form_class = GoodsIssueNoteForm
+    success_url = reverse_lazy('success_url_name')  # Replace 'success_url_name' with the URL name of the success page
 
-    def form_valid(self,form):
-        #Calculate total cost
-        if form.instance.item1 != None:
-            if form.instance.item_qty1_sale != None:
-                i1 = round(form.instance.item_qty1_sale * form.instance.item1.price, 2)
-            else:
-                i1 = round(form.instance.item_qty1 * form.instance.item1.price, 2)
-        else:
-            i1 = 0
-        if form.instance.item2 != None:
-            if form.instance.item_qty2_sale != None:
-                i2 = round(form.instance.item_qty2_sale * form.instance.item2.price, 2)
-            else:
-                i2 = round(form.instance.item_qty2 * form.instance.item2.price, 2)
-        else:
-            i2 = 0
-        if form.instance.item3 != None:
-            if form.instance.item_qty3_sale != None:
-                i3 = round(form.instance.item_qty3_sale * form.instance.item3.price, 2)
-            else:
-                i3 = round(form.instance.item_qty3 * form.instance.item3.price, 2)
-        else:
-            i3 = 0
-        if form.instance.item4 != None:
-            if form.instance.item_qty4_sale != None:
-                i4 = round(form.instance.item_qty4_sale * form.instance.item4.price, 2)
-            else:
-                i4 = round(form.instance.item_qty4 * form.instance.item4.price, 2)
-        else:   
-            i4 = 0
-        if form.instance.item5 != None:
-            if form.instance.item_qty5_sale != None:
-                i5 = round(form.instance.item_qty5_sale * form.instance.item5.price, 2)
-            else:
-                i5 = round(form.instance.item_qty5 * form.instance.item5.price, 2)
-        else:
-            i5 = 0
-        if form.instance.item6 != None:
-            if form.instance.item_qty6_sale != None:
-                i6 = round(form.instance.item_qty6_sale * form.instance.item6.price, 2)
-            else:
-                i6 = round(form.instance.item_qty6 * form.instance.item6.price, 2)
-        else:
-            i6 = 0
-        if form.instance.item7 != None:
-            if form.instance.item_qty7_sale != None:
-                i7 = round(form.instance.item_qty7_sale * form.instance.item7.price, 2)
-            else:
-                i7 = round(form.instance.item_qty7 * form.instance.item7.price, 2)
-        else:
-            i7 = 0
-        if form.instance.item8 != None:
-            if form.instance.item_qty8_sale != None:
-                i8 = round(form.instance.item_qty8_sale * form.instance.item8.price, 2)
-            else:
-                i8 = round(form.instance.item_qty8 * form.instance.item8.price, 2)
-        else:
-            i8 = 0
- 
-        result = round(i1 + i2 + i3 + i4 + i5 + i6 + i7 + i8, 2)
+    def form_valid(self, form):
+        # Calculate total cost and total warehouse weight
+        item_fields = ['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8']
+        sale_qty_fields = ['item_qty1_sale', 'item_qty2_sale', 'item_qty3_sale', 'item_qty4_sale', 'item_qty5_sale', 'item_qty6_sale', 'item_qty7_sale', 'item_qty8_sale']
+        qty_fields = ['item_qty1', 'item_qty2', 'item_qty3', 'item_qty4', 'item_qty5', 'item_qty6', 'item_qty7', 'item_qty8']
+        price_fields = ['item1.price', 'item2.price', 'item3.price', 'item4.price', 'item5.price', 'item6.price', 'item7.price', 'item8.price']
+        wh_fields = ['item_qty1_wh', 'item_qty2_wh', 'item_qty3_wh', 'item_qty4_wh', 'item_qty5_wh', 'item_qty6_wh', 'item_qty7_wh', 'item_qty8_wh']
 
-        form.instance.gross_total = result * int(1.16)
+        total_cost = 0
+        total_wh_weight = 0
 
-        form.instance.my_total = result
+        for idx, item_field in enumerate(item_fields):
+            item = getattr(form.instance, item_field)
+            if item is not None:
+                if getattr(form.instance, sale_qty_fields[idx]) is not None:
+                    total_cost += round(getattr(form.instance, sale_qty_fields[idx]) * getattr(item, 'price'), 2)
+                else:
+                    total_cost += round(getattr(form.instance, qty_fields[idx]) * getattr(item, 'price'), 2)
 
-        #Calculate total warehouse weight
-        if form.instance.item1 != None:
-            w1 = form.instance.item_qty1_wh
-        else:
-            w1 = 0
-        if form.instance.item2 != None:
-            w2 = form.instance.item_qty2_wh
-        else:
-            w2 = 0
-        if form.instance.item3 != None:
-            w3 = form.instance.item_qty3_wh
-        else:
-            w3 = 0
-        if form.instance.item4 != None:
-            w4 = form.instance.item_qty4_wh
-        else:
-            w4 = 0
-        if form.instance.item5 != None:
-            w5 = form.instance.item_qty5_wh
-        else:
-            w5 = 0
-        if form.instance.item6 != None:
-            w6 = form.instance.item_qty6_wh
-        else:
-            w6 = 0
-        if form.instance.item7 != None:
-            w7 = form.instance.item_qty7_wh
-        else:
-            w7 = 0
-        if form.instance.item8 != None:
-            w8 = form.instance.item_qty8_wh
-        else:
-            w8 = 0
- 
-        form.instance.total_weight_wh = round(w1 + w2 + w3 + w4 + w5 + w6 + w7 + w8, 2)
+                total_wh_weight += getattr(form.instance, wh_fields[idx], 0)
 
-        if form.instance.isinternal == False:
-            form.instance.form_status = 2 #Increases the form status by 2
-        else:
-            form.instance.form_status = 1 #Increases the form status by 1
+        form.instance.gross_total = round(total_cost * 1.16, 2)
+        form.instance.my_total = total_cost
+        form.instance.total_weight_wh = round(total_wh_weight, 2)
 
-        form.instance.author = self.request.user #Inserts the author into the new post
+        # Set form_status based on isinternal
+        form.instance.form_status = 2 if not form.instance.isinternal else 1
+
+        # Set other fields
+        form.instance.author = self.request.user
         form.instance.department_from = self.request.user.profile.department
 
+        # Send emails to relevant users
         prev_serial_num = goods_issue_note.objects.count()
-        serial_num = prev_serial_num + 1 #Get next serial number to display in email
+        serial_num = prev_serial_num + 1
 
         dept = self.request.user.profile.department_id
-        profs = Profile.objects.filter(department=f'{dept}',level='2')
+        profs = Profile.objects.filter(department=f'{dept}', level='2')
 
         for prof in profs:
             subject = 'Goods Issue Note'
             message = f'Hello {prof.user.first_name}, a new Goods Issue Note has been submitted by {form.instance.author} for your approval. Please login to the system on http://10.10.0.173:8000/waste/gins/ to view the form. \n The serial number is {serial_num}. \n To: {form.instance.department_to}'
             email_from = settings.EMAIL_HOST_USER
-            #recipient_list = [prof.user.email, config('BRIAN_EMAIL')]
             recipient_list = [config('BRIAN_EMAIL')]
             send_mail(subject, message, email_from, recipient_list, fail_silently=False)
 
