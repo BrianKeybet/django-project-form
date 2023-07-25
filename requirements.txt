@@ -93,7 +93,7 @@ dictdiffer @ file:///tmp/build/80754af9/dictdiffer_1594059095757/work
 diff-match-patch @ file:///Users/ktietz/demo/mc3/conda-bld/diff-match-patch_1630511840874/work
 distlib==0.3.2
 distributed @ file:///C:/ci/distributed_1617384289923/work
-Django==3.2.14
+Django==3.2.20
 django-computed-property==0.3.0
 django-cors-headers==3.8.0
 django-crispy-forms==1.12.0
