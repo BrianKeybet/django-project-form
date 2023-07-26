@@ -53,8 +53,8 @@ brotlipy==0.7.0
 CacheControl @ file:///Users/ktietz/demo/mc3/conda-bld/cachecontrol_1629143824253/work
 cached-property==1.5.1
 cachetools==5.2.0
-celery==4.3.0
-certifi==2021.10.8
+celery==5.2.2
+certifi==2022.12.07
 cffi @ file:///C:/ci_310/cffi_1642682485096/work
 cfgv==3.3.0
 chardet @ file:///C:/ci/chardet_1607690654534/work
@@ -104,7 +104,7 @@ django-simple-history==3.1.1
 django-webpack-loader==1.3.0
 djangorestframework==3.12.4
 docutils @ file:///C:/ci/docutils_1620828260973/work
-dparse==0.5.1
+dparse==0.5.2
 entrypoints==0.3
 et-xmlfile==1.1.0
 executing @ file:///opt/conda/conda-bld/executing_1646925071911/work
@@ -117,7 +117,7 @@ flatbuffers==1.12
 fonttools==4.25.0
 frozenlist @ file:///D:/bld/frozenlist_1648771831307/work
 fsspec @ file:///opt/conda/conda-bld/fsspec_1647268051896/work
-future==0.18.2
+future==0.18.3
 gast==0.4.0
 gevent @ file:///C:/ci/gevent_1628273793586/work
 glob2 @ file:///home/linux1/recipes/ci/glob2_1610991677669/work
@@ -218,10 +218,10 @@ nose @ file:///opt/conda/conda-bld/nose_1642704612149/work
 notebook @ file:///C:/Windows/TEMP/abs_79abr1_60s/croots/recipe/notebook_1659083661851/work
 numba @ file:///C:/ci/numba_1635186101448/work
 numexpr @ file:///C:/ci/numexpr_1640704408721/work
-numpy==1.21.4
+numpy==1.22
 numpydoc @ file:///opt/conda/conda-bld/numpydoc_1643788541039/work
 nums-from-string==0.1.2
-oauthlib==3.2.0
+oauthlib==3.2.2
 olefile @ file:///Users/ktietz/demo/mc3/conda-bld/olefile_1629805411829/work
 openpyxl @ file:///tmp/build/80754af9/openpyxl_1632777717936/work
 openTSNE @ file:///C:/Windows/Temp/abs_84a8s3h9_s/croots/recipe/opentsne_1659348475909/work
@@ -243,7 +243,7 @@ patsy==0.5.2
 pep8==1.7.1
 pexpect @ file:///tmp/build/80754af9/pexpect_1605563209008/work
 pickleshare @ file:///tmp/build/80754af9/pickleshare_1606932040724/work
-Pillow==9.0.1
+Pillow==9.2.0
 pkginfo @ file:///tmp/build/80754af9/pkginfo_1643162084911/work
 platformdirs==2.2.0
 plotly==5.3.1
@@ -254,7 +254,7 @@ poyo @ file:///tmp/build/80754af9/poyo_1617751526755/work
 pre-commit==2.13.0
 prometheus-client @ file:///opt/conda/conda-bld/prometheus_client_1643788673601/work
 prompt-toolkit @ file:///tmp/build/80754af9/prompt-toolkit_1633440160888/work
-protobuf==3.19.4
+protobuf==3.19.5
 psutil @ file:///C:/ci/psutil_1612298324802/work
 psycopg2==2.9.3
 psycopg2-binary==2.9.1
@@ -273,7 +273,7 @@ pydot==1.4.2
 pydotplus==2.0.2
 pyerfa @ file:///C:/ci/pyerfa_1621561004681/work
 pyflakes @ file:///tmp/build/80754af9/pyflakes_1617200973297/work
-Pygments==2.9.0
+Pygments==2.15.0
 PyJWT @ file:///C:/ci/pyjwt_1619651841937/work
 pylint==2.9.3
 pyls-spyder==0.4.0
@@ -281,7 +281,7 @@ PyNaCl @ file:///C:/ci/pynacl_1595000047588/work
 pyodbc @ file:///C:/ci/pyodbc_1647426060948/work
 pyOpenSSL @ file:///tmp/build/80754af9/pyopenssl_1608057966937/work
 pyparsing @ file:///tmp/build/80754af9/pyparsing_1635766073266/work
-PyPDF2==1.26.0
+PyPDF2==1.27.9
 pyqtgraph @ file:///tmp/build/80754af9/pyqtgraph_1594064840332/work
 pyreadline==2.1
 pyrsistent @ file:///C:/ci/pyrsistent_1636111468851/work
@@ -352,7 +352,7 @@ spyder-kernels @ file:///C:/ci/spyder-kernels_1634237040526/work
 SQLAlchemy @ file:///C:/ci/sqlalchemy_1638290879826/work
 sqlparse @ file:///home/conda/feedstock_root/build_artifacts/sqlparse_1631317292236/work
 stack-data @ file:///opt/conda/conda-bld/stack_data_1646927590127/work
-starlette==0.25.0
+starlette==0.27.0
 statsmodels==0.12.2
 sympy @ file:///C:/ci/sympy_1635237204453/work
 tables==3.6.1
@@ -394,7 +394,7 @@ watchdog @ file:///C:/ci/watchdog_1612471251191/work
 wcwidth @ file:///Users/ktietz/demo/mc3/conda-bld/wcwidth_1629357192024/work
 webencodings==0.5.1
 websocket-client @ file:///C:/ci/websocket-client_1614804473297/work
-Werkzeug==2.1.2
+Werkzeug==2.2.3
 whichcraft @ file:///tmp/build/80754af9/whichcraft_1617751293875/work
 widgetsnbextension @ file:///C:/ci/widgetsnbextension_1645009558218/work
 win-inet-pton @ file:///C:/ci/win_inet_pton_1605306167264/work
