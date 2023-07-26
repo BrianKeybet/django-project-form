@@ -54,7 +54,7 @@ CacheControl @ file:///Users/ktietz/demo/mc3/conda-bld/cachecontrol_162914382425
 cached-property==1.5.1
 cachetools==5.2.0
 celery==5.2.2
-certifi==2022.12.07
+certifi==2023.07.22
 cffi @ file:///C:/ci_310/cffi_1642682485096/work
 cfgv==3.3.0
 chardet @ file:///C:/ci/chardet_1607690654534/work
@@ -243,7 +243,7 @@ patsy==0.5.2
 pep8==1.7.1
 pexpect @ file:///tmp/build/80754af9/pexpect_1605563209008/work
 pickleshare @ file:///tmp/build/80754af9/pickleshare_1606932040724/work
-Pillow==9.2.0
+Pillow==9.3.0
 pkginfo @ file:///tmp/build/80754af9/pkginfo_1643162084911/work
 platformdirs==2.2.0
 plotly==5.3.1
