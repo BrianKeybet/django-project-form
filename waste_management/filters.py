@@ -3,7 +3,7 @@ from .models import *
 from django.forms.widgets import TextInput, Select
 
 
-class goods_issue_noteFilter(django_filters.FilterSet):
+class GoodsIssueNoteFilterSet(django_filters.FilterSet):
 
     CHOICES = (
         ('0','Rejected'),
@@ -20,7 +20,7 @@ class goods_issue_noteFilter(django_filters.FilterSet):
     #Date_posted = django_filters.IsoDateTimeFilter(label='Date Posted', field_name='date_posted', lookup_expr='gte')
 
     class Meta:
-        model = goods_issue_note
+        model = GoodsIssueNote
         fields = {
             'id': ['exact'],
             'author': ['exact'],
