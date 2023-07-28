@@ -33,17 +33,8 @@
     margin: auto auto;
     padding: 10px;
     display: grid;
-    /* grid-template-columns: repeat(5, 1fr); */
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 10px;
-
-    /* align-items: end;
-    justify-content: end; */
-
-    /* column-gap: 10px;
-    row-gap: 10px; */
-    /* grid-auto-rows: minmax(200px, auto); */
-    /* grid-template-rows: repeat(3, 1fr); */
     }
     .my_table {
     table-layout: fixed;
@@ -78,16 +69,6 @@
     text-align: center;
     }
 
-    /* .item:nth-of-type(3) {
-    background: #333;
-    grid-row: 2 / 4;
-    }
-
-    .item:nth-of-type(4) {
-    background: #333;
-    grid-row: 2 / 4;
-    } */
-
     @media (max-width: 500px) {
     .container {
         grid-template-columns: 1fr;
@@ -113,7 +94,8 @@
                     <fieldset class="form-group">
                         <legend class="center border-bottom mb-4">Items</legend>
                         {{ form.errors }}
-                        {{ form.non_field_errors }}
+                        {{ form.non_field_errors }}                                             
+                        
                         <table  class="table my_table">
                             <tr>
                               <th scope="col" style="width:50%">Material</th>
@@ -121,126 +103,97 @@
                               <th scope="col" style="width:25%">W/H Weight</th>
                             </tr>
                             <tr>
-                              {{ form.item1.errors }}
-                              <td>{{ form.item1 }}</td>
-                              <td>{{ form.item_qty1 }}</td>
-                              <td>{{ form.item_qty1_wh }}</td>
+                              {{ form.material_1.errors }}
+                              <td>{{ form.material_1 }}</td>
+                              <td>{{ form.material_quantity_1 }}</td>
+                              <td>{{ form.warehouse_weight_1 }}</td>
                             </tr>
                             <tr>
-                                {{ form.item2.errors }}
-                                <td>{{ form.item2 }}</td>
-                                <td>{{ form.item_qty2 }}</td>
-                                <td>{{ form.item_qty2_wh }}</td>
-                            </tr>
-                            <tr>
-                                {{ form.item3.errors }}
-                                <td>{{ form.item3 }}</td>
-                                <td>{{ form.item_qty3 }}</td>
-                                <td>{{ form.item_qty3_wh }}</td>
-                            </tr>
-                            <tr>
-                                {{ form.item4.errors }}
-                                <td>{{ form.item4 }}</td>
-                                <td>{{ form.item_qty4 }}</td>
-                                <td>{{ form.item_qty4_wh }}</td>
-                            </tr>
-                            <tr>
-                                {{ form.item5.errors }}
-                                <td>{{ form.item5 }}</td>
-                                <td>{{ form.item_qty5 }}</td>
-                                <td>{{ form.item_qty5_wh }}</td>
-                            </tr>
-                            <tr>
-                                {{ form.item6.errors }}
-                                <td>{{ form.item6 }}</td>
-                                <td>{{ form.item_qty6 }}</td>
-                                <td>{{ form.item_qty6_wh }}</td>
-                            </tr>
-                            <tr>
-                                {{ form.item7.errors }}
-                                <td>{{ form.item7 }}</td>
-                                <td>{{ form.item_qty7 }}</td>
-                                <td>{{ form.item_qty7_wh }}</td>
-                            </tr>
-                            <tr>
-                                {{ form.item8.errors }}
-                                <td>{{ form.item8 }}</td>
-                                <td>{{ form.item_qty8 }}</td>
-                                <td>{{ form.item_qty8_wh }}</td>
-                            </tr>
+                                {{ form.material_2.errors }}
+                                <td>{{ form.material_2 }}</td>
+                                <td>{{ form.material_quantity_2 }}</td>
+                                <td>{{ form.warehouse_weight_2 }}</td>
+                              </tr>
+                              <tr>
+                                {{ form.material_3.errors }}
+                                <td>{{ form.material_3 }}</td>
+                                <td>{{ form.material_quantity_3 }}</td>
+                                <td>{{ form.warehouse_weight_3 }}</td>
+                              </tr>
+                              <tr>
+                                {{ form.material_4.errors }}
+                                <td>{{ form.material_4 }}</td>
+                                <td>{{ form.material_quantity_4 }}</td>
+                                <td>{{ form.warehouse_weight_4 }}</td>
+                              </tr>
+                              <tr>
+                                {{ form.material_5.errors }}
+                                <td>{{ form.material_5 }}</td>
+                                <td>{{ form.material_quantity_5 }}</td>
+                                <td>{{ form.warehouse_weight_5 }}</td>
+                              </tr>
+                              <tr>
+                                {{ form.material_6.errors }}
+                                <td>{{ form.material_6 }}</td>
+                                <td>{{ form.material_quantity_6 }}</td>
+                                <td>{{ form.warehouse_weight_6 }}</td>
+                              </tr>
+                              <tr>
+                                {{ form.material_7.errors }}
+                                <td>{{ form.material_7 }}</td>
+                                <td>{{ form.material_quantity_7 }}</td>
+                                <td>{{ form.warehouse_weight_7 }}</td>
+                              </tr>
+                              <tr>
+                                {{ form.material_8.errors }}
+                                <td>{{ form.material_8 }}</td>
+                                <td>{{ form.material_quantity_8 }}</td>
+                                <td>{{ form.warehouse_weight_8 }}</td>
+                              </tr>
+                              <tr>
+                                {{ form.material_9.errors }}
+                                <td>{{ form.material_9 }}</td>
+                                <td>{{ form.material_quantity_9 }}</td>
+                                <td>{{ form.warehouse_weight_9 }}</td>
+                              </tr>
+                              <tr>
+                                {{ form.material_10.errors }}
+                                <td>{{ form.material_10 }}</td>
+                                <td>{{ form.material_quantity_10 }}</td>
+                                <td>{{ form.warehouse_weight_10 }}</td>
+                              </tr>
+                              <tr>
+                                {{ form.material_11.errors }}
+                                <td>{{ form.material_11 }}</td>
+                                <td>{{ form.material_quantity_11 }}</td>
+                                <td>{{ form.warehouse_weight_11 }}</td>
+                              </tr>
+                              <tr>
+                                {{ form.material_12.errors }}
+                                <td>{{ form.material_12 }}</td>
+                                <td>{{ form.material_quantity_12 }}</td>
+                                <td>{{ form.warehouse_weight_12 }}</td>
+                              </tr>
+                              <tr>
+                                {{ form.material_13.errors }}
+                                <td>{{ form.material_13 }}</td>
+                                <td>{{ form.material_quantity_13 }}</td>
+                                <td>{{ form.warehouse_weight_13 }}</td>
+                              </tr>
+                              <tr>
+                                {{ form.material_14.errors }}
+                                <td>{{ form.material_14 }}</td>
+                                <td>{{ form.material_quantity_14 }}</td>
+                                <td>{{ form.warehouse_weight_14 }}</td>
+                              </tr>
+                              <tr>
+                                {{ form.material_15.errors }}
+                                <td>{{ form.material_15 }}</td>
+                                <td>{{ form.material_quantity_15 }}</td>
+                                <td>{{ form.warehouse_weight_15 }}</td>
+                              </tr>
+                            
                           </table> 
-                        <!-- <div class="fieldWrapper">
-                            {{ form.item1.errors }}
-                            <label for="{{ form.item1.id_for_label }}">Material:</label>
-                            {{ form.item1 }}
-
-                            {{ form.item_qty1.errors }}
-                            <label for="{{ form.item_qty1.id_for_label }}">Quantity:</label>
-                            {{ form.item_qty1 }}
-                        </div>
-                        <div class="fieldWrapper">
-                            {{ form.item2.errors }}
-                            <label for="{{ form.item2.id_for_label }}">Material:</label>
-                            {{ form.item2 }}
-
-                            {{ form.item_qty2.errors }}
-                            <label for="{{ form.item_qty2.id_for_label }}">Quantity:</label>
-                            {{ form.item_qty2 }}
-                        </div>
-                        <div class="fieldWrapper">
-                            {{ form.item3.errors }}
-                            <label for="{{ form.item3.id_for_label }}">Material:</label>
-                            {{ form.item3 }}
-
-                            {{ form.item_qty3.errors }}
-                            <label for="{{ form.item_qty3.id_for_label }}">Quantity:</label>
-                            {{ form.item_qty3 }}
-                        </div>
-                        <div class="fieldWrapper">
-                            {{ form.item4.errors }}
-                            <label for="{{ form.item4.id_for_label }}">Material:</label>
-                            {{ form.item4 }}
-
-                            {{ form.item_qty4.errors }}
-                            <label for="{{ form.item_qty4.id_for_label }}">Quantity:</label>
-                            {{ form.item_qty4 }}
-                        </div>
-                        <div class="fieldWrapper">
-                            {{ form.item5.errors }}
-                            <label for="{{ form.item5.id_for_label }}">Material:</label>
-                            {{ form.item5 }}
-
-                            {{ form.item_qty5.errors }}
-                            <label for="{{ form.item_qty5.id_for_label }}">Quantity:</label>
-                            {{ form.item_qty5 }}
-                        </div>
-                        <div class="fieldWrapper">
-                            {{ form.item6.errors }}
-                            <label for="{{ form.item6.id_for_label }}">Material:</label>
-                            {{ form.item6 }}
-
-                            {{ form.item_qty6.errors }}
-                            <label for="{{ form.item_qty6.id_for_label }}">Quantity:</label>
-                            {{ form.item_qty6 }}
-                        </div>
-                        <div class="fieldWrapper">
-                            {{ form.item7.errors }}
-                            <label for="{{ form.item7.id_for_label }}">Material:</label>
-                            {{ form.item7 }}
-
-                            {{ form.item_qty7.errors }}
-                            <label for="{{ form.item_qty7.id_for_label }}">Quantity:</label>
-                            {{ form.item_qty7 }}
-                        </div>
-                        <div class="fieldWrapper">
-                            {{ form.item8.errors }}
-                            <label for="{{ form.item8.id_for_label }}">Material:</label>
-                            {{ form.item8 }}
-
-                            {{ form.item_qty8.errors }}
-                            <label for="{{ form.item_qty8.id_for_label }}">Quantity:</label>
-                            {{ form.item_qty8 }}
-                        </div> -->
                         <div class="row justify-content-center mt-5">
                             <button name="elevate" value="Submit" type="submit" class="btn btn-outline-success active btn-sm">Submit</button>
                         </div>

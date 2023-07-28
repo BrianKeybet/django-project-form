@@ -1315,11 +1315,15 @@ class GoodsIssueNoteCreateView(LoginRequiredMixin, SuccessMessageMixin, generic.
 
     def form_valid(self, form):
         # Calculate total cost and total warehouse weight
-        item_fields = ['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8']
-        weighbridge_weight_fields = ['item_qty1_sale', 'item_qty2_sale', 'item_qty3_sale', 'item_qty4_sale', 'item_qty5_sale', 'item_qty6_sale', 'item_qty7_sale', 'item_qty8_sale']
-        qty_fields = ['item_qty1', 'item_qty2', 'item_qty3', 'item_qty4', 'item_qty5', 'item_qty6', 'item_qty7', 'item_qty8']
-        price_fields = ['item1.price', 'item2.price', 'item3.price', 'item4.price', 'item5.price', 'item6.price', 'item7.price', 'item8.price']
-        wh_weight_fields = ['item_qty1_wh', 'item_qty2_wh', 'item_qty3_wh', 'item_qty4_wh', 'item_qty5_wh', 'item_qty6_wh', 'item_qty7_wh', 'item_qty8_wh']
+        item_fields = ['material_1', 'material_2', 'material_3', 'material_4', 'material_5', 'material_6', 'material_7', 'material_8', 'material_9', 'material_10', 'material_11', 'material_12', 'material_13', 'material_14', 'material_15']
+        weighbridge_weight_fields = ['weighbridge_weight_1', 'weighbridge_weight_2', 'weighbridge_weight_3', 'weighbridge_weight_4','weighbridge_weight_5', 'weighbridge_weight_6', 'weighbridge_weight_7', 'weighbridge_weight_8', 'weighbridge_weight_9',
+                                    'weighbridge_weight_10', 'weighbridge_weight_11', 'weighbridge_weight_12', 'weighbridge_weight_13', 'weighbridge_weight_14', 'weighbridge_weight_15']
+        qty_fields = ['material_quantity_1', 'material_quantity_2', 'material_quantity_3', 'material_quantity_4', 'material_quantity_5', 'material_quantity_6', 'material_quantity_7', 
+                    'material_quantity_8', 'material_quantity_9', 'material_quantity_10', 'material_quantity_11', 'material_quantity_12', 'material_quantity_13', 'material_quantity_14', 'material_quantity_15']
+        price_fields = ['material_1.price', 'material_2.price', 'material_3.price', 'material_4.price', 'material_5.price', 'material_6.price', 'material_7.price', 'material_8.price', 'material_9.price', 
+                        'material_10.price', 'material_11.price', 'material_12.price', 'material_13.price', 'material_14.price', 'material_15.price']
+        wh_weight_fields = ['warehouse_weight_1', 'warehouse_weight_2', 'warehouse_weight_3', 'warehouse_weight_4', 'warehouse_weight_5', 'warehouse_weight_6', 'warehouse_weight_7', 'warehouse_weight_8', 
+                        'warehouse_weight_9', 'warehouse_weight_10', 'warehouse_weight_11', 'warehouse_weight_12', 'warehouse_weight_13', 'warehouse_weight_14', 'warehouse_weight_15']
 
         total_cost = 0
         total_wh_weight = 0
@@ -1619,17 +1623,18 @@ class DepartmentRecieveGoodsIssueNoteUpdateView(LoginRequiredMixin, UpdateView):
 class SalesReceiveGoodsIssueNoteUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'waste_management/sales_receivegoodsissuenote.html'
     model = GoodsIssueNote
-    fields = ['item_qty1_sale', 'item_qty2_sale', 'item_qty3_sale', 'item_qty4_sale', 'item_qty5_sale', 'item_qty6_sale', 'item_qty7_sale', 'item_qty8_sale', 'received_by', 'dept_comment', 'total_weight_wb']
+    fields = ['weighbridge_weight_1', 'weighbridge_weight_2', 'weighbridge_weight_3', 'weighbridge_weight_4','weighbridge_weight_5', 'weighbridge_weight_6', 'weighbridge_weight_7', 'weighbridge_weight_8', 
+            'weighbridge_weight_9','weighbridge_weight_10', 'weighbridge_weight_11', 'weighbridge_weight_12', 'weighbridge_weight_13', 'weighbridge_weight_14', 'weighbridge_weight_15', 'received_by', 'dept_comment', 'total_weight_wb']
     success_url = reverse_lazy('gins')  # Replace 'success_url_name' with the URL name of the success page
 
     def form_valid(self, form):
         # Calculate updated total price
         result = 0
-        for idx in range(1, 9):
-            item = getattr(form.instance, f'item{idx}', None)
-            qty_field = getattr(form.instance, f'item_qty{idx}_sale', None)
+        for idx in range(1, 16):
+            item = getattr(form.instance, f'material_{idx}', None)
+            qty_field = getattr(form.instance, f'weighbridge_weight_{idx}', None)
             if qty_field is None:
-                qty_field = getattr(form.instance, f'item_qty{idx}', None)
+                qty_field = getattr(form.instance, f'material_quantity_{idx}', None)
             if item is not None:
                 price = getattr(item, 'price', 0)
                 result += round(qty_field * price, 2)

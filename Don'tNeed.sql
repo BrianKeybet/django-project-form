@@ -1,0 +1,64 @@
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN material_1_id TO item1_id;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN material_quantity_1 TO item_qty1;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN warehouse_weight_1 TO item_qty1_wh;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN weighbridge_weight_1 TO item_qty1_sale;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN material_2_id TO item2_id;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN material_quantity_2 TO item_qty2;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN warehouse_weight_2 TO item_qty2_wh;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN weighbridge_weight_2 TO item_qty2_sale;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN material_3_id TO item3_id;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN material_quantity_3 TO item_qty3;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN warehouse_weight_3 TO item_qty3_wh;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN weighbridge_weight_3 TO item_qty3_sale;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN material_4_id TO item4_id;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN material_quantity_4 TO item_qty4;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN warehouse_weight_4 TO item_qty4_wh;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN weighbridge_weight_4 TO item_qty4_sale;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN material_5_id TO item5_id;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN material_quantity_5 TO item_qty5;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN warehouse_weight_5 TO item_qty5_wh;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN weighbridge_weight_5 TO item_qty5_sale;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN material_6_id TO item6_id;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN material_quantity_6 TO item_qty6;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN warehouse_weight_6 TO item_qty6_wh;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN weighbridge_weight_6 TO item_qty6_sale;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN material_7_id TO item7_id;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN material_quantity_7 TO item_qty7;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN warehouse_weight_7 TO item_qty7_wh;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN weighbridge_weight_7 TO item_qty7_sale;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN material_8_id TO item8_id;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN material_quantity_8 TO item_qty8;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN warehouse_weight_8 TO item_qty8_wh;
+ALTER TABLE waste_management_goodsissuenote
+RENAME COLUMN weighbridge_weight_8 TO item_qty8_sale;

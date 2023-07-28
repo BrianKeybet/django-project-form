@@ -133,112 +133,161 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% if object.item1 == None %}
+                    {% if object.material_1 == None %}
                     <tr></tr>
                     {% else %}
                     <tr>
-                        <td>{{ object.item1 }}</td>
-                        <td style="text-align: center;">{{ object.item_qty1 }}</td>
-                        <td style="text-align: center;">{{ object.item1.uom }}</td>
-                        <td style="text-align: center;">{{ object.item_qty1_wh }}</td>                        
+                        <td>{{ object.material_1 }}</td>
+                        <td style="text-align: center;">{{ object.material_quantity_1 }}</td>
+                        <td style="text-align: center;">{{ object.material_1.uom }}</td>
+                        <td style="text-align: center;">{{ object.warehouse_weight_1 }}</td>                        
                     </tr>
                     {% endif %}
-                    {% if object.item2 == None %}
+                    {% if object.material_2 == None %}
                     <tr></tr>
                     {% else %}
                     <tr>
-                        <td>{{ object.item2 }}</td>
-                        <td style="text-align: center;">{{ object.item_qty2 }}</td>
-                        <td style="text-align: center;">{{ object.item2.uom }}</td>
-                        <td style="text-align: center;">{{ object.item_qty2_wh }}</td>
+                        <td>{{ object.material_2 }}</td>
+                        <td style="text-align: center;">{{ object.material_quantity_2 }}</td>
+                        <td style="text-align: center;">{{ object.material_2.uom }}</td>
+                        <td style="text-align: center;">{{ object.warehouse_weight_2 }}</td>
                         
                     </tr>
                     {% endif %}
-                    {% if object.item3 == None %}
+                    {% if object.material_3 == None %}
                     <tr></tr>
                     {% else %}
                     <tr>
-                        <td>{{ object.item3 }}</td>
-                        <td style="text-align: center;">{{ object.item_qty3 }}</td>
-                        <td style="text-align: center;">{{ object.item3.uom }}</td>
-                        <td style="text-align: center;">{{ object.item_qty3_wh }}</td>
+                        <td>{{ object.material_3 }}</td>
+                        <td style="text-align: center;">{{ object.material_quantity_3 }}</td>
+                        <td style="text-align: center;">{{ object.material_3.uom }}</td>
+                        <td style="text-align: center;">{{ object.warehouse_weight_3 }}</td>
                         
                     </tr>
                     {% endif %}
-                    {% if object.item4 == None %}
+                    {% if object.material_4 == None %}
                     <tr></tr>
                     {% else %}
                     <tr>
-                        <td>{{ object.item4 }}</td>
-                        <td style="text-align: center;">{{ object.item_qty4 }}</td>
-                        <td style="text-align: center;">{{ object.item4.uom }}</td>
-                        <td style="text-align: center;">{{ object.item_qty4_wh }}</td>
+                        <td>{{ object.material_4 }}</td>
+                        <td style="text-align: center;">{{ object.material_quantity_4 }}</td>
+                        <td style="text-align: center;">{{ object.material_4.uom }}</td>
+                        <td style="text-align: center;">{{ object.warehouse_weight_4 }}</td>
                     </tr>
                     {% endif %}
-                    {% if object.item5 == None %}
+                    {% if object.material_5 == None %}
                     <tr></tr>
                     {% else %}
                     <tr>
-                        <td>{{ object.item5 }}</td>
-                        <td style="text-align: center;">{{ object.item_qty5 }}</td>
-                        <td style="text-align: center;">{{ object.item5.uom }}</td>
-                        <td style="text-align: center;">{{ object.item_qty5_wh }}</td>
+                        <td>{{ object.material_5 }}</td>
+                        <td style="text-align: center;">{{ object.material_quantity_5 }}</td>
+                        <td style="text-align: center;">{{ object.material_5.uom }}</td>
+                        <td style="text-align: center;">{{ object.warehouse_weight_5 }}</td>
                     </tr>
                     {% endif %}
-                    {% if object.item6 == None %}
+                    {% if object.material_6 == None %}
                     <tr></tr>
                     {% else %}
                     <tr>
-                        <td>{{ object.item6 }}</td>
-                        <td style="text-align: center;">{{ object.item_qty6 }}</td>
-                        <td style="text-align: center;">{{ object.item6.uom }}</td>
-                        <td style="text-align: center;">{{ object.item_qty6_wh }}</td>
+                        <td>{{ object.material_6 }}</td>
+                        <td style="text-align: center;">{{ object.material_quantity_6 }}</td>
+                        <td style="text-align: center;">{{ object.material_6.uom }}</td>
+                        <td style="text-align: center;">{{ object.warehouse_weight_6 }}</td>
                     </tr>
                     {% endif %}
-                    {% if object.item7 == None %}
+                    {% if object.material_7 == None %}
                     <tr></tr>
                     {% else %}
                     <tr>
-                        <td>{{ object.item7 }}</td>
-                        <td style="text-align: center;">{{ object.item_qty7 }}</td>
-                        <td style="text-align: center;">{{ object.item7.uom }}</td>
-                        <td style="text-align: center;">{{ object.item_qty7_wh }}</td>
+                        <td>{{ object.material_7 }}</td>
+                        <td style="text-align: center;">{{ object.material_quantity_7 }}</td>
+                        <td style="text-align: center;">{{ object.material_7.uom }}</td>
+                        <td style="text-align: center;">{{ object.warehouse_weight_7 }}</td>
                     </tr>
                     {% endif %}
-                    {% if object.item8 == None %}
+                    {% if object.material_8 == None %}
                     <tr></tr>
                     {% else %}
                     <tr>
-                        <td>{{ object.item8 }}</td>
-                        <td style="text-align: center;">{{ object.item_qty8 }}</td>
-                        <td style="text-align: center;">{{ object.item8.uom }}</td>
-                        <td style="text-align: center;">{{ object.item_qty8_wh }}</td>
+                        <td>{{ object.material_8 }}</td>
+                        <td style="text-align: center;">{{ object.material_quantity_8 }}</td>
+                        <td style="text-align: center;">{{ object.material_8.uom }}</td>
+                        <td style="text-align: center;">{{ object.warehouse_weight_8 }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if object.material_9 == None %}
+                    <tr></tr>
+                    {% else %}
+                    <tr>
+                        <td>{{ object.material_9 }}</td>
+                        <td style="text-align: center;">{{ object.material_quantity_9 }}</td>
+                        <td style="text-align: center;">{{ object.material_9.uom }}</td>
+                        <td style="text-align: center;">{{ object.warehouse_weight_9 }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if object.material_10 == None %}
+                    <tr></tr>
+                    {% else %}
+                    <tr>
+                        <td>{{ object.material_10 }}</td>
+                        <td style="text-align: center;">{{ object.material_quantity_10 }}</td>
+                        <td style="text-align: center;">{{ object.material_10.uom }}</td>
+                        <td style="text-align: center;">{{ object.warehouse_weight_10 }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if object.material_11 == None %}
+                    <tr></tr>
+                    {% else %}
+                    <tr>
+                        <td>{{ object.material_11 }}</td>
+                        <td style="text-align: center;">{{ object.material_quantity_11 }}</td>
+                        <td style="text-align: center;">{{ object.material_11.uom }}</td>
+                        <td style="text-align: center;">{{ object.warehouse_weight_11 }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if object.material_12 == None %}
+                    <tr></tr>
+                    {% else %}
+                    <tr>
+                        <td>{{ object.material_12 }}</td>
+                        <td style="text-align: center;">{{ object.material_quantity_12 }}</td>
+                        <td style="text-align: center;">{{ object.material_12.uom }}</td>
+                        <td style="text-align: center;">{{ object.warehouse_weight_12 }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if object.material_13 == None %}
+                    <tr></tr>
+                    {% else %}
+                    <tr>
+                        <td>{{ object.material_13 }}</td>
+                        <td style="text-align: center;">{{ object.material_quantity_13 }}</td>
+                        <td style="text-align: center;">{{ object.material_13.uom }}</td>
+                        <td style="text-align: center;">{{ object.warehouse_weight_13 }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if object.material_14 == None %}
+                    <tr></tr>
+                    {% else %}
+                    <tr>
+                        <td>{{ object.material_14 }}</td>
+                        <td style="text-align: center;">{{ object.material_quantity_14 }}</td>
+                        <td style="text-align: center;">{{ object.material_14.uom }}</td>
+                        <td style="text-align: center;">{{ object.warehouse_weight_14 }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if object.material_15 == None %}
+                    <tr></tr>
+                    {% else %}
+                    <tr>
+                        <td>{{ object.material_15 }}</td>
+                        <td style="text-align: center;">{{ object.material_quantity_15 }}</td>
+                        <td style="text-align: center;">{{ object.material_15.uom }}</td>
+                        <td style="text-align: center;">{{ object.warehouse_weight_15 }}</td>
                     </tr>
                     {% endif %}
                 </tbody>
             </table>
-            <!-- <table>
-                <tfoot>
-                    <tr>
-                        <td style="width:25% ; text-align: right;"><strong>WAREHOUSE WEIGHT: &nbsp;</strong></td>
-                        <td style="width:25% ; text-align: left;"><strong>{{ object.total_weight_wh}} KG</strong></td>
-                        <td style="width:25%" ><strong>ESTIMATED VALUE:</strong></td>
-                        <td style="width:25% ; text-align: right;"><strong>{{ object.my_total |intcomma}}</strong></td>
-                    </tr>
-                    <tr>
-                        <td style="width:50%"></td>
-                        <td style="width:25%" ></td>
-                        <td style="width:25%" ><strong>VAT (16%):</strong></td>
-                        <td  style="width:25% ; text-align: right;"><strong>{{ 0.16 | mul:object.my_total |floatformat:2 |intcomma}}</strong></td>
-                    </tr>
-                    <tr>
-                        <td style="width:25%"></td>
-                        <td style="width:25%"></td>
-                        <td style="width:25%"><strong>GROSS ESTIMATED VALUE:</strong></td>
-                        <td style="width:25% ; text-align: right;"><strong>{{ 1.16 | mul:object.my_total |floatformat:2 |intcomma }}</strong></td>
-                    </tr>
-                </tfoot>
-            </table> -->
+
         </fieldset>
     </div>    
     <div class="item">

@@ -192,10 +192,8 @@ class kgrn_item(models.Model):
         return reverse('kgrn_items')
 
 class GoodsIssueNote(models.Model):
-    #id = models.AutoField(primary_key=True)
     date_posted = models.DateTimeField(default = timezone.now, verbose_name= "Date")
     department_from = models.CharField(max_length = 20, blank = True)
-    #department_to = models.CharField(max_length = 30, blank = True)
     department_to = models.ForeignKey(Customer, null = True, blank = True, related_name = "Department_to", on_delete = models.PROTECT)
     department_internal = models.ForeignKey(Department, on_delete = models.PROTECT, null = True, blank = True, related_name = 'Department_Internal')
     time_in = models.TimeField(auto_now=False, auto_now_add=False, blank = True, null = True)
@@ -204,39 +202,66 @@ class GoodsIssueNote(models.Model):
     author = models.ForeignKey(User, null = True, on_delete = models.PROTECT)
     delivered_by = models.CharField(max_length=20, null = True, blank = True, verbose_name = "Delivered By")
     received_by = models.CharField(max_length=20, null = True, blank = True, verbose_name = "Received By")
-    #received_by = models.ForeignKey(User, null = True, blank = True, related_name = "Received_By", on_delete = models.PROTECT)
-    item1 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material01', verbose_name = "Material Description")
-    item_qty1 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
-    item_qty1_wh =models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Warehouse Weight")
-    item_qty1_sale =models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
-    item2 = models.ForeignKey(Material, on_delete = models.PROTECT,null = True, blank = True, related_name = 'material02', verbose_name = "Material Description")
-    item_qty2 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
-    item_qty2_wh =models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Warehouse Weight")
-    item_qty2_sale =models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
-    item3 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material03', verbose_name = "Material Description")
-    item_qty3 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
-    item_qty3_wh =models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Warehouse Weight")
-    item_qty3_sale =models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
-    item4 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material04', verbose_name = "Material Description")
-    item_qty4 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
-    item_qty4_wh =models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Warehouse Weight")
-    item_qty4_sale =models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
-    item5 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material05', verbose_name = "Material Description")
-    item_qty5 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
-    item_qty5_wh =models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Warehouse Weight")
-    item_qty5_sale =models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
-    item6 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material06', verbose_name = "Material Description")
-    item_qty6 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
-    item_qty6_wh =models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Warehouse Weight")
-    item_qty6_sale =models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
-    item7 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material07', verbose_name = "Material Description")
-    item_qty7 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
-    item_qty7_wh =models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Warehouse Weight")
-    item_qty7_sale =models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
-    item8 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name = 'material08', verbose_name = "Material Description")
-    item_qty8 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Estimated Quantity")
-    item_qty8_wh =models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Warehouse Weight")
-    item_qty8_sale = models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
+    material_1 = models.ForeignKey(Material, on_delete=models.PROTECT, null=True, blank=True, related_name='goods_issue_notes_1', verbose_name="Material 1 Description")
+    material_quantity_1 = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True, verbose_name="Material 1 Estimated Quantity")
+    warehouse_weight_1 = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True, verbose_name="Material 1 Warehouse Weight")
+    weighbridge_weight_1 = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True, verbose_name="")
+    material_2 = models.ForeignKey(Material, on_delete=models.PROTECT, null=True, blank=True, related_name='goods_issue_notes_2', verbose_name="Material 2 Description")
+    material_quantity_2 = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True, verbose_name="Material 2 Estimated Quantity")
+    warehouse_weight_2 = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True, verbose_name="Material 2 Warehouse Weight")
+    weighbridge_weight_2 = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True, verbose_name="")
+    material_3 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name='goods_issue_notes_3', verbose_name = "Material 3 Description")
+    material_quantity_3 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 3 Estimated Quantity")
+    warehouse_weight_3 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 3 Warehouse Weight")
+    weighbridge_weight_3 =models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
+    material_4 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name='goods_issue_notes_4', verbose_name = "Material 4 Description")
+    material_quantity_4 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 4 Estimated Quantity")
+    warehouse_weight_4 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 4 Warehouse Weight")
+    weighbridge_weight_4 =models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
+    material_5 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name='goods_issue_notes_5', verbose_name = "Material 5 Description")
+    material_quantity_5 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 5 Estimated Quantity")
+    warehouse_weight_5 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 5 Warehouse Weight")
+    weighbridge_weight_5 =models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
+    material_6 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name='goods_issue_notes_6', verbose_name = "Material 6 Description")
+    material_quantity_6 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 6 Estimated Quantity")
+    warehouse_weight_6 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 6 Warehouse Weight")
+    weighbridge_weight_6 =models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
+    material_7 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name='goods_issue_notes_7', verbose_name = "Material 7 Description")
+    material_quantity_7 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 7 Estimated Quantity")
+    warehouse_weight_7 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 7 Warehouse Weight")
+    weighbridge_weight_7 =models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
+    material_8 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name='goods_issue_notes_8', verbose_name = "Material 8 Description")
+    material_quantity_8 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 8 Estimated Quantity")
+    warehouse_weight_8 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 8 Warehouse Weight")
+    weighbridge_weight_8= models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
+    material_9 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name='goods_issue_notes_9', verbose_name = "Material 9 Description")
+    material_quantity_9 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 9 Estimated Quantity")
+    warehouse_weight_9 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 9 Warehouse Weight")
+    weighbridge_weight_9= models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
+    material_10 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name='goods_issue_notes_10', verbose_name = "Material 10 Description")
+    material_quantity_10 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 10 Estimated Quantity")
+    warehouse_weight_10 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 10 Warehouse Weight")
+    weighbridge_weight_10= models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
+    material_11 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name='goods_issue_notes_11', verbose_name = "Material 11 Description")
+    material_quantity_11 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 11 Estimated Quantity")
+    warehouse_weight_11 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 11 Warehouse Weight")
+    weighbridge_weight_11= models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
+    material_12 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name='goods_issue_notes_12', verbose_name = "Material 12 Description")
+    material_quantity_12 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 12 Estimated Quantity")
+    warehouse_weight_12 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 12 Warehouse Weight")
+    weighbridge_weight_12= models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
+    material_13 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name='goods_issue_notes_13', verbose_name = "Material 13 Description")
+    material_quantity_13 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 13 Estimated Quantity")
+    warehouse_weight_13 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 13 Warehouse Weight")
+    weighbridge_weight_13= models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
+    material_14 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name='goods_issue_notes_14', verbose_name = "Material 14 Description")
+    material_quantity_14 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 14 Estimated Quantity")
+    warehouse_weight_14 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 14 Warehouse Weight")
+    weighbridge_weight_14= models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
+    material_15 = models.ForeignKey(Material, on_delete = models.PROTECT, null = True, blank = True, related_name='goods_issue_notes_15', verbose_name = "Material 15 Description")
+    material_quantity_15 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 15 Estimated Quantity")
+    warehouse_weight_15 = models.DecimalField(max_digits=8, decimal_places=2, null = True, blank = True, verbose_name = "Material 15 Warehouse Weight")
+    weighbridge_weight_15= models.DecimalField(max_digits=15, decimal_places=2, null = True, blank = True, verbose_name = "")
     isinternal = models.BooleanField(default=False, verbose_name = "Internal/External")
     hod = models.ForeignKey(User, null = True, on_delete = models.PROTECT,  related_name = 'HOD', blank= True)
     hod_comment = models.CharField(max_length=100, null=True, blank=True, verbose_name="HOD comment")
@@ -247,72 +272,6 @@ class GoodsIssueNote(models.Model):
     gross_total = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, verbose_name="Gross Total")
     total_weight_wh = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, verbose_name="Total WH Weight")
     total_weight_wb = models.DecimalField(max_digits=15, decimal_places=2, blank=False, null=True, verbose_name="")
-
-    # my_total = computed_property.ComputedFloatField(compute_from='get_cost', null=True, default='0', verbose_name="Total")
-
-    # #https://django-computed-property.readthedocs.io/en/latest/
-    # @property
-    # def get_cost(self, *args, **kwargs):
-    #     if self.item1 != None:
-    #         if self.item_qty1_sale != None:
-    #             i1 = round(self.item_qty1_sale * float(self.item1.price), 2)
-    #         else:
-    #             i1 = round(self.item_qty1 * float(self.item1.price), 2)
-    #     else:
-    #         i1 = 0
-    #     if self.item2 != None:
-    #         if self.item_qty2_sale != None:
-    #             i2 = round(self.item_qty2_sale * float(self.item2.price), 2)
-    #         else:
-    #             i2 = round(self.item_qty2 * float(self.item2.price), 2)
-    #     else:
-    #         i2 = 0
-    #     if self.item3 != None:
-    #         if self.item_qty3_sale != None:
-    #             i3 = round(self.item_qty3_sale * float(self.item3.price), 2)
-    #         else:
-    #             i3 = round(self.item_qty3 * float(self.item3.price), 2)
-    #     else:
-    #         i3 = 0
-    #     if self.item4 != None:
-    #         if self.item_qty4_sale != None:
-    #             i4 = round(self.item_qty4_sale * float(self.item4.price), 2)
-    #         else:
-    #             i4 = round(self.item_qty4 * float(self.item4.price), 2)
-    #     else:   
-    #         i4 = 0
-    #     if self.item5 != None:
-    #         if self.item_qty5_sale != None:
-    #             i5 = round(self.item_qty5_sale * float(self.item5.price), 2)
-    #         else:
-    #             i5 = round(self.item_qty5 * float(self.item5.price), 2)
-    #     else:
-    #         i5 = 0
-    #     if self.item6 != None:
-    #         if self.item_qty6_sale != None:
-    #             i6 = round(self.item_qty6_sale * float(self.item6.price), 2)
-    #         else:
-    #             i6 = round(self.item_qty6 * float(self.item6.price), 2)
-    #     else:
-    #         i6 = 0
-    #     if self.item7 != None:
-    #         if self.item_qty7_sale != None:
-    #             i7 = round(self.item_qty7_sale * float(self.item7.price), 2)
-    #         else:
-    #             i7 = round(self.item_qty7 * float(self.item7.price), 2)
-    #     else:
-    #         i7 = 0
-    #     if self.item8 != None:
-    #         if self.item_qty8_sale != None:
-    #             i8 = round(self.item_qty8_sale * float(self.item8.price), 2)
-    #         else:
-    #             i8 = round(self.item_qty8 * float(self.item8.price), 2)
-    #     else:
-    #         i8 = 0
- 
-    #     result = round(i1 + i2 + i3 + i4 + i5 + i6 + i7 + i8, 2)
-    #     #return f'{result:n}'
-    #     return result
 
     class Meta:
         ordering = ['-id']

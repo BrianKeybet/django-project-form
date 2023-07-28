@@ -119,139 +119,258 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% if gin.item1 != null %}
+                            {% if gin.material_1 != null %}
                             <tr>
-                                {% if gin.item_qty1_sale != null %}
-                                <td>{{ gin.item1 }}</td>
-                                <td style="text-align: center;">{{ gin.item_qty1_sale }}</td>
-                                <td style="text-align: center;">{{ gin.item1.uom }}</td>
-                                <td style="text-align: right;">{{ gin.item1.price }}</td>
-                                <td style="text-align: right;">{{ gin.item_qty1_sale | mul:gin.item1.price |floatformat:2 |intcomma}}</td>
+                                {% if gin.weighbridge_weight_1 != null %}
+                                <td>{{ gin.material_1 }}</td>
+                                <td style="text-align: center;">{{ gin.weighbridge_weight_1 }}</td>
+                                <td style="text-align: center;">{{ gin.material_1.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_1.price }}</td>
+                                <td style="text-align: right;">{{ gin.weighbridge_weight_1 | mul:gin.material_1.price |floatformat:2 |intcomma}}</td>
                                 {% else %}
-                                <td>{{ gin.item1 }}</td>
-                                <td style="text-align: center;">{{ gin.item_qty1 }}</td>
-                                <td style="text-align: center;">{{ gin.item1.uom }}</td>
-                                <td style="text-align: right;">{{ gin.item1.price }}</td>
-                                <td style="text-align: right;">{{ gin.item_qty1 | mul:gin.item1.price |floatformat:2 |intcomma}}</td>
+                                <td>{{ gin.material_1 }}</td>
+                                <td style="text-align: center;">{{ gin.material_quantity_1 }}</td>
+                                <td style="text-align: center;">{{ gin.material_1.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_1.price }}</td>
+                                <td style="text-align: right;">{{ gin.material_quantity_1 | mul:gin.material_1.price |floatformat:2 |intcomma}}</td>
                                 {% endif %}                                
                             </tr>
                             {% endif %}
-                            {% if gin.item2 != null %}
+                            {% if gin.material_2 != null %}
                             <tr>
-                                {% if gin.item_qty2_sale != null %}
-                                <td>{{ gin.item2 }}</td>
-                                <td style="text-align: center;">{{ gin.item_qty2_sale }}</td>
-                                <td style="text-align: center;">{{ gin.item2.uom }}</td>
-                                <td style="text-align: right;">{{ gin.item2.price }}</td>
-                                <td  style="text-align: right;">{{ gin.item_qty2_sale | mul:gin.item2.price |floatformat:2 |intcomma}}</td>
+                                {% if gin.weighbridge_weight_2 != null %}
+                                <td>{{ gin.material_2 }}</td>
+                                <td style="text-align: center;">{{ gin.weighbridge_weight_2 }}</td>
+                                <td style="text-align: center;">{{ gin.material_2.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_2.price }}</td>
+                                <td  style="text-align: right;">{{ ginweighbridge_weight_ye | mul:ginmaterial_m2.price |floatformat:2 |intcomma}}</td>
                                 {% else %}
-                                <td>{{ gin.item2 }}</td>
-                                <td style="text-align: center;">{{ gin.item_qty2 }}</td>
-                                <td style="text-align: center;">{{ gin.item2.uom }}</td>
-                                <td style="text-align: right;">{{ gin.item2.price }}</td>
-                                <td style="text-align: right;">{{ gin.item_qty2 | mul:gin.item2.price |floatformat:2 |intcomma}}</td>
+                                <td>{{ gin.material_2 }}</td>
+                                <td style="text-align: center;">{{ gin.material_quantity_2 }}</td>
+                                <td style="text-align: center;">{{ gin.material_2.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_2.price }}</td>
+                                <td style="text-align: right;">{{ gin.material_quantity_2 | mul:gin.material_2.price |floatformat:2 |intcomma}}</td>
                                 {% endif %}    
                             </tr>
                             {% endif %}
-                            {% if gin.item3 != null %}
+                            {% if gin.material_3 != null %}
                             <tr>
-                                {% if gin.item_qty3_sale != null %}
-                                <td>{{ gin.item3 }}</td>
-                                <td style="text-align: center;">{{ gin.item_qty3_sale }}</td>
-                                <td style="text-align: center;">{{ gin.item3.uom }}</td>
-                                <td style="text-align: right;">{{ gin.item3.price }}</td>
-                                <td style="text-align: right;">{{ gin.item_qty3_sale | mul:gin.item3.price |floatformat:2 |intcomma}}</td>
+                                {% if gin.weighbridge_weight_3 != null %}
+                                <td>{{ gin.material_3 }}</td>
+                                <td style="text-align: center;">{{ gin.weighbridge_weight_3 }}</td>
+                                <td style="text-align: center;">{{ gin.material_3.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_3.price }}</td>
+                                <td style="text-align: right;">{{ gin.weighbridge_weight_3 | mul:gin.material_3.price |floatformat:2 |intcomma}}</td>
                                 {% else %}
-                                <td>{{ gin.item3 }}</td>
-                                <td style="text-align: center;">{{ gin.item_qty3 }}</td>
-                                <td style="text-align: center;">{{ gin.item3.uom }}</td>
-                                <td style="text-align: right;">{{ gin.item3.price }}</td>
-                                <td style="text-align: right;">{{ gin.item_qty3 | mul:gin.item3.price |floatformat:2 |intcomma}}</td>
+                                <td>{{ gin.material_3 }}</td>
+                                <td style="text-align: center;">{{ gin.material_quantity_3 }}</td>
+                                <td style="text-align: center;">{{ gin.material_3.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_3.price }}</td>
+                                <td style="text-align: right;">{{ gin.material_quantity_3 | mul:gin.material_3.price |floatformat:2 |intcomma}}</td>
                                 {% endif %} 
                             </tr>
                             {% endif %}
-                            {% if gin.item4 != null %}
+                            {% if gin.material_4 != null %}
                             <tr>
-                                {% if gin.item_qty4_sale != null %}
-                                <td>{{ gin.item4 }}</td>
-                                <td style="text-align: center;">{{ gin.item_qty4_sale }}</td>
-                                <td style="text-align: center;">{{ gin.item4.uom }}</td>
-                                <td style="text-align: right;">{{ gin.item4.price }}</td>
-                                <td style="text-align: right;">{{ gin.item_qty4_sale | mul:gin.item4.price |floatformat:2 |intcomma}}</td>
+                                {% if gin.weighbridge_weight_4 != null %}
+                                <td>{{ gin.material_4 }}</td>
+                                <td style="text-align: center;">{{ gin.weighbridge_weight_4 }}</td>
+                                <td style="text-align: center;">{{ gin.material_4.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_4.price }}</td>
+                                <td style="text-align: right;">{{ gin.weighbridge_weight_4 | mul:gin.material_4.price |floatformat:2 |intcomma}}</td>
                                 {% else %}
-                                <td>{{ gin.item4 }}</td>
-                                <td style="text-align: center;">{{ gin.item_qty4 }}</td>
-                                <td style="text-align: center;">{{ gin.item4.uom }}</td>
-                                <td style="text-align: right;">{{ gin.item4.price }}</td>
-                                <td style="text-align: right;">{{ gin.item_qty4 | mul:gin.item4.price |floatformat:2 |intcomma}}</td>
+                                <td>{{ gin.material_4 }}</td>
+                                <td style="text-align: center;">{{ gin.material_quantity_4 }}</td>
+                                <td style="text-align: center;">{{ gin.material_4.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_4.price }}</td>
+                                <td style="text-align: right;">{{ gin.material_quantity_4 | mul:gin.material_4.price |floatformat:2 |intcomma}}</td>
                                 {% endif %} 
                             </tr>
                             {% endif %}
-                            {% if gin.item5 != null %}
+                            {% if gin.material_5 != null %}
                             <tr>
-                                {% if gin.item_qty5_sale != null %}
-                                <td>{{ gin.item5 }}</td>
-                                <td style="text-align: center;">{{ gin.item_qty5_sale }}</td>
-                                <td style="text-align: center;">{{ gin.item5.uom }}</td>
-                                <td style="text-align: right;">{{ gin.item5.price }}</td>
-                                <td style="text-align: right;">{{ gin.item_qty5_sale | mul:gin.item5.price |floatformat:2 |intcomma}}</td>
+                                {% if gin.weighbridge_weight_5 != null %}
+                                <td>{{ gin.material_5 }}</td>
+                                <td style="text-align: center;">{{ gin.weighbridge_weight_5 }}</td>
+                                <td style="text-align: center;">{{ gin.material_5.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_5.price }}</td>
+                                <td style="text-align: right;">{{ gin.weighbridge_weight_5 | mul:gin.material_5.price |floatformat:2 |intcomma}}</td>
                                 {% else %}
-                                <td>{{ gin.item5 }}</td>
-                                <td style="text-align: center;">{{ gin.item_qty5 }}</td>
-                                <td style="text-align: center;">{{ gin.item5.uom }}</td>
-                                <td style="text-align: right;">{{ gin.item5.price }}</td>
-                                <td style="text-align: right;">{{ gin.item_qty5 | mul:gin.item5.price |floatformat:2 |intcomma}}</td>
+                                <td>{{ gin.material_5 }}</td>
+                                <td style="text-align: center;">{{ gin.material_quantity_5 }}</td>
+                                <td style="text-align: center;">{{ gin.material_5.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_5.price }}</td>
+                                <td style="text-align: right;">{{ gin.material_quantity_5 | mul:gin.material_5.price |floatformat:2 |intcomma}}</td>
                                 {% endif %} 
                             </tr>
                             {% endif %}
-                            {% if gin.item6 != null %}
+                            {% if gin.material_6 != null %}
                             <tr>
-                                {% if gin.item_qty6_sale != null %}
-                                <td>{{ gin.item6 }}</td>
-                                <td style="text-align: center;">{{ gin.item_qty6_sale }}</td>
-                                <td style="text-align: center;">{{ gin.item6.uom }}</td>
-                                <td style="text-align: right;">{{ gin.item6.price }}</td>
-                                <td style="text-align: right;">{{ gin.item_qty6_sale | mul:gin.item6.price |floatformat:2 |intcomma}}</td>
+                                {% if gin.weighbridge_weight_6 != null %}
+                                <td>{{ gin.material_6 }}</td>
+                                <td style="text-align: center;">{{ gin.weighbridge_weight_6 }}</td>
+                                <td style="text-align: center;">{{ gin.material_6.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_6.price }}</td>
+                                <td style="text-align: right;">{{ gin.weighbridge_weight_6 | mul:gin.material_6.price |floatformat:2 |intcomma}}</td>
                                 {% else %}
-                                <td>{{ gin.item6 }}</td>
-                                <td style="text-align: center;">{{ gin.item_qty6 }}</td>
-                                <td style="text-align: center;">{{ gin.item6.uom }}</td>
-                                <td style="text-align: right;">{{ gin.item6.price }}</td>
-                                <td style="text-align: right;">{{ gin.item_qty6 | mul:gin.item6.price |floatformat:2 |intcomma}}</td>
+                                <td>{{ gin.material_6 }}</td>
+                                <td style="text-align: center;">{{ gin.material_quantity_6 }}</td>
+                                <td style="text-align: center;">{{ gin.material_6.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_6.price }}</td>
+                                <td style="text-align: right;">{{ gin.material_quantity_6 | mul:gin.material_6.price |floatformat:2 |intcomma}}</td>
                                 {% endif %} 
                             </tr>
                             {% endif %}
-                            {% if gin.item7 != null %}
+                            {% if gin.material_7 != null %}
                             <tr>
-                                {% if gin.item_qty7_sale != null %}
-                                <td>{{ gin.item7 }}</td>
-                                <td style="text-align: center;">{{ gin.item_qty7_sale }}</td>
-                                <td style="text-align: center;">{{ gin.item7.uom }}</td>
-                                <td style="text-align: right;">{{ gin.item7.price }}</td>
-                                <td style="text-align: right;">{{ gin.item_qty7_sale | mul:gin.item7.price |floatformat:2 |intcomma}}</td>
+                                {% if gin.weighbridge_weight_7 != null %}
+                                <td>{{ gin.material_7 }}</td>
+                                <td style="text-align: center;">{{ gin.weighbridge_weight_7 }}</td>
+                                <td style="text-align: center;">{{ gin.material_7.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_7.price }}</td>
+                                <td style="text-align: right;">{{ gin.weighbridge_weight_7 | mul:gin.material_7.price |floatformat:2 |intcomma}}</td>
                                 {% else %}
-                                <td>{{ gin.item7 }}</td>
-                                <td style="text-align: center;">{{ gin.item_qty7 }}</td>
-                                <td style="text-align: center;">{{ gin.item7.uom }}</td>
-                                <td style="text-align: right;">{{ gin.item7.price }}</td>
-                                <td style="text-align: right;">{{ gin.item_qty7 | mul:gin.item7.price |floatformat:2 |intcomma}}</td>
+                                <td>{{ gin.material_7 }}</td>
+                                <td style="text-align: center;">{{ gin.material_quantity_7 }}</td>
+                                <td style="text-align: center;">{{ gin.material_7.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_7.price }}</td>
+                                <td style="text-align: right;">{{ gin.material_quantity_7 | mul:gin.material_7.price |floatformat:2 |intcomma}}</td>
                                 {% endif %} 
                             </tr>
                             {% endif %}
-                            {% if gin.item8 != null %}
+                            {% if gin.material_8 != null %}
                             <tr>
-                                {% if gin.item_qty8_sale != null %}
-                                <td>{{ gin.item8 }}</td>
-                                <td style="text-align: center;">{{ gin.item_qty8_sale }}</td>
-                                <td style="text-align: center;">{{ gin.item8.uom }}</td>
-                                <td style="text-align: right;">{{ gin.item8.price }}</td>
-                                <td style="text-align: right;">{{ gin.item_qty8_sale | mul:gin.item8.price |floatformat:2 |intcomma}}</td>
+                                {% if gin.weighbridge_weight_8 != null %}
+                                <td>{{ gin.material_8 }}</td>
+                                <td style="text-align: center;">{{ gin.weighbridge_weight_8 }}</td>
+                                <td style="text-align: center;">{{ gin.material_8.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_8.price }}</td>
+                                <td style="text-align: right;">{{ gin.weighbridge_weight_8 | mul:gin.material_8.price |floatformat:2 |intcomma}}</td>
                                 {% else %}
-                                <td>{{ gin.item8 }}</td>
-                                <td style="text-align: center;">{{ gin.item_qty8 }}</td>
-                                <td style="text-align: center;">{{ gin.item8.uom }}</td>
-                                <td style="text-align: right;">{{ gin.item8.price }}</td>
-                                <td style="text-align: right;">{{ gin.item_qty8 | mul:gin.item8.price |floatformat:2|intcomma }}</td>
+                                <td>{{ gin.material_8 }}</td>
+                                <td style="text-align: center;">{{ gin.material_quantity_8 }}</td>
+                                <td style="text-align: center;">{{ gin.material_8.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_8.price }}</td>
+                                <td style="text-align: right;">{{ gin.material_quantity_8 | mul:gin.material_8.price |floatformat:2|intcomma }}</td>
+                                {% endif %} 
+                            </tr>
+                            {% endif %}
+                            {% if gin.material_9 != null %}
+                            <tr>
+                                {% if gin.weighbridge_weight_9 != null %}
+                                <td>{{ gin.material_9 }}</td>
+                                <td style="text-align: center;">{{ gin.weighbridge_weight_9 }}</td>
+                                <td style="text-align: center;">{{ gin.material_9.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_9.price }}</td>
+                                <td style="text-align: right;">{{ gin.weighbridge_weight_9 | mul:gin.material_9.price |floatformat:2 |intcomma}}</td>
+                                {% else %}
+                                <td>{{ gin.material_9 }}</td>
+                                <td style="text-align: center;">{{ gin.material_quantity_9 }}</td>
+                                <td style="text-align: center;">{{ gin.material_9.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_9.price }}</td>
+                                <td style="text-align: right;">{{ gin.material_quantity_9 | mul:gin.material_9.price |floatformat:2|intcomma }}</td>
+                                {% endif %} 
+                            </tr>
+                            {% endif %}
+                            {% if gin.material_10 != null %}
+                            <tr>
+                                {% if gin.weighbridge_weight_10 != null %}
+                                <td>{{ gin.material_10 }}</td>
+                                <td style="text-align: center;">{{ gin.weighbridge_weight_10 }}</td>
+                                <td style="text-align: center;">{{ gin.material_10.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_10.price }}</td>
+                                <td style="text-align: right;">{{ gin.weighbridge_weight_10 | mul:gin.material_10.price |floatformat:2 |intcomma}}</td>
+                                {% else %}
+                                <td>{{ gin.material_10 }}</td>
+                                <td style="text-align: center;">{{ gin.material_quantity_10 }}</td>
+                                <td style="text-align: center;">{{ gin.material_10.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_10.price }}</td>
+                                <td style="text-align: right;">{{ gin.material_quantity_10 | mul:gin.material_10.price |floatformat:2|intcomma }}</td>
+                                {% endif %} 
+                            </tr>
+                            {% endif %}
+                            {% if gin.material_11 != null %}
+                            <tr>
+                                {% if gin.weighbridge_weight_11 != null %}
+                                <td>{{ gin.material_11 }}</td>
+                                <td style="text-align: center;">{{ gin.weighbridge_weight_11 }}</td>
+                                <td style="text-align: center;">{{ gin.material_11.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_11.price }}</td>
+                                <td style="text-align: right;">{{ gin.weighbridge_weight_11 | mul:gin.material_11.price |floatformat:2 |intcomma}}</td>
+                                {% else %}
+                                <td>{{ gin.material_11 }}</td>
+                                <td style="text-align: center;">{{ gin.material_quantity_11 }}</td>
+                                <td style="text-align: center;">{{ gin.material_11.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_11.price }}</td>
+                                <td style="text-align: right;">{{ gin.material_quantity_11 | mul:gin.material_11.price |floatformat:2|intcomma }}</td>
+                                {% endif %} 
+                            </tr>
+                            {% endif %}
+                            {% if gin.material_12 != null %}
+                            <tr>
+                                {% if gin.weighbridge_weight_12 != null %}
+                                <td>{{ gin.material_12 }}</td>
+                                <td style="text-align: center;">{{ gin.weighbridge_weight_12 }}</td>
+                                <td style="text-align: center;">{{ gin.material_12.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_12.price }}</td>
+                                <td style="text-align: right;">{{ gin.weighbridge_weight_12 | mul:gin.material_12.price |floatformat:2 |intcomma}}</td>
+                                {% else %}
+                                <td>{{ gin.material_12 }}</td>
+                                <td style="text-align: center;">{{ gin.material_quantity_12 }}</td>
+                                <td style="text-align: center;">{{ gin.material_12.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_12.price }}</td>
+                                <td style="text-align: right;">{{ gin.material_quantity_12 | mul:gin.material_12.price |floatformat:2|intcomma }}</td>
+                                {% endif %} 
+                            </tr>
+                            {% endif %}
+                            {% if gin.material_13 != null %}
+                            <tr>
+                                {% if gin.weighbridge_weight_13 != null %}
+                                <td>{{ gin.material_13 }}</td>
+                                <td style="text-align: center;">{{ gin.weighbridge_weight_13 }}</td>
+                                <td style="text-align: center;">{{ gin.material_13.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_13.price }}</td>
+                                <td style="text-align: right;">{{ gin.weighbridge_weight_13 | mul:gin.material_13.price |floatformat:2 |intcomma}}</td>
+                                {% else %}
+                                <td>{{ gin.material_13 }}</td>
+                                <td style="text-align: center;">{{ gin.material_quantity_13 }}</td>
+                                <td style="text-align: center;">{{ gin.material_13.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_13.price }}</td>
+                                <td style="text-align: right;">{{ gin.material_quantity_13 | mul:gin.material_13.price |floatformat:2|intcomma }}</td>
+                                {% endif %} 
+                            </tr>
+                            {% endif %}
+                            {% if gin.material_14 != null %}
+                            <tr>
+                                {% if gin.weighbridge_weight_14 != null %}
+                                <td>{{ gin.material_14 }}</td>
+                                <td style="text-align: center;">{{ gin.weighbridge_weight_14 }}</td>
+                                <td style="text-align: center;">{{ gin.material_14.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_14.price }}</td>
+                                <td style="text-align: right;">{{ gin.weighbridge_weight_14 | mul:gin.material_14.price |floatformat:2 |intcomma}}</td>
+                                {% else %}
+                                <td>{{ gin.material_14 }}</td>
+                                <td style="text-align: center;">{{ gin.material_quantity_14 }}</td>
+                                <td style="text-align: center;">{{ gin.material_14.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_14.price }}</td>
+                                <td style="text-align: right;">{{ gin.material_quantity_14 | mul:gin.material_14.price |floatformat:2|intcomma }}</td>
+                                {% endif %} 
+                            </tr>
+                            {% endif %}
+                            {% if gin.material_15 != null %}
+                            <tr>
+                                {% if gin.weighbridge_weight_15 != null %}
+                                <td>{{ gin.material_15 }}</td>
+                                <td style="text-align: center;">{{ gin.weighbridge_weight_15 }}</td>
+                                <td style="text-align: center;">{{ gin.material_15.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_15.price }}</td>
+                                <td style="text-align: right;">{{ gin.weighbridge_weight_15 | mul:gin.material_15.price |floatformat:2 |intcomma}}</td>
+                                {% else %}
+                                <td>{{ gin.material_15 }}</td>
+                                <td style="text-align: center;">{{ gin.material_quantity_15 }}</td>
+                                <td style="text-align: center;">{{ gin.material_15.uom }}</td>
+                                <td style="text-align: right;">{{ gin.material_15.price }}</td>
+                                <td style="text-align: right;">{{ gin.material_quantity_15 | mul:gin.material_15.price |floatformat:2|intcomma }}</td>
                                 {% endif %} 
                             </tr>
                             {% endif %}
