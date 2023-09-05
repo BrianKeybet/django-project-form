@@ -1,20 +1,20 @@
-from django.shortcuts import redirect, render
+import itertools
+from io import BytesIO
+from django.db.models import Q
 from django.conf import settings
 from decouple  import config
 from .models import Checklist, waste_delivery_note, kgrn, GoodsIssueNote, kgrn_item
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
-from datetime import date, datetime
+from datetime import datetime
 from .forms import WasteForm, GoodsIssueNoteForm, KGRNForm
-from . import models
 from users.models import Profile
 from django.core.mail import EmailMessage
 from django.core.mail import send_mail
 from django.contrib import messages
-from decouple  import config
-from django.urls import reverse, reverse_lazy
-from django.views.generic import DetailView, UpdateView, ListView
+from django.urls import reverse_lazy
+from django.views.generic import UpdateView, ListView
 from django.shortcuts import get_object_or_404, redirect, HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
@@ -22,8 +22,6 @@ import nums_from_string
 import locale
 locale.setlocale(locale.LC_ALL, '')
 from .filters import *
-import itertools
-from io import BytesIO
 
 
 def dnotes_render_pdf_view(request, *args, **kwargs):
@@ -623,7 +621,8 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form, **kwargs):
         form.instance.hod = self.request.user #Inserts the author into the new post
-        profs = Profile.objects.filter(level='4').select_related('user')
+        # profs = Profile.objects.filter(level='4').select_related('user')
+        profs = Profile.objects.filter(Q(level='1') | Q(level='4')).select_related('user')
         director_profile = Profile.objects.filter(email=config('PUR_DIR_EMAIL')).select_related('user')
         profs = profs | director_profile #Combine the two querysets
 
