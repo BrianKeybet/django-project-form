@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'users.apps.UsersConfig',
     'crispy_forms',
+    'crispy_bootstrap4',
     'rts_forms.apps.Rts_FormsConfig',
     'waste_management.apps.WasteManagementConfig',
     'mathfilters',
@@ -84,6 +85,8 @@ INSTALLED_APPS = [
     'django_filters',
     'bootstrapform'
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap4'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

@@ -1,5 +1,4 @@
 from django.urls import path
-from .views import waste_delivery_noteCreateView
 from . import views
 
 urlpatterns = [

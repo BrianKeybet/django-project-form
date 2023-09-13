@@ -622,7 +622,7 @@ class KGRNHODUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form, **kwargs):
         form.instance.hod = self.request.user #Inserts the author into the new post
         # profs = Profile.objects.filter(level='4').select_related('user')
-        profs = Profile.objects.filter(Q(level='1') | Q(level='4')).select_related('user')
+        profs = Profile.objects.filter(Q(level='1') & Q(department_id='14') | Q(level='4')).select_related('user')
         director_profile = Profile.objects.filter(email=config('PUR_DIR_EMAIL')).select_related('user')
         profs = profs | director_profile #Combine the two querysets
 
