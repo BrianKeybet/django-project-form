@@ -243,7 +243,7 @@ patsy==0.5.2
 pep8==1.7.1
 pexpect @ file:///tmp/build/80754af9/pexpect_1605563209008/work
 pickleshare @ file:///tmp/build/80754af9/pickleshare_1606932040724/work
-Pillow==9.3.0
+Pillow==10.0.1
 pkginfo @ file:///tmp/build/80754af9/pkginfo_1643162084911/work
 platformdirs==2.2.0
 plotly==5.3.1
@@ -286,7 +286,7 @@ pyqtgraph @ file:///tmp/build/80754af9/pyqtgraph_1594064840332/work
 pyreadline==2.1
 pyrsistent @ file:///C:/ci/pyrsistent_1636111468851/work
 PySocks @ file:///C:/ci/pysocks_1605287845585/work
-pyspark==3.2.2
+pyspark==3.4.0
 pytest==6.2.5
 python-bidi==0.4.2
 python-dateutil @ file:///tmp/build/80754af9/python-dateutil_1626374649649/work
