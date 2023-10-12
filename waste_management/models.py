@@ -5,7 +5,6 @@ from rts_forms.models import Supplier
 from django.urls import reverse
 from simple_history.models import HistoricalRecords
 
-import computed_property
 
 # Create your models here.
 class Department(models.Model):
