@@ -143,7 +143,7 @@
                                 <td style="text-align: center;">{{ gin.weighbridge_weight_2 }}</td>
                                 <td style="text-align: center;">{{ gin.material_2.uom }}</td>
                                 <td style="text-align: right;">{{ gin.material_2.price }}</td>
-                                <td  style="text-align: right;">{{ ginweighbridge_weight_ye | mul:ginmaterial_m2.price |floatformat:2 |intcomma}}</td>
+                                <td  style="text-align: right;">{{ gin.weighbridge_weight_2 | mul:gin.material_2.price |floatformat:2 |intcomma}}</td>
                                 {% else %}
                                 <td>{{ gin.material_2 }}</td>
                                 <td style="text-align: center;">{{ gin.material_quantity_2 }}</td>
